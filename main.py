@@ -1,15 +1,36 @@
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.orchestrator import ConversationOrchestrator
 from app.core.models import UserMessage
 from app.core.database import ConversationDB
+import os
 
 app = FastAPI(
     title="MATIČÁK",
     description="Matiční AI Pomocník - inteligentní školní asistent",
     version="0.1.0"
 )
+
+# CORS middleware pro povolení requestů z browseru
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 orchestrator = ConversationOrchestrator()
 db = ConversationDB()
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    """Zobrazí webové rozhraní"""
+    html_path = os.path.join("app", "ui", "chat.html")
+    with open(html_path, "r", encoding="utf-8") as f:
+        return f.read()
 
 @app.post("/chat")
 def chat(message: UserMessage):
