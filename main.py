@@ -25,6 +25,9 @@ app.add_middleware(
 orchestrator = ConversationOrchestrator()
 db = ConversationDB()
 
+# Servírovat statické soubory (obrázky, atd.)
+app.mount("/static", StaticFiles(directory="app/ui"), name="static")
+
 @app.get("/", response_class=HTMLResponse)
 async def home():
     """Zobrazí webové rozhraní"""
