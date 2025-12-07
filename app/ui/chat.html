@@ -283,8 +283,62 @@
             localStorage.setItem('userId', userId);
         }
 
-        // Uvítací zpráva se zobrazí vždy při načtení
-        // Neodstraňujeme ji, zůstane v chatu
+        // Funkce pro typing efekt (písmenka po písmenku)
+        async function typeMessage(element, text, speed = 50) {
+            element.textContent = '';
+            for (let i = 0; i < text.length; i++) {
+                element.textContent += text.charAt(i);
+                await new Promise(resolve => setTimeout(resolve, speed));
+            }
+        }
+
+        // Zobrazení uvítací zprávy s typing efektem
+        async function showWelcomeMessage() {
+            // Skryjeme statickou zprávu
+            const staticWelcome = document.getElementById('welcomeMessage');
+            if (staticWelcome) {
+                staticWelcome.style.display = 'none';
+            }
+
+            // Vytvoříme bot zprávu s uvítacím textem
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+
+            // Typing efekt pro každou část zprávy
+            await typeMessage(contentDiv, 'Ahoj! 👋', 80);
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            contentDiv.textContent += '\n\n';
+            const currentLength = contentDiv.textContent.length;
+            await typeMessage(contentDiv, contentDiv.textContent + 'Jsem MATIČÁK, tvůj školní AI pomocník.', 50);
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            contentDiv.textContent += '\n\n';
+            await typeMessage(contentDiv, contentDiv.textContent + 'Jak ti můžu dnes pomoci?', 50);
+            
+            // Přidáme kontakt tlačítko
+            await new Promise(resolve => setTimeout(resolve, 500));
+            const contactBtn = document.createElement('button');
+            contactBtn.className = 'welcome-contact-btn';
+            contactBtn.textContent = '📧 Kontakt';
+            contactBtn.onclick = showContact;
+            contactBtn.style.marginTop = '15px';
+            contentDiv.appendChild(document.createElement('br'));
+            contentDiv.appendChild(contactBtn);
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Spustíme uvítací zprávu po načtení
+        window.addEventListener('load', () => {
+            setTimeout(showWelcomeMessage, 500);
+        });
 
         function addMessage(text, isUser) {
 
