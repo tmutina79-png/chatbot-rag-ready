@@ -37,6 +37,26 @@
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
+        }
+
+        .contact-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
         .header h1 {
@@ -220,6 +240,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <button class="contact-btn" onclick="showContact()">Kontakt</button>
             <h1>🤖 MATIČÁK</h1>
             <p>Matiční AI Pomocník</p>
         </div>
@@ -252,6 +273,11 @@
         const chatContainer = document.getElementById('chatContainer');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
+        
+        // Funkce pro zobrazení kontaktu
+        function showContact() {
+            alert('📧 Kontakt:\n\nMatiční gymnázium Ostrava\nE-mail: info@mgo.cz\nTelefon: +420 XXX XXX XXX\n\nPro více informací navštivte webové stránky školy.');
+        }
         
         // Generuj unikátní user ID nebo použij existující z localStorage
         let userId = localStorage.getItem('userId');
