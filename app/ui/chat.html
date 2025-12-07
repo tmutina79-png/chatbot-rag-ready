@@ -37,26 +37,6 @@
             color: white;
             padding: 20px;
             text-align: center;
-            position: relative;
-        }
-
-        .contact-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .contact-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
         }
 
         .header h1 {
@@ -235,21 +215,38 @@
             width: auto;
             opacity: 0.8;
         }
+
+        .welcome-contact-btn {
+            margin-top: 15px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .welcome-contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <button class="contact-btn" onclick="showContact()">Kontakt</button>
             <h1>🤖 MATIČÁK</h1>
             <p>Matiční AI Pomocník</p>
         </div>
         
         <div class="chat-container" id="chatContainer">
-            <div class="welcome-message">
+            <div class="welcome-message" id="welcomeMessage">
                 <h2>Ahoj! 👋</h2>
                 <p>Jsem MATIČÁK, tvůj školní AI pomocník.</p>
                 <p>Jak ti můžu dnes pomoci?</p>
+                <button class="welcome-contact-btn" onclick="showContact()">📧 Kontakt</button>
             </div>
         </div>
         
@@ -286,15 +283,10 @@
             localStorage.setItem('userId', userId);
         }
 
-        // Po prvním načtení smažeme welcome message
-        let isFirstMessage = true;
+        // Uvítací zpráva se zobrazí vždy při načtení
+        // Neodstraňujeme ji, zůstane v chatu
 
         function addMessage(text, isUser) {
-            if (isFirstMessage && !isUser) {
-                const welcome = document.querySelector('.welcome-message');
-                if (welcome) welcome.remove();
-                isFirstMessage = false;
-            }
 
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
