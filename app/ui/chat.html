@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MATIČÁK - Matiční AI Pomocník</title>
+    <script src="config.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,23 +14,25 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f0f2f5;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            width: 90%;
-            max-width: 800px;
-            height: 90vh;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 600px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            z-index: 1000;
         }
 
         .header {
@@ -84,6 +87,7 @@
             border-radius: 18px;
             word-wrap: break-word;
             white-space: pre-wrap;
+            font-size: 12px;
         }
 
         .message.user .message-content {
@@ -187,17 +191,6 @@
             }
         }
 
-        .welcome-message {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-
-        .welcome-message h2 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
         .footer {
             padding: 15px 20px;
             text-align: center;
@@ -207,7 +200,13 @@
             border-top: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
@@ -217,21 +216,194 @@
             opacity: 0.8;
         }
 
-        .welcome-contact-btn {
-            margin-top: 15px;
-            padding: 10px 24px;
+        .typing-toggle-btn {
+            padding: 6px 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 25px;
-            font-size: 14px;
+            border-radius: 15px;
+            font-size: 10px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
+            white-space: nowrap;
         }
 
-        .welcome-contact-btn:hover {
+        .typing-toggle-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .typing-toggle-btn.instant {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 24px;
+            background: transparent;
+            color: #000000;
+            border: 2px solid #000000;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-btn:hover {
+            background: #000000;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal styly */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .modal-body {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .modal-body h3 {
+            color: #667eea;
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+        }
+
+        .modal-body p {
+            margin: 8px 0;
+        }
+
+        .modal-body a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .modal-body a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .contact-link {
+            display: block;
+            padding: 12px 20px;
+            background: transparent;
+            color: #667eea;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Styly pro předmětové tlačítka */
+        .predmet-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 16px;
+            background: transparent;
+            color: #667eea;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .predmet-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .predmety-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -243,12 +415,6 @@
         </div>
         
         <div class="chat-container" id="chatContainer">
-            <div class="welcome-message" id="welcomeMessage">
-                <h2>Ahoj! 👋</h2>
-                <p>Jsem MATIČÁK, tvůj školní AI pomocník.</p>
-                <p>Jak ti můžu dnes pomoci?</p>
-                <button class="welcome-contact-btn" onclick="showContact()">📧 Kontakt</button>
-            </div>
         </div>
         
         <div class="input-container">
@@ -262,8 +428,50 @@
         </div>
         
         <div class="footer">
-            <img src="/static/logo_mgo.jpeg" alt="MGO Logo" class="footer-logo">
-            <span>Vytvořili žáci Matičního gymnázia Ostrava</span>
+            <div class="footer-content">
+                <img src="/static/logo_mgo.jpeg" alt="MGO Logo" class="footer-logo">
+                <span>Vytvořili žáci Matičního gymnázia Ostrava</span>
+            </div>
+            <button id="typingToggleBtn" class="typing-toggle-btn" onclick="toggleTypingEffect()">
+                ⚡ Přeskočit typing
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal okno pro kontakt -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Kontakt</h2>
+                <button class="close-btn" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Matiční gymnázium Ostrava</h3>
+                <p><strong>📧 E-mail:</strong> <a href="mailto:info@mgo.cz">info@mgo.cz</a></p>
+                <p><strong>📞 Telefon:</strong> <a href="tel:+420596136632">+420 596 136 632</a></p>
+                
+                <div class="contact-links">
+                    <a href="#" onclick="showVedeniInfo(event)" class="contact-link">
+                        👔 Vedení školy
+                    </a>
+                    <a href="#" onclick="showUciteleMenu(event)" class="contact-link">
+                        👨‍🏫 Učitelé
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro jídelnu -->
+    <div id="jidelnaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🍽️ Jídelna</h2>
+                <button class="close-btn" onclick="closeJidelnaModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="jidelnaModalBody">
+                <p>⏳ Načítám informace o jídelně...</p>
+            </div>
         </div>
     </div>
 
@@ -272,9 +480,384 @@
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
         
+        // Globální proměnné pro typing efekt
+        let typingEnabled = true;
+        let currentTypingElement = null;
+        let currentFullText = '';
+        let skipTyping = false;
+        
+        // Funkce pro přepínání/skip typing efektu
+        function toggleTypingEffect() {
+            const btn = document.getElementById('typingToggleBtn');
+            
+            // Pokud se něco právě vypisuje, okamžitě to dokončíme
+            if (currentTypingElement && currentFullText) {
+                skipTyping = true;
+                currentTypingElement.textContent = currentFullText;
+                btn.textContent = '⚡ Dokončeno';
+                
+                // Po chvíli vrátíme tlačítko do původního stavu
+                setTimeout(() => {
+                    btn.textContent = '⚡ Přeskočit typing';
+                    skipTyping = false;
+                }, 1000);
+            }
+        }
+        
         // Funkce pro zobrazení kontaktu
         function showContact() {
-            alert('📧 Kontakt:\n\nMatiční gymnázium Ostrava\nE-mail: info@mgo.cz\nTelefon: +420 XXX XXX XXX\n\nPro více informací navštivte webové stránky školy.');
+            document.getElementById('contactModal').style.display = 'block';
+        }
+        
+        // Funkce pro zobrazení jídelny - dnešní menu
+        async function showJidelna() {
+            // Otevřeme modal
+            document.getElementById('jidelnaModal').style.display = 'block';
+            const modalBody = document.getElementById('jidelnaModalBody');
+            modalBody.innerHTML = '<p>⏳ Načítám dnešní menu...</p>';
+            
+            try {
+                // Načteme dnešní menu z backendu
+                const response = await fetch(`${CONFIG.API_BASE_URL}/jidelna/dnesni-menu`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    // Začneme vytvářet HTML strukturu postupně
+                    let htmlContent = `<h3>🍽️ Dnešní menu - ${result.data.den} ${result.data.datum}</h3>`;
+                    
+                    if (result.data.menu && result.data.menu.length > 0) {
+                        // Zobrazíme postupně každé jídlo
+                        for (const jidlo of result.data.menu) {
+                            htmlContent += `<p><strong>${jidlo.typ}:</strong><br>${jidlo.nazev}</p>`;
+                            // Aktualizujeme obsah průběžně
+                            modalBody.innerHTML = htmlContent + '<div class="contact-links"><a href="#" onclick="showTydenniMenuInChat(event)" class="contact-link">📅 Týdenní menu</a><a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link">🛒 Objednat oběd</a></div>';
+                            // Přidáme krátkou pauzu pro plynulé zobrazení
+                            await new Promise(resolve => setTimeout(resolve, 200));
+                        }
+                    } else {
+                        htmlContent += '<p>Dnes není k dispozici žádné menu.</p>';
+                    }
+                    
+                    // Přidáme tlačítka na konec
+                    htmlContent += '<div class="contact-links">';
+                    htmlContent += '<a href="#" onclick="showTydenniMenuInChat(event)" class="contact-link">📅 Týdenní menu</a>';
+                    htmlContent += '<a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link">🛒 Objednat oběd</a>';
+                    htmlContent += '</div>';
+                    
+                    modalBody.innerHTML = htmlContent;
+                } else {
+                    modalBody.innerHTML = '<p>❌ Nepodařilo se načíst dnešní menu. Zkus to prosím později.</p>';
+                }
+                
+            } catch (error) {
+                console.error('Chyba při načítání menu:', error);
+                modalBody.innerHTML = '<p>❌ Došlo k chybě při načítání informací. Zkus to prosím znovu.</p>';
+            }
+        }
+        
+        // Funkce pro zobrazení týdenního menu v chatu
+        async function showTydenniMenuInChat(event) {
+            if (event) event.preventDefault();
+            
+            // Zavřeme modal
+            closeJidelnaModal();
+            
+            // Zobrazíme loading zprávu v chatu
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message bot';
+            loadingDiv.id = 'tydenniMenuLoading';
+            
+            const loadingContent = document.createElement('div');
+            loadingContent.className = 'message-content';
+            loadingContent.textContent = '⏳ Načítám týdenní menu...';
+            
+            loadingDiv.appendChild(loadingContent);
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/jidelna/tydenni-menu`);
+                const result = await response.json();
+                
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('tydenniMenuLoading');
+                if (loading) loading.remove();
+                
+                if (result.success && result.data) {
+                    // Vytvoříme formátovanou zprávu s týdenním menu
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message bot';
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.innerHTML = '';
+                    contentDiv.style.maxWidth = '80%'; // Širší pro lepší zobrazení
+                    
+                    messageDiv.appendChild(contentDiv);
+                    chatContainer.appendChild(messageDiv);
+                    
+                    // Postupně vytváříme a zobrazujeme obsah
+                    // Hlavní nadpis
+                    contentDiv.innerHTML = '<h3 style="color: #667eea; font-size: 18px; margin: 0 0 15px 0;">📅 Týdenní jídelní lístek</h3>';
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    
+                    if (result.data.dny && result.data.dny.length > 0) {
+                        for (const den of result.data.dny) {
+                            // Přidáme den
+                            contentDiv.innerHTML += `<h3 style="color: #667eea; font-size: 16px; margin: 15px 0 10px 0;">${den.den}</h3>`;
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            await new Promise(resolve => setTimeout(resolve, 200));
+                            
+                            // Postupně přidáme každé jídlo
+                            for (const jidlo of den.menu) {
+                                contentDiv.innerHTML += `<p style="margin: 8px 0;"><strong>${jidlo.typ}:</strong><br>${jidlo.nazev}</p>`;
+                                chatContainer.scrollTop = chatContainer.scrollHeight;
+                                await new Promise(resolve => setTimeout(resolve, 150));
+                            }
+                        }
+                        
+                        // Přidáme odkaz na objednání
+                        contentDiv.innerHTML += '<p style="margin-top: 15px; font-style: italic;">💡 Pro objednání navštivte: <a href="http://obedy.zs-mat5.cz/login" target="_blank" style="color: #667eea; text-decoration: none;">obedy.zs-mat5.cz</a></p>';
+                    } else {
+                        contentDiv.innerHTML += '<p>Týdenní menu není k dispozici.</p>';
+                    }
+                } else {
+                    addMessage('❌ Nepodařilo se načíst týdenní menu. Zkus to prosím později.', false);
+                }
+                
+            } catch (error) {
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('tydenniMenuLoading');
+                if (loading) loading.remove();
+                
+                console.error('Chyba při načítání týdenního menu:', error);
+                addMessage('❌ Došlo k chybě při načítání týdenního menu. Zkus to prosím znovu.', false);
+            }
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // Funkce pro zavření modalu
+        function closeContactModal() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+        
+        // Funkce pro zavření jídelna modalu
+        function closeJidelnaModal() {
+            document.getElementById('jidelnaModal').style.display = 'none';
+        }
+        
+        // Zavření modalu při kliknutí mimo něj
+        window.onclick = function(event) {
+            const contactModal = document.getElementById('contactModal');
+            const jidelnaModal = document.getElementById('jidelnaModal');
+            
+            if (event.target === contactModal) {
+                contactModal.style.display = 'none';
+            }
+            if (event.target === jidelnaModal) {
+                jidelnaModal.style.display = 'none';
+            }
+        }
+        
+        // Funkce pro zobrazení informací o vedení školy
+        async function showVedeniInfo(event) {
+            event.preventDefault();
+            closeContactModal();
+            
+            // Zobrazíme loading zprávu
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message bot';
+            loadingDiv.id = 'vedeniLoading';
+            
+            const loadingContent = document.createElement('div');
+            loadingContent.className = 'message-content';
+            loadingContent.textContent = '⏳ Načítám informace o vedení školy...';
+            
+            loadingDiv.appendChild(loadingContent);
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            try {
+                // Načteme data z backendu
+                const response = await fetch(`${CONFIG.API_BASE_URL}/kontakt/vedeni`);
+                const result = await response.json();
+                
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('vedeniLoading');
+                if (loading) loading.remove();
+                
+                if (result.success && result.data) {
+                    // Vytvoříme formátovanou zprávu s daty
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message bot';
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.innerHTML = ''; // Použijeme innerHTML pro HTML obsah
+                    
+                    messageDiv.appendChild(contentDiv);
+                    chatContainer.appendChild(messageDiv);
+                    
+                    // Vytvoříme HTML strukturu s klikacími odkazy
+                    let htmlContent = "<strong>👔 Vedení školy - Matiční gymnázium Ostrava</strong><br><br>";
+                    
+                    result.data.forEach(osoba => {
+                        htmlContent += `▪️ ${osoba.jmeno}<br>`;
+                        htmlContent += `&nbsp;&nbsp;&nbsp;Pozice: ${osoba.pozice}<br>`;
+                        if (osoba.email) {
+                            htmlContent += `&nbsp;&nbsp;&nbsp;📧 Email: <a href="mailto:${osoba.email}" style="color: #667eea; text-decoration: none;">${osoba.email}</a><br>`;
+                        }
+                        if (osoba.telefon) {
+                            htmlContent += `&nbsp;&nbsp;&nbsp;📞 Telefon: ${osoba.telefon}<br>`;
+                        }
+                        htmlContent += '<br>';
+                    });
+                    
+                    // Použijeme typing efekt pro HTML obsah
+                    await typeHtmlMessage(contentDiv, htmlContent, 30);
+                } else {
+                    // Zobrazíme chybovou zprávu s typing efektem
+                    addMessage('Omlouvám se, nepodařilo se načíst informace o vedení školy. Zkus to prosím později.', false);
+                }
+                
+            } catch (error) {
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('vedeniLoading');
+                if (loading) loading.remove();
+                
+                console.error('Chyba při načítání vedení:', error);
+                addMessage('Omlouvám se, došlo k chybě při načítání informací. Zkus to prosím znovu.', false);
+            }
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // Funkce pro zobrazení menu s předměty
+        async function showUciteleMenu(event) {
+            event.preventDefault();
+            closeContactModal();
+            
+            // Vytvoříme zprávu s tlačítky předmětů
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.style.maxWidth = '70%';
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            
+            // Typing efekt pro úvodní text
+            await typeMessage(contentDiv, '👨‍🏫 Vyber předmět pro zobrazení učitelů:\n\n', 30);
+            
+            // Přidáme kontejner pro tlačítka předmětů
+            const predmetyContainer = document.createElement('div');
+            predmetyContainer.className = 'predmety-container';
+            
+            // Seznam předmětů
+            const predmety = [
+                { nazev: 'Český jazyk', id: 'cestina' },
+                { nazev: 'Matematika', id: 'matematika' },
+                { nazev: 'Angličtina', id: 'anglictina' },
+                { nazev: 'Němčina', id: 'nemcina' },
+                { nazev: 'Fyzika', id: 'fyzika' },
+                { nazev: 'Chemie', id: 'chemie' },
+                { nazev: 'Biologie', id: 'biologie' },
+                { nazev: 'Dějepis', id: 'dejepis' },
+                { nazev: 'Zeměpis', id: 'zemepis' },
+                { nazev: 'Informatika', id: 'informatika' },
+                { nazev: 'Tělesná výchova', id: 'tv' },
+                { nazev: 'Hudební výchova', id: 'hv' }
+            ];
+            
+            // Vytvoříme tlačítko pro každý předmět
+            predmety.forEach(predmet => {
+                const btn = document.createElement('button');
+                btn.className = 'predmet-btn';
+                btn.textContent = predmet.nazev;
+                btn.onclick = () => showUciteleByPredmet(predmet.nazev, predmet.id);
+                predmetyContainer.appendChild(btn);
+            });
+            
+            contentDiv.appendChild(predmetyContainer);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // Funkce pro zobrazení učitelů daného předmětu
+        async function showUciteleByPredmet(nazevPredmetu, idPredmetu) {
+            // Zobrazíme loading zprávu
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message bot';
+            loadingDiv.id = 'uciteleLoading';
+            
+            const loadingContent = document.createElement('div');
+            loadingContent.className = 'message-content';
+            loadingContent.textContent = `⏳ Načítám učitele předmětu ${nazevPredmetu}...`;
+            
+            loadingDiv.appendChild(loadingContent);
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            try {
+                // Načteme data z backendu
+                const response = await fetch(`${CONFIG.API_BASE_URL}/kontakt/ucitele/${idPredmetu}`);
+                const result = await response.json();
+                
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('uciteleLoading');
+                if (loading) loading.remove();
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    // Vytvoříme formátovanou zprávu s daty
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message bot';
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.innerHTML = ''; // Použijeme innerHTML pro HTML obsah
+                    
+                    messageDiv.appendChild(contentDiv);
+                    chatContainer.appendChild(messageDiv);
+                    
+                    // Vytvoříme HTML strukturu s klikacími odkazy
+                    let htmlContent = `<strong>📚 ${result.predmet} - Vyučující</strong><br><br>`;
+                    
+                    result.data.forEach(ucitel => {
+                        htmlContent += `▪️ ${ucitel.jmeno}<br>`;
+                        if (ucitel.aprobace) {
+                            htmlContent += `&nbsp;&nbsp;&nbsp;Aprobace: ${ucitel.aprobace}<br>`;
+                        }
+                        if (ucitel.klapka) {
+                            htmlContent += `&nbsp;&nbsp;&nbsp;☎️ Klapka: ${ucitel.klapka}<br>`;
+                        }
+                        if (ucitel.email) {
+                            htmlContent += `&nbsp;&nbsp;&nbsp;📧 Email: <a href="mailto:${ucitel.email}" style="color: #667eea; text-decoration: none;">${ucitel.email}</a><br>`;
+                        }
+                        if (ucitel.konzultace) {
+                            htmlContent += `&nbsp;&nbsp;&nbsp;🕐 Konzultační hodiny: ${ucitel.konzultace}<br>`;
+                        }
+                        htmlContent += '<br>';
+                    });
+                    
+                    // Použijeme typing efekt pro HTML obsah
+                    await typeHtmlMessage(contentDiv, htmlContent, 30);
+                } else {
+                    // Zobrazíme zprávu, že nebyli nalezeni učitelé
+                    addMessage(`📚 ${nazevPredmetu}\n\nBohužel nebyly nalezeny žádné informace o učitelích pro tento předmět.`, false);
+                }
+                
+            } catch (error) {
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('uciteleLoading');
+                if (loading) loading.remove();
+                
+                console.error('Chyba při načítání učitelů:', error);
+                addMessage('Omlouvám se, došlo k chybě při načítání informací. Zkus to prosím znovu.', false);
+            }
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         
         // Generuj unikátní user ID nebo použij existující z localStorage
@@ -286,53 +869,107 @@
 
         // Funkce pro typing efekt (písmenka po písmenku)
         async function typeMessage(element, text, speed = 50) {
-            element.textContent = '';
+            if (!typingEnabled) {
+                // Okamžité zobrazení bez typing efektu
+                element.textContent = text;
+                return;
+            }
+            
+            // Nastavíme globální proměnné pro možnost přeskočení
+            currentTypingElement = element;
+            currentFullText = text;
+            skipTyping = false;
+            
             for (let i = 0; i < text.length; i++) {
+                // Pokud bylo požadováno přeskočení, ukončíme smyčku
+                if (skipTyping) {
+                    break;
+                }
+                
                 element.textContent += text.charAt(i);
                 await new Promise(resolve => setTimeout(resolve, speed));
             }
+            
+            // Po dokončení vynulujeme globální proměnné
+            currentTypingElement = null;
+            currentFullText = '';
+        }
+
+        // Funkce pro typing efekt s HTML obsahem
+        async function typeHtmlMessage(element, htmlContent, speed = 30) {
+            if (!typingEnabled) {
+                // Okamžité zobrazení bez typing efektu
+                element.innerHTML = htmlContent;
+                return;
+            }
+            
+            // Nastavíme globální proměnné pro možnost přeskočení
+            currentTypingElement = element;
+            currentFullText = htmlContent;
+            skipTyping = false;
+            
+            // Převedeme HTML na text pro typing efekt
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlContent;
+            const plainText = tempDiv.textContent || tempDiv.innerText || '';
+            
+            // Během typingu zobrazujeme jako prostý text
+            for (let i = 0; i < plainText.length; i++) {
+                if (skipTyping) {
+                    break;
+                }
+                
+                element.textContent += plainText.charAt(i);
+                await new Promise(resolve => setTimeout(resolve, speed));
+            }
+            
+            // Po dokončení typingu nahradíme HTML verzí s odkazy
+            element.innerHTML = htmlContent;
+            
+            // Po dokončení vynulujeme globální proměnné
+            currentTypingElement = null;
+            currentFullText = '';
         }
 
         // Zobrazení uvítací zprávy s typing efektem
         async function showWelcomeMessage() {
-            // Skryjeme statickou zprávu
-            const staticWelcome = document.getElementById('welcomeMessage');
-            if (staticWelcome) {
-                staticWelcome.style.display = 'none';
-            }
-
-            // Vytvoříme bot zprávu s uvítacím textem
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message bot';
             
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
+            contentDiv.style.maxWidth = '70%';
             
             messageDiv.appendChild(contentDiv);
             chatContainer.appendChild(messageDiv);
 
-            // Typing efekt pro každou část zprávy
-            await typeMessage(contentDiv, 'Ahoj! 👋', 80);
+            // Typing efekt pro uvítací zprávu
+            await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATIČÁK, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?', 50);
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Po dokončení textu přidáme tlačítka kontakt a jídelna pod zprávu
             await new Promise(resolve => setTimeout(resolve, 300));
             
-            contentDiv.textContent += '\n\n';
-            const currentLength = contentDiv.textContent.length;
-            await typeMessage(contentDiv, contentDiv.textContent + 'Jsem MATIČÁK, tvůj školní AI pomocník.', 50);
-            await new Promise(resolve => setTimeout(resolve, 300));
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'message bot';
+            buttonsDiv.style.marginTop = '5px';
+            buttonsDiv.style.display = 'flex';
+            buttonsDiv.style.gap = '10px';
             
-            contentDiv.textContent += '\n\n';
-            await typeMessage(contentDiv, contentDiv.textContent + 'Jak ti můžu dnes pomoci?', 50);
-            
-            // Přidáme kontakt tlačítko
-            await new Promise(resolve => setTimeout(resolve, 500));
             const contactBtn = document.createElement('button');
-            contactBtn.className = 'welcome-contact-btn';
+            contactBtn.className = 'contact-btn';
             contactBtn.textContent = '📧 Kontakt';
             contactBtn.onclick = showContact;
-            contactBtn.style.marginTop = '15px';
-            contentDiv.appendChild(document.createElement('br'));
-            contentDiv.appendChild(contactBtn);
             
+            const jidelnaBtn = document.createElement('button');
+            jidelnaBtn.className = 'contact-btn';
+            jidelnaBtn.textContent = '🍽️ Jídelna';
+            jidelnaBtn.onclick = showJidelna;
+            
+            buttonsDiv.appendChild(contactBtn);
+            buttonsDiv.appendChild(jidelnaBtn);
+            chatContainer.appendChild(buttonsDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
@@ -354,12 +991,24 @@
             
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
-            contentDiv.textContent = text;
+            
+            if (isUser) {
+                // Uživatelské zprávy bez typing efektu
+                contentDiv.textContent = text;
+            } else {
+                // Bot zprávy s typing efektem
+                contentDiv.textContent = '';
+            }
             
             messageDiv.appendChild(contentDiv);
             chatContainer.appendChild(messageDiv);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Spustíme typing efekt pro bot zprávy
+            if (!isUser) {
+                typeMessage(contentDiv, text, 30);
+            }
         }
 
         function showTypingIndicator() {
@@ -396,7 +1045,7 @@
             showTypingIndicator();
 
             try {
-                const response = await fetch('http://127.0.0.1:8000/chat', {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/chat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

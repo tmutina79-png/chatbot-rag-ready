@@ -5,6 +5,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.orchestrator import ConversationOrchestrator
 from app.core.models import UserMessage
 from app.core.database import ConversationDB
+from app.kontakty.scraper import (
+    scrape_vedeni_skoly, 
+    format_vedeni_info,
+    filter_ucitele_by_predmet,
+    get_predmet_zkratka,
+    format_ucitele_info
+)
+from app.jidelna.scraper import (
+    get_jidelna_info, 
+    format_jidelnicek_info,
+    scrape_dnesni_menu,
+    scrape_tydenni_menu
+)
 import os
 
 app = FastAPI(
@@ -59,3 +72,130 @@ def get_all_conversations(limit: int = 50):
     """Získá všechny nedávné konverzace"""
     conversations = db.get_all_conversations(limit)
     return {"conversations": conversations}
+
+@app.get("/kontakt/vedeni")
+def get_vedeni_skoly():
+    """Získá informace o vedení školy ze stránky MGO"""
+    try:
+        vedeni_data = scrape_vedeni_skoly()
+        return {
+            "success": True,
+            "data": vedeni_data,
+            "formatted_text": format_vedeni_info(vedeni_data)
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": []
+        }
+
+
+@app.get("/kontakt/ucitele/{predmet_id}")
+def get_ucitele_by_predmet(predmet_id: str):
+    """
+    Získá učitele pro daný předmět ze stránky pedagogického sboru.
+    
+    Args:
+        predmet_id: ID předmětu (např. 'matematika', 'cestina', 'anglictina')
+    """
+    try:
+        # Převedeme ID na zkratku předmětu
+        predmet_zkratka = get_predmet_zkratka(predmet_id)
+        
+        if not predmet_zkratka:
+            return {
+                "success": False,
+                "error": f"Neznámý předmět: {predmet_id}",
+                "data": []
+            }
+        
+        # Načteme učitele pro daný předmět
+        ucitele_data = filter_ucitele_by_predmet(predmet_zkratka)
+        
+        # Získáme čitelný název předmětu
+        predmet_nazvy = {
+            'cestina': 'Český jazyk',
+            'matematika': 'Matematika',
+            'anglictina': 'Angličtina',
+            'nemcina': 'Němčina',
+            'fyzika': 'Fyzika',
+            'chemie': 'Chemie',
+            'biologie': 'Biologie',
+            'dejepis': 'Dějepis',
+            'zemepis': 'Zeměpis',
+            'informatika': 'Informatika',
+            'tv': 'Tělesná výchova',
+            'hv': 'Hudební výchova'
+        }
+        predmet_nazev = predmet_nazvy.get(predmet_id.lower(), predmet_id)
+        
+        return {
+            "success": True,
+            "data": ucitele_data,
+            "predmet": predmet_nazev,
+            "formatted_text": format_ucitele_info(ucitele_data, predmet_nazev)
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": []
+        }
+
+
+@app.get("/jidelna")
+def get_jidelna():
+    """
+    Získá informace o školní jídelně
+    """
+    try:
+        jidelna_data = get_jidelna_info()
+        return {
+            "success": True,
+            "data": jidelna_data
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
+
+
+@app.get("/jidelna/dnesni-menu")
+def get_dnesni_menu():
+    """
+    Získá dnešní menu z webu obedy.zs-mat5.cz
+    """
+    try:
+        menu_data = scrape_dnesni_menu()
+        return {
+            "success": True,
+            "data": menu_data
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
+
+
+@app.get("/jidelna/tydenni-menu")
+def get_tydenni_menu():
+    """
+    Získá týdenní menu z webu obedy.zs-mat5.cz
+    """
+    try:
+        menu_data = scrape_tydenni_menu()
+        return {
+            "success": True,
+            "data": menu_data
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
