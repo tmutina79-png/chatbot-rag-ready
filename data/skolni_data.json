@@ -168,6 +168,19 @@
         {"cislo": "4", "cas": "10:50-11:35", "predmet": "Angličtina", "ucitel": "Mgr. Dvořák", "mistnost": "210"},
         {"cislo": "5", "cas": "11:45-12:30", "predmet": "Informatika", "ucitel": "Mgr. Kučera", "mistnost": "PC1"}
       ]
+    },
+    "TB": {
+      "trida": "Tercie B",
+      "den": "Středa",
+      "datum": "10.12.2025",
+      "hodiny": [
+        {"cislo": "1", "cas": "8:00-8:45", "predmet": "Biologie", "ucitel": "Mgr. Černá", "mistnost": "307"},
+        {"cislo": "2", "cas": "8:55-9:40", "predmet": "Zeměpis", "ucitel": "Mgr. Kučera", "mistnost": "304"},
+        {"cislo": "3", "cas": "9:50-10:35", "predmet": "Český jazyk", "ucitel": "Mgr. Svobodová", "mistnost": "301"},
+        {"cislo": "4", "cas": "10:50-11:35", "predmet": "Matematika", "ucitel": "Mgr. Novák", "mistnost": "205"},
+        {"cislo": "5", "cas": "11:45-12:30", "predmet": "Němčina", "ucitel": "Mgr. Procházková", "mistnost": "211"},
+        {"cislo": "6", "cas": "12:40-13:25", "predmet": "Tělesná výchova", "ucitel": "Mgr. Horák", "mistnost": "Tělocvična"}
+      ]
     }
   },
   "info": {

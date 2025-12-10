@@ -20,7 +20,7 @@ from app.jidelna.scraper import (
     scrape_dnesni_menu,
     scrape_tydenni_menu
 )
-from app.rozvrh.scraper import scrape_rozvrh_kva, scrape_rozvrh_pa
+from app.rozvrh.scraper import scrape_rozvrh_kva, scrape_rozvrh_pa, scrape_rozvrh_tb
 import os
 
 app = FastAPI(
@@ -393,6 +393,38 @@ def get_rozvrh_pa():
         # Fallback na lokální databázi
         if not rozvrh_data:
             rozvrh_data = data_manager.get_rozvrh("PA")
+        
+        return {
+            "success": True,
+            "data": rozvrh_data,
+            "source": source
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
+
+@app.get("/rozvrh/tb")
+def get_rozvrh_tb():
+    """
+    Získá rozvrh třídy TB - používá lokální databázi
+    """
+    try:
+        # Nejdřív zkus scraping
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_tb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("TB")
         
         return {
             "success": True,

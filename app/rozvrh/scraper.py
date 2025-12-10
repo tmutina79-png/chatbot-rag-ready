@@ -29,6 +29,16 @@ def scrape_rozvrh_pa():
     url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2B"
     return _scrape_rozvrh_generic(url)
 
+def scrape_rozvrh_tb():
+    """
+    Načte rozvrh třídy TB z Bakalářů a vrátí rozvrh pro dnešní den
+    
+    Returns:
+        dict: Obsahuje den, datum a seznam hodin
+    """
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/26"
+    return _scrape_rozvrh_generic(url)
+
 def _scrape_rozvrh_generic(url):
     
     try:
