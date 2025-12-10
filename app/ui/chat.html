@@ -2333,6 +2333,30 @@
                 if (loading) loading.remove();
                 
                 if (result.success && result.data) {
+                    // Funkce pro zjištění, zda je po poslední hodině
+                    const isAfterLastLesson = (hodiny) => {
+                        if (!hodiny || hodiny.length === 0) return false;
+                        
+                        // Najdi poslední hodinu
+                        const posledniHodina = hodiny[hodiny.length - 1];
+                        if (!posledniHodina.cas) return false;
+                        
+                        // Extrahuj čas konce (např. "8:15-9:00" -> "9:00")
+                        const casMatch = posledniHodina.cas.match(/(\d+):(\d+)$/);
+                        if (!casMatch) return false;
+                        
+                        const konecHodiny = parseInt(casMatch[1]) * 60 + parseInt(casMatch[2]);
+                        
+                        // Aktuální čas
+                        const now = new Date();
+                        const aktualniCas = now.getHours() * 60 + now.getMinutes();
+                        
+                        return aktualniCas > konecHodiny;
+                    };
+                    
+                    // Zjistíme, jestli je po poslední hodině
+                    const jePoPoslednHodine = isAfterLastLesson(result.data.hodiny);
+                    
                     // Vytvoříme zprávu s rozvrhem
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'message bot';
@@ -2344,7 +2368,26 @@
                     messageDiv.appendChild(contentDiv);
                     chatContainer.appendChild(messageDiv);
                     
-                    let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${result.data.den} ${result.data.datum}</h3>`;
+                    let denZobrazeni = result.data.den;
+                    if (jePoPoslednHodine) {
+                        // Mapování dnů pro zjištění následujícího dne
+                        const dnyTydne = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
+                        const now = new Date();
+                        let denIndex = now.getDay();
+                        
+                        // Přeskok na další pracovní den
+                        denIndex++;
+                        if (denIndex === 6) denIndex = 1; // Sobota -> Pondělí
+                        if (denIndex === 0) denIndex = 1; // Neděle -> Pondělí
+                        
+                        denZobrazeni = `${dnyTydne[denIndex]} (zítřejší rozvrh)`;
+                    }
+                    
+                    let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni}</h3>`;
+                    
+                    if (jePoPoslednHodine) {
+                        htmlContent += `<p style="margin: 5px 0; padding: 8px; background: #e8f4f8; border-radius: 5px; font-size: 11px;">ℹ️ Poslední hodina už skončila, zobrazuji rozvrh na zítřek.</p>`;
+                    }
                     
                     if (result.data.hodiny && result.data.hodiny.length > 0) {
                         result.data.hodiny.forEach(hodina => {
