@@ -272,18 +272,48 @@ def get_predmet_zkratka(predmet_nazev: str) -> str:
     Převede název předmětu na zkratku používanou v aprobaci.
     """
     mapping = {
+        # Jazyky
         'cestina': 'Čj',
+        'cj': 'Čj',
         'matematika': 'M',
+        'm': 'M',
         'anglictina': 'Aj',
+        'aj': 'Aj',
         'nemcina': 'Nj',
+        'nj': 'Nj',
+        'spanelstina': 'Šj',
+        'sj': 'Šj',
+        'francouzstina': 'Fj',
+        'fj': 'Fj',
+        'rustina': 'Rj',
+        'rj': 'Rj',
+        'latina': 'La',
+        'la': 'La',
+        # Přírodní vědy
         'fyzika': 'F',
+        'f': 'F',
         'chemie': 'Ch',
+        'ch': 'Ch',
         'biologie': 'Bi',
+        'bi': 'Bi',
+        # Společenské vědy
         'dejepis': 'D',
+        'd': 'D',
         'zemepis': 'Z',
+        'z': 'Z',
+        'zsv': 'ZSV',
+        'ov': 'Ov',
+        'obcanska-vychova': 'Ov',
+        'eks': 'EKS',
+        # IT a umění
         'informatika': 'IVT',
+        'ivt': 'IVT',
         'tv': 'Tv',
-        'hv': 'Hv'
+        'telesna-vychova': 'Tv',
+        'hv': 'Hv',
+        'hudebni-vychova': 'Hv',
+        'vv': 'Vv',
+        'vytvarnavychova': 'Vv'
     }
     return mapping.get(predmet_nazev.lower(), '')
 
@@ -301,6 +331,59 @@ def get_fallback_ucitele_data() -> List[Dict[str, str]]:
             "konzultace": ""
         }
     ]
+
+
+def search_ucitele_by_name(search_query: str) -> List[Dict[str, str]]:
+    """
+    Vyhledá učitele podle jména nebo příjmení (bez diakritiky).
+    
+    Args:
+        search_query: Hledané jméno/příjmení
+    
+    Returns:
+        Seznam nalezených učitelů
+    """
+    def remove_diacritics(text: str) -> str:
+        """Odstraní diakritiku z textu"""
+        text = text.lower()
+        replacements = {
+            'á': 'a', 'č': 'c', 'ď': 'd', 'é': 'e', 'ě': 'e', 'í': 'i',
+            'ň': 'n', 'ó': 'o', 'ř': 'r', 'š': 's', 'ť': 't', 'ú': 'u',
+            'ů': 'u', 'ý': 'y', 'ž': 'z'
+        }
+        for old, new in replacements.items():
+            text = text.replace(old, new)
+        return text
+    
+    def clean_name_part(text: str) -> str:
+        """Odstraní interpunkci a speciální znaky z jména"""
+        # Odstraníme tečky, čárky a další interpunkci
+        return text.replace('.', '').replace(',', '').strip()
+    
+    ucitele = scrape_ucitele_pedagogicky_sbor()
+    
+    # Normalizace hledaného dotazu
+    search_normalized = remove_diacritics(search_query.strip())
+    
+    found_ucitele = []
+    for ucitel in ucitele:
+        jmeno = ucitel.get('jmeno', '')
+        
+        # Rozdělíme jméno na části, ale nejdřív odstraníme interpunkci
+        jmeno_cleaned = jmeno.replace('.', ' ').replace(',', ' ')
+        jmeno_parts = jmeno_cleaned.split()
+        
+        # Kontrolujeme každou část jména
+        for part in jmeno_parts:
+            if not part:  # Přeskočíme prázdné části
+                continue
+            part_normalized = remove_diacritics(part.strip())
+            # Musí se shodovat celé slovo (kvůli požadavku uživatele)
+            if part_normalized == search_normalized:
+                found_ucitele.append(ucitel)
+                break
+    
+    return found_ucitele
 
 
 def format_ucitele_info(ucitele_data: List[Dict[str, str]], predmet_nazev: str = "") -> str:

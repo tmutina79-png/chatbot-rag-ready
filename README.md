@@ -1,4 +1,7 @@
-# 🤖 MATIČÁK - Matiční AI Pomocník
+Name:           maticak-backend
+Build Command:  pip install -r requirements.txt
+Start Command:  uvicorn main:app --host 0.0.0.0 --port $PORT
+Instance Type:  Free# 🤖 MATIČÁK - Matiční AI Pomocník
 
 Inteligentní školní chatbot pro Matiční gymnázium Ostrava.
 
@@ -107,3 +110,6 @@ Podrobný návod k nasazení: [DEPLOYMENT.md](DEPLOYMENT.md)
 ---
 
 **Vytvořeno žáky Matičního gymnázia Ostrava** ❤️
+
+cd /Users/tomasmutina/Documents/Chatbot_skola_1
+./deploy_backend.sh

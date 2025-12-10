@@ -5,12 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.orchestrator import ConversationOrchestrator
 from app.core.models import UserMessage
 from app.core.database import ConversationDB
+from app.core.data_manager import data_manager
 from app.kontakty.scraper import (
     scrape_vedeni_skoly, 
     format_vedeni_info,
     filter_ucitele_by_predmet,
     get_predmet_zkratka,
-    format_ucitele_info
+    format_ucitele_info,
+    search_ucitele_by_name
 )
 from app.jidelna.scraper import (
     get_jidelna_info, 
@@ -18,6 +20,7 @@ from app.jidelna.scraper import (
     scrape_dnesni_menu,
     scrape_tydenni_menu
 )
+from app.rozvrh.scraper import scrape_rozvrh_kva, scrape_rozvrh_pa
 import os
 
 app = FastAPI(
@@ -48,6 +51,14 @@ async def home():
     with open(html_path, "r", encoding="utf-8") as f:
         return f.read()
 
+@app.get("/config.js")
+async def get_config():
+    """Servíruje config.js"""
+    config_path = os.path.join("app", "ui", "config.js")
+    with open(config_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    return HTMLResponse(content=content, media_type="application/javascript")
+
 @app.post("/chat")
 def chat(message: UserMessage):
     reply = orchestrator.generate_answer(message.text, user_id=message.user_id)
@@ -75,13 +86,28 @@ def get_all_conversations(limit: int = 50):
 
 @app.get("/kontakt/vedeni")
 def get_vedeni_skoly():
-    """Získá informace o vedení školy ze stránky MGO"""
+    """Získá informace o vedení školy - používá lokální databázi"""
     try:
-        vedeni_data = scrape_vedeni_skoly()
+        # Nejdřív zkus scraping
+        try:
+            vedeni_data = scrape_vedeni_skoly()
+            if vedeni_data:
+                return {
+                    "success": True,
+                    "data": vedeni_data,
+                    "formatted_text": format_vedeni_info(vedeni_data),
+                    "source": "scraping"
+                }
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        vedeni_data = data_manager.get_vedeni()
         return {
             "success": True,
             "data": vedeni_data,
-            "formatted_text": format_vedeni_info(vedeni_data)
+            "formatted_text": data_manager.format_vedeni_info(),
+            "source": "database"
         }
     except Exception as e:
         return {
@@ -94,7 +120,7 @@ def get_vedeni_skoly():
 @app.get("/kontakt/ucitele/{predmet_id}")
 def get_ucitele_by_predmet(predmet_id: str):
     """
-    Získá učitele pro daný předmět ze stránky pedagogického sboru.
+    Získá učitele pro daný předmět - používá lokální databázi
     
     Args:
         predmet_id: ID předmětu (např. 'matematika', 'cestina', 'anglictina')
@@ -110,23 +136,64 @@ def get_ucitele_by_predmet(predmet_id: str):
                 "data": []
             }
         
-        # Načteme učitele pro daný předmět
-        ucitele_data = filter_ucitele_by_predmet(predmet_zkratka)
+        # Nejdřív zkus scraping
+        ucitele_data = []
+        source = "database"
+        try:
+            ucitele_data = filter_ucitele_by_predmet(predmet_zkratka)
+            if ucitele_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not ucitele_data:
+            ucitele_data = data_manager.get_ucitele_by_predmet(predmet_id.lower())
         
         # Získáme čitelný název předmětu
         predmet_nazvy = {
+            # Jazyky
             'cestina': 'Český jazyk',
+            'cj': 'Český jazyk',
             'matematika': 'Matematika',
+            'm': 'Matematika',
             'anglictina': 'Angličtina',
+            'aj': 'Angličtina',
             'nemcina': 'Němčina',
+            'nj': 'Němčina',
+            'spanelstina': 'Španělština',
+            'sj': 'Španělština',
+            'francouzstina': 'Francouzština',
+            'fj': 'Francouzština',
+            'rustina': 'Ruština',
+            'rj': 'Ruština',
+            'latina': 'Latina',
+            'la': 'Latina',
+            # Přírodní vědy
             'fyzika': 'Fyzika',
+            'f': 'Fyzika',
             'chemie': 'Chemie',
+            'ch': 'Chemie',
             'biologie': 'Biologie',
+            'bi': 'Biologie',
+            # Společenské vědy
             'dejepis': 'Dějepis',
+            'd': 'Dějepis',
             'zemepis': 'Zeměpis',
+            'z': 'Zeměpis',
+            'zsv': 'Základy společenských věd',
+            'ov': 'Občanská výchova',
+            'obcanska-vychova': 'Občanská výchova',
+            'eks': 'EKS',
+            # IT a umění
             'informatika': 'Informatika',
+            'ivt': 'Informatika',
             'tv': 'Tělesná výchova',
-            'hv': 'Hudební výchova'
+            'telesna-vychova': 'Tělesná výchova',
+            'hv': 'Hudební výchova',
+            'hudebni-vychova': 'Hudební výchova',
+            'vv': 'Výtvarná výchova',
+            'vytvarnavychova': 'Výtvarná výchova'
         }
         predmet_nazev = predmet_nazvy.get(predmet_id.lower(), predmet_id)
         
@@ -134,7 +201,8 @@ def get_ucitele_by_predmet(predmet_id: str):
             "success": True,
             "data": ucitele_data,
             "predmet": predmet_nazev,
-            "formatted_text": format_ucitele_info(ucitele_data, predmet_nazev)
+            "formatted_text": format_ucitele_info(ucitele_data, predmet_nazev),
+            "source": source
         }
     except Exception as e:
         return {
@@ -144,7 +212,52 @@ def get_ucitele_by_predmet(predmet_id: str):
         }
 
 
-@app.get("/jidelna")
+@app.get("/kontakt/hledat-ucitele/{jmeno}")
+def hledat_ucitele(jmeno: str):
+    """
+    Vyhledá učitele podle jména nebo příjmení - používá lokální databázi
+    
+    Args:
+        jmeno: Jméno nebo příjmení učitele (bez diakritiky)
+    """
+    try:
+        # Nejdřív zkus scraping
+        ucitele_data = []
+        source = "database"
+        try:
+            ucitele_data = search_ucitele_by_name(jmeno)
+            if ucitele_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not ucitele_data:
+            ucitele_data = data_manager.search_ucitele_by_name(jmeno)
+        
+        if not ucitele_data:
+            return {
+                "success": True,
+                "data": [],
+                "message": f"Nebyl nalezen žádný učitel se jménem nebo příjmením '{jmeno}'.",
+                "source": source
+            }
+        
+        return {
+            "success": True,
+            "data": ucitele_data,
+            "count": len(ucitele_data),
+            "source": source
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": []
+        }
+
+
+@app.get("/jidelna/info")
 def get_jidelna():
     """
     Získá informace o školní jídelně
@@ -166,13 +279,27 @@ def get_jidelna():
 @app.get("/jidelna/dnesni-menu")
 def get_dnesni_menu():
     """
-    Získá dnešní menu z webu obedy.zs-mat5.cz
+    Získá dnešní menu - používá lokální databázi
     """
     try:
-        menu_data = scrape_dnesni_menu()
+        # Nejdřív zkus scraping
+        menu_data = None
+        source = "database"
+        try:
+            menu_data = scrape_dnesni_menu()
+            if menu_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not menu_data:
+            menu_data = data_manager.get_dnesni_menu()
+        
         return {
             "success": True,
-            "data": menu_data
+            "data": menu_data,
+            "source": source
         }
     except Exception as e:
         return {
@@ -185,13 +312,92 @@ def get_dnesni_menu():
 @app.get("/jidelna/tydenni-menu")
 def get_tydenni_menu():
     """
-    Získá týdenní menu z webu obedy.zs-mat5.cz
+    Získá týdenní menu - používá lokální databázi
     """
     try:
-        menu_data = scrape_tydenni_menu()
+        # Nejdřív zkus scraping
+        menu_data = None
+        source = "database"
+        try:
+            menu_data = scrape_tydenni_menu()
+            if menu_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not menu_data:
+            menu_data = data_manager.get_tydenni_menu()
+        
         return {
             "success": True,
-            "data": menu_data
+            "data": menu_data,
+            "source": source
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
+
+
+@app.get("/rozvrh/kva")
+def get_rozvrh_kva():
+    """
+    Získá rozvrh třídy KVA - používá lokální databázi
+    """
+    try:
+        # Nejdřív zkus scraping
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_kva()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("KVA")
+        
+        return {
+            "success": True,
+            "data": rozvrh_data,
+            "source": source
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
+
+@app.get("/rozvrh/pa")
+def get_rozvrh_pa():
+    """
+    Získá rozvrh třídy PA - používá lokální databázi
+    """
+    try:
+        # Nejdřív zkus scraping
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_pa()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        
+        # Fallback na lokální databázi
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("PA")
+        
+        return {
+            "success": True,
+            "data": rozvrh_data,
+            "source": source
         }
     except Exception as e:
         return {

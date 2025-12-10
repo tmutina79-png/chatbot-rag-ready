@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - MATIČÁK Chatbot Integration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .demo-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .info-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-box h2 {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        
+        .highlight {
+            color: #f92672;
+        }
+        
+        .string {
+            color: #e6db74;
+        }
+        
+        .comment {
+            color: #75715e;
+        }
+        
+        .action-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .note strong {
+            color: #856404;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🤖 MATIČÁK Chatbot</h1>
+        <p class="subtitle">Integrace chatbota na webovou stránku - Demo</p>
+        
+        <div class="info-box">
+            <h2>📋 Jak integrovat chatbot na tvou stránku</h2>
+            <p>Chatbot se integruje snadno - stačí přidat 2 řádky kódu před uzavírací tag <code>&lt;/body&gt;</code>:</p>
+            
+            <div class="code-block">
+<span class="comment">&lt;!-- Před uzavírací tag &lt;/body&gt; --&gt;</span>
+<span class="highlight">&lt;script</span> <span class="string">src="chatbot-widget.js"</span><span class="highlight">&gt;&lt;/script&gt;</span>
+<span class="highlight">&lt;script&gt;</span>
+  MaticakChatbot.init({
+    <span class="string">apiUrl:</span> <span class="string">'http://127.0.0.1:8000'</span> <span class="comment">// Tvoje API adresa</span>
+  });
+<span class="highlight">&lt;/script&gt;</span>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h2>✨ Funkce chatbota</h2>
+            <ul class="feature-list">
+                <li>Plovoucí tlačítko v pravém dolním rohu</li>
+                <li>Plně responzivní design (desktop i mobil)</li>
+                <li>Rychlé akce: Kontakt, Jídelna, Rozvrh</li>
+                <li>Modální okna s informacemi</li>
+                <li>Automatické načítání dat z API</li>
+                <li>Minimální dopad na výkon stránky</li>
+            </ul>
+        </div>
+        
+        <div class="note">
+            <strong>💡 Důležité:</strong> Chatbot je nyní aktivní na této stránce! Klikni na plovoucí tlačítko 💬 v pravém dolním rohu a vyzkoušej ho.
+        </div>
+        
+        <div class="info-box">
+            <h2>🚀 Nasazení do produkce</h2>
+            <p><strong>Krok 1:</strong> Ujisti se, že FastAPI server běží:</p>
+            <div class="code-block">
+python3 -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+            </div>
+            
+            <p><strong>Krok 2:</strong> Nahraj soubor <code>chatbot-widget.js</code> na tvůj webhosting</p>
+            
+            <p><strong>Krok 3:</strong> Přidej integračním kód do HTML (viz výše)</p>
+            
+            <p><strong>Krok 4:</strong> Změň <code>apiUrl</code> na adresu tvého serveru</p>
+        </div>
+        
+        <div class="info-box">
+            <h2>🎨 Přizpůsobení</h2>
+            <p>Chatbot lze snadno přizpůsobit barvám tvé stránky editací CSS v souboru <code>chatbot-widget.js</code>:</p>
+            <ul class="feature-list">
+                <li>Barvy: Upravit gradient v <code>background</code></li>
+                <li>Pozice: Změnit <code>bottom</code> a <code>right</code> hodnoty</li>
+                <li>Velikost: Upravit <code>width</code> a <code>height</code></li>
+                <li>Z-index: Nastavit správné vrstvy</li>
+            </ul>
+        </div>
+        
+        <a href="https://mgo.cz" class="action-button" target="_blank">🌐 MGO Web</a>
+        <a href="https://mgo.jecool.net" class="action-button" target="_blank">📚 Tabule žáka</a>
+    </div>
+    
+    <!-- ========================================== -->
+    <!-- MATIČÁK Chatbot Integration -->
+    <!-- ========================================== -->
+    <script src="chatbot-widget.js"></script>
+    <script>
+        // Inicializace chatbota
+        MaticakChatbot.init({
+            apiUrl: 'http://127.0.0.1:8000'  // Změň na tvoji API adresu
+        });
+    </script>
+</body>
+</html>

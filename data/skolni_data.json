@@ -1,0 +1,186 @@
+{
+  "vedeni": [
+    {
+      "jmeno": "Mgr. Vasevič Ladislav",
+      "pozice": "Ředitel školy",
+      "email": "vasevic@mgo.cz",
+      "telefon": "+420 596 11 88 77, linka 103",
+      "klapka": "103"
+    },
+    {
+      "jmeno": "PaedDr. Mohelník Karel",
+      "pozice": "Zástupce ředitele",
+      "email": "mohelnik@mgo.cz",
+      "telefon": "+420 596 11 62 38, linka 104",
+      "klapka": "104"
+    },
+    {
+      "jmeno": "Mgr. Čeledová Platošová Zdeňka",
+      "pozice": "Zástupce ředitele",
+      "email": "celedova@mgo.cz",
+      "telefon": "+420 596 11 62 38, linka 102",
+      "klapka": "102"
+    }
+  ],
+  "ucitele": [
+    {
+      "jmeno": "Mgr. Novák Jan",
+      "aprobace": "Matematika, Fyzika",
+      "predmety": ["matematika", "fyzika"],
+      "email": "novak@mgo.cz",
+      "klapka": "201",
+      "konzultace": "Pondělí 14:00-15:00"
+    },
+    {
+      "jmeno": "Mgr. Svobodová Marie",
+      "aprobace": "Český jazyk, Literatura",
+      "predmety": ["cesky jazyk", "literatura"],
+      "email": "svobodova@mgo.cz",
+      "klapka": "202",
+      "konzultace": "Úterý 13:00-14:00"
+    },
+    {
+      "jmeno": "Mgr. Dvořák Petr",
+      "aprobace": "Angličtina",
+      "predmety": ["anglictina", "anglicky jazyk"],
+      "email": "dvorak@mgo.cz",
+      "klapka": "203",
+      "konzultace": "Středa 14:00-15:00"
+    },
+    {
+      "jmeno": "Mgr. Černá Jana",
+      "aprobace": "Chemie, Biologie",
+      "predmety": ["chemie", "biologie"],
+      "email": "cerna@mgo.cz",
+      "klapka": "204",
+      "konzultace": "Čtvrtek 13:00-14:00"
+    },
+    {
+      "jmeno": "Mgr. Horák Tomáš",
+      "aprobace": "Dějepis, Občanská výchova",
+      "predmety": ["dejepis", "obcanska vychova", "ov"],
+      "email": "horak@mgo.cz",
+      "klapka": "205",
+      "konzultace": "Pátek 12:00-13:00"
+    },
+    {
+      "jmeno": "Mgr. Procházková Eva",
+      "aprobace": "Němčina",
+      "predmety": ["nemcina", "nemecky jazyk"],
+      "email": "prochazkova@mgo.cz",
+      "klapka": "206",
+      "konzultace": "Pondělí 13:00-14:00"
+    },
+    {
+      "jmeno": "Mgr. Kučera Martin",
+      "aprobace": "Zeměpis, Informatika",
+      "predmety": ["zemepis", "informatika", "it"],
+      "email": "kucera@mgo.cz",
+      "klapka": "207",
+      "konzultace": "Úterý 14:00-15:00"
+    }
+  ],
+  "jidelna": {
+    "dnesni_menu": {
+      "datum": "10.12.2025",
+      "den": "Středa",
+      "menu": [
+        {
+          "typ": "Polévka",
+          "nazev": "Polévka čočková"
+        },
+        {
+          "typ": "Oběd 1",
+          "nazev": "Francouzské brambory, salát z kyselého zelí s mrkví"
+        },
+        {
+          "typ": "Oběd 2",
+          "nazev": "Sýrový salát se zeleninou, pečivo"
+        },
+        {
+          "typ": "Nápoj",
+          "nazev": "Voda s citrónem, ochucené mléko"
+        },
+        {
+          "typ": "Dezert",
+          "nazev": "Ovoce"
+        }
+      ]
+    },
+    "tydenni_menu": {
+      "tyden": "10.12.2025 - 14.12.2025",
+      "dny": [
+        {
+          "den": "Pondělí 10.12.",
+          "polevka": "Gulášová polévka",
+          "obed1": "Kuřecí řízek, bramborová kaše, okurkový salát",
+          "obed2": "Vegetariánské lasagne"
+        },
+        {
+          "den": "Úterý 11.12.",
+          "polevka": "Hrachová polévka",
+          "obed1": "Svíčková na smetaně, houskové knedlíky",
+          "obed2": "Zapečené těstoviny se sýrem"
+        },
+        {
+          "den": "Středa 12.12.",
+          "polevka": "Polévka čočková",
+          "obed1": "Francouzské brambory, salát z kyselého zelí",
+          "obed2": "Sýrový salát se zeleninou, pečivo"
+        },
+        {
+          "den": "Čtvrtek 13.12.",
+          "polevka": "Zelňačka",
+          "obed1": "Vepřový guláš, těstoviny",
+          "obed2": "Zeleninové rizoto"
+        },
+        {
+          "den": "Pátek 14.12.",
+          "polevka": "Hovězí vývar s nudlemi",
+          "obed1": "Smažený sýr, hranolky, tatarská omáčka",
+          "obed2": "Čočka na paprice, rýže"
+        }
+      ]
+    }
+  },
+  "rozvrhy": {
+    "KVA": {
+      "trida": "Kvarta A",
+      "den": "Středa",
+      "datum": "10.12.2025",
+      "hodiny": [
+        {"cislo": "1", "cas": "8:00-8:45", "predmet": "Matematika", "ucitel": "Mgr. Novák", "mistnost": "205"},
+        {"cislo": "2", "cas": "8:55-9:40", "predmet": "Český jazyk", "ucitel": "Mgr. Svobodová", "mistnost": "301"},
+        {"cislo": "3", "cas": "9:50-10:35", "predmet": "Angličtina", "ucitel": "Mgr. Dvořák", "mistnost": "210"},
+        {"cislo": "4", "cas": "10:50-11:35", "predmet": "Fyzika", "ucitel": "Mgr. Novák", "mistnost": "Lab1"},
+        {"cislo": "5", "cas": "11:45-12:30", "predmet": "Dějepis", "ucitel": "Mgr. Horák", "mistnost": "302"},
+        {"cislo": "6", "cas": "12:40-13:25", "predmet": "Tělesná výchova", "ucitel": "Mgr. Procházková", "mistnost": "Tělocvična"}
+      ]
+    },
+    "PA": {
+      "trida": "Prima A",
+      "den": "Středa",
+      "datum": "10.12.2025",
+      "hodiny": [
+        {"cislo": "1", "cas": "8:00-8:45", "predmet": "Chemie", "ucitel": "Mgr. Černá", "mistnost": "Lab2"},
+        {"cislo": "2", "cas": "8:55-9:40", "predmet": "Matematika", "ucitel": "Mgr. Novák", "mistnost": "205"},
+        {"cislo": "3", "cas": "9:50-10:35", "predmet": "Český jazyk", "ucitel": "Mgr. Svobodová", "mistnost": "301"},
+        {"cislo": "4", "cas": "10:50-11:35", "predmet": "Angličtina", "ucitel": "Mgr. Dvořák", "mistnost": "210"},
+        {"cislo": "5", "cas": "11:45-12:30", "predmet": "Informatika", "ucitel": "Mgr. Kučera", "mistnost": "PC1"}
+      ]
+    }
+  },
+  "info": {
+    "nazev": "Matiční gymnázium Ostrava",
+    "adresa": "Hybešova 131/28, 702 00 Ostrava",
+    "telefon": "+420 596 11 88 77",
+    "email": "skola@mgo.cz",
+    "web": "https://www.mgo.cz",
+    "izo": "600000000",
+    "redizo": "600000000",
+    "otviraci_doba": {
+      "pondeli_patek": "7:00 - 17:00",
+      "vikend": "Zavřeno"
+    }
+  }
+}

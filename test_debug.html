@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test</h1>
+    <button onclick="testVedeni()">Test Vedení</button>
+    <button onclick="testJidelna()">Test Jídelna</button>
+    <div id="result"></div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000';
+        
+        async function testVedeni() {
+            console.log('Testing vedeni endpoint...');
+            try {
+                const response = await fetch(`${API_URL}/kontakt/vedeni`);
+                const result = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+                console.log('Success:', result);
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+                console.error('Error:', error);
+            }
+        }
+        
+        async function testJidelna() {
+            console.log('Testing jidelna endpoint...');
+            try {
+                const response = await fetch(`${API_URL}/jidelna/dnesni-menu`);
+                const result = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+                console.log('Success:', result);
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
