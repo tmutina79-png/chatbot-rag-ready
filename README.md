@@ -2,6 +2,13 @@
 
 Inteligentní školní chatbot pro Matiční gymnázium Ostrava.
 
+## 🌐 Live Demo
+
+**Chatbot je online!** Vyzkoušej si ho:
+```
+https://tmutina79-png.github.io/chatbot-rag-ready/
+```
+
 ## ✨ Funkce
 
 - 📧 **Kontakty**: Vedení školy a učitelé dle předmětů
@@ -24,16 +31,34 @@ uvicorn main:app --reload --port 8000
 open app/ui/chat.html
 ```
 
-### Nasazení pro účastníky
+### GitHub Pages Deployment
 
-**Kompletní návod najdeš v [DEPLOYMENT.md](DEPLOYMENT.md)**
+**👉 Aktivuj GitHub Pages a sdílej chatbot s ostatními!**
+
+**Rychlý návod:** [GITHUB_PAGES_QUICKSTART.md](GITHUB_PAGES_QUICKSTART.md) ← **ZAČNI TADY!**
+
+**Kroky (2 minuty):**
+1. Jdi na [Settings → Pages](https://github.com/tmutina79-png/chatbot-rag-ready/settings/pages)
+2. Nastav Branch: `main`, Folder: `/docs`
+3. Klikni **Save**
+4. Hotovo! URL: `https://tmutina79-png.github.io/chatbot-rag-ready/`
+
+**Aktualizace webu:**
+```bash
+./deploy_to_pages.sh  # Automaticky zkopíruje a pushne změny
+```
+
+### Backend Deployment (volitelné)
+
+Pro plnou funkčnost chatbota s AI a databází:
+
+**Kompletní návod:** [DEPLOYMENT.md](DEPLOYMENT.md)
 
 **Rychlý přehled:**
 1. Deploy backend na Render.com (zdarma)
-2. Aktualizuj URL v `app/ui/config.js`
-3. Push na GitHub
-4. Aktivuj GitHub Pages
-5. Sdílej URL účastníkům
+2. Aktualizuj URL v `docs/config.js`
+3. Push změny
+4. Chatbot má plnou funkčnost!
 
 ## 📝 Konfigurace
 
