@@ -1517,6 +1517,9 @@
             // Zavřeme modal
             closeJidelnaModal();
             
+            // Nejdřív zobrazíme zprávu uživatele
+            addMessage('Týdenní menu', true);
+            
             // Zobrazíme loading zprávu v chatu
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'message bot';
@@ -1917,6 +1920,9 @@
             event.preventDefault();
             closeContactModal();
             
+            // Nejdřív zobrazíme zprávu uživatele
+            addMessage('Vedení školy', true);
+            
             // Zobrazíme loading zprávu
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'message bot';
@@ -2066,6 +2072,9 @@
         
         // Funkce pro zobrazení učitelů daného předmětu
         async function showUciteleByPredmet(nazevPredmetu, idPredmetu) {
+            // Nejdřív zobrazíme zprávu uživatele
+            addMessage(`Učitelé - ${nazevPredmetu}`, true);
+            
             // Zobrazíme loading zprávu
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'message bot';
@@ -2309,6 +2318,9 @@
         async function showRozvrhTridyReal(nazevTridy, endpoint, bakalariUrl) {
             // Zavřeme modal
             closeRozvrhModal();
+            
+            // Nejdřív zobrazíme zprávu uživatele
+            addMessage(`Rozvrh ${nazevTridy}`, true);
             
             // Zobrazíme loading zprávu
             const loadingDiv = document.createElement('div');
