@@ -3001,9 +3001,13 @@
             
             // Kontrola názvu třídy (s nebo bez slova "rozvrh")
             for (const [className, func] of Object.entries(classMap)) {
-                // Přesná shoda nebo slovo "rozvrh" + název třídy
-                if (lowerMessage === className || 
-                    (lowerMessage.includes('rozvrh') && lowerMessage.includes(className))) {
+                // Přesná shoda nebo slovo "rozvrh" + název třídy (ignoruje velikost písmen)
+                if (
+                    lowerMessage === className ||
+                    lowerMessage === className.toUpperCase() ||
+                    lowerMessage === className.charAt(0).toUpperCase() + className.slice(1) ||
+                    (lowerMessage.includes('rozvrh') && (lowerMessage.includes(className) || lowerMessage.includes(className.toUpperCase()) || lowerMessage.includes(className.charAt(0).toUpperCase() + className.slice(1))))
+                ) {
                     return { class: className, func: func };
                 }
             }
