@@ -3179,18 +3179,12 @@
                 return;
             }
 
-            // Zkontroluj dotaz na učitele/pedagogy (zobrazí modal s učiteli)
-            if (detectTeacherRequest(message)) {
-                await addMessage('👨‍🏫 Otevírám kontakty na učitele...', false);
-                setTimeout(() => showUciteleModalWindow(), 500);
-                sendBtn.disabled = false;
-                userInput.focus();
-                return;
-            }
-
-            // Zkontroluj dotaz na konkrétní předmět (zobrazí modal s předměty)
+            // Zkontroluj dotaz na konkrétní předmět
             const subjectId = detectSubjectRequest(message);
-            if (subjectId) {
+            const hasTeacherKeyword = detectTeacherRequest(message);
+            
+            // Pokud zpráva obsahuje "učitel" + předmět → zobraz učitele daného předmětu
+            if (hasTeacherKeyword && subjectId) {
                 const subjectNames = {
                     'Čj': 'Český jazyk', 'M': 'Matematika', 'Aj': 'Angličtina', 
                     'Nj': 'Němčina', 'Šj': 'Španělština', 'Fj': 'Francouzština', 
@@ -3202,6 +3196,24 @@
                 const subjectName = subjectNames[subjectId] || subjectId;
                 await addMessage(`📚 Zobrazuji učitele předmětu ${subjectName}...`, false);
                 setTimeout(() => showUciteleByPredmetModal(subjectName, subjectId), 500);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+            
+            // Pokud zpráva obsahuje pouze "učitel" → zobraz modal s výběrem předmětů
+            if (hasTeacherKeyword) {
+                await addMessage('👨‍🏫 Otevírám výběr předmětů...', false);
+                setTimeout(() => showUciteleModalWindow(), 500);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+            
+            // Pokud zpráva obsahuje pouze předmět → zobraz modal s výběrem předmětů
+            if (subjectId) {
+                await addMessage('👨‍🏫 Otevírám výběr předmětů...', false);
+                setTimeout(() => showUciteleModalWindow(), 500);
                 sendBtn.disabled = false;
                 userInput.focus();
                 return;
