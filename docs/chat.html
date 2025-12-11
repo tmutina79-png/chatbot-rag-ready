@@ -2635,7 +2635,28 @@
             }
         }
 
-        // Funkce pro detekci dotazu na učitele/pedagogy (zobrazí modal s kontakty)
+        // Funkce pro detekci dotazu na vedení školy (zobrazí modal kontaktů)
+        function detectLeadershipRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            
+            const leadershipKeywords = [
+                'vedeni', 'vedeniho', 'vedenim',
+                'reditel', 'reditele', 'rediteli', 'reditelem', 'reditelka', 'reditelky', 'reditelce',
+                'zastupce', 'zastupcu', 'zastupcem', 'zastupkyne', 'zastupkyne',
+                'management', 'managementu',
+                'statutar', 'statutarni organ'
+            ];
+            
+            for (const keyword of leadershipKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        // Funkce pro detekci dotazu na učitele/pedagogy (zobrazí modal s učiteli)
         function detectTeacherRequest(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
             
@@ -2643,8 +2664,7 @@
                 'ucitel', 'ucitele', 'ucitelka', 'ucitelu', 'ucitelem',
                 'pedagog', 'pedagoga', 'pedagogy', 'pedagogu',
                 'vyucujici',
-                'pan ucitel', 'pani ucitelka', 'pan profesor', 'pani profesorka',
-                'vedouci', 'vedeni'
+                'pan ucitel', 'pani ucitelka', 'pan profesor', 'pani profesorka'
             ];
             
             for (const keyword of teacherKeywords) {
@@ -2984,7 +3004,16 @@
                 return;
             }
 
-            // Zkontroluj dotaz na učitele/pedagogy (zobrazí modal s kontakty)
+            // Zkontroluj dotaz na vedení školy (zobrazí modal kontaktů)
+            if (detectLeadershipRequest(message)) {
+                await addMessage('👔 Otevírám kontakty vedení školy...', false);
+                setTimeout(() => showContact(), 500);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
+            // Zkontroluj dotaz na učitele/pedagogy (zobrazí modal s učiteli)
             if (detectTeacherRequest(message)) {
                 await addMessage('👨‍🏫 Otevírám kontakty na učitele...', false);
                 setTimeout(() => showUciteleModalWindow(), 500);
