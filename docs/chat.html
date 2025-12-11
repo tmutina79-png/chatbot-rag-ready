@@ -1361,21 +1361,22 @@
         
         // Funkce pro přeskočení typing efektu
         function skipCurrentTyping() {
+            // Nastavíme příznak pro přeskočení všech typing efektů
+            skipTyping = true;
+            
+            // Pokud máme aktuální typing element, dokončíme ho okamžitě
             if (currentTypingElement && currentFullText) {
-                skipTyping = true;
                 currentTypingElement.innerHTML = currentFullText;
-                currentTypingElement = null;
-                currentFullText = '';
-                
-                // Skryjeme tlačítko stopky
-                const skipBtn = document.getElementById('skipTypingBtn');
-                if (skipBtn) {
-                    skipBtn.classList.remove('active');
-                }
-                
-                // Scrollujeme dolů
-                chatContainer.scrollTop = chatContainer.scrollHeight;
             }
+            
+            // Vynulujeme počítadlo typing efektů (všechny budou ukončeny)
+            activeTypingCount = 0;
+            
+            // Skryjeme tlačítko stopky
+            hideSkipButton();
+            
+            // Scrollujeme dolů
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         
         // Funkce pro zobrazení tlačítka stopky
