@@ -2987,7 +2987,7 @@
             // Zkontroluj dotaz na učitele/pedagogy (zobrazí modal s kontakty)
             if (detectTeacherRequest(message)) {
                 await addMessage('👨‍🏫 Otevírám kontakty na učitele...', false);
-                setTimeout(() => showUciteleMenu(), 500);
+                setTimeout(() => showUciteleModalWindow(), 500);
                 sendBtn.disabled = false;
                 userInput.focus();
                 return;
