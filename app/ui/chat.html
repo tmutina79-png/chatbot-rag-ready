@@ -2635,6 +2635,132 @@
             }
         }
 
+        // Funkce pro detekci dotazu na jídelnu (zobrazí modal jídelny)
+        function detectCanteenRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            
+            const canteenKeywords = [
+                'jidelna', 'jidelny', 'jidelne', 'jidelnou',
+                'obed', 'obeda', 'obedu', 'obedem', 'obedy',
+                'menu', 'jidelnicek', 'jidelni listek',
+                'jidlo', 'jidla', 'jidel',
+                'strava', 'stravy', 'strave',
+                'kantyna', 'kantyne',
+                'co je na obed', 'co bude na obed', 'co maji na obed',
+                'co se vari', 'co se dnes vari', 'co se zitra vari',
+                'co si dam k jidlu', 'kde se najedim'
+            ];
+            
+            for (const keyword of canteenKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        // Funkce pro detekci konkrétního dne v dotazu na jídlo
+        function detectCanteenDayRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            
+            // Kontrola, zda zpráva obsahuje něco o jídle
+            const foodMentioned = ['obed', 'jidlo', 'menu', 'jidelna', 'strava', 'vari'].some(word => 
+                lowerMessage.includes(word)
+            );
+            
+            if (!foodMentioned) return null;
+            
+            // Detekce konkrétních dnů
+            const dayPatterns = {
+                'dnes': ['dnes', 'dnesni', 'dneska', 'dnešní'],
+                'zitra': ['zitra', 'zitrejsi', 'zitrek', 'zítřejší', 'zítra'],
+                'pozitri': ['pozitri', 'popozitri', 'pozitrejsi', 'pozítří', 'popozítří'],
+                'pondeli': ['pondeli', 'v pondeli', 'na pondeli', 'pondělí'],
+                'utery': ['utery', 'v utery', 'na utery', 'úterý'],
+                'streda': ['streda', 've stredu', 'na stredu', 'středa', 've středu'],
+                'ctvrtek': ['ctvrtek', 've ctvrtek', 'na ctvrtek', 'čtvrtek'],
+                'patek': ['patek', 'v patek', 'na patek', 'pátek']
+            };
+            
+            for (const [day, patterns] of Object.entries(dayPatterns)) {
+                for (const pattern of patterns) {
+                    if (lowerMessage.includes(pattern)) {
+                        return day;
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        // Funkce pro zobrazení menu konkrétního dne v chatu
+        async function showMenuForDay(day) {
+            const dayNames = {
+                'dnes': 'dnes',
+                'zitra': 'zítra',
+                'pozitri': 'pozítří',
+                'pondeli': 'v pondělí',
+                'utery': 'v úterý',
+                'streda': 've středu',
+                'ctvrtek': 've čtvrtek',
+                'patek': 'v pátek'
+            };
+            
+            const dayName = dayNames[day] || day;
+            
+            try {
+                // Načteme týdenní menu
+                const response = await fetch(`${CONFIG.API_BASE_URL}/jidelna/tydenni-menu`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    // Najdeme správný den
+                    const today = new Date();
+                    let targetDate = new Date(today);
+                    
+                    if (day === 'zitra') {
+                        targetDate.setDate(today.getDate() + 1);
+                    } else if (day === 'pozitri') {
+                        targetDate.setDate(today.getDate() + 2);
+                    } else if (day !== 'dnes') {
+                        // Pro konkrétní den v týdnu
+                        const dayMap = {
+                            'pondeli': 1, 'utery': 2, 'streda': 3, 'ctvrtek': 4, 'patek': 5
+                        };
+                        const targetDay = dayMap[day];
+                        const currentDay = today.getDay();
+                        let daysToAdd = targetDay - currentDay;
+                        if (daysToAdd <= 0) daysToAdd += 7;
+                        targetDate.setDate(today.getDate() + daysToAdd);
+                    }
+                    
+                    const dateStr = targetDate.toLocaleDateString('cs-CZ', { 
+                        day: 'numeric', 
+                        month: 'numeric' 
+                    });
+                    
+                    // Najdeme menu pro tento den
+                    const menuItem = result.data.find(item => item.datum === dateStr);
+                    
+                    if (menuItem) {
+                        let menuText = `🍽️ Menu ${dayName} (${dateStr}):\n\n`;
+                        menuText += `🥗 Polévka: ${menuItem.polevka}\n\n`;
+                        menuText += `🍖 Hlavní jídlo: ${menuItem.hlavni_jidlo}\n`;
+                        
+                        await addMessage(menuText, false);
+                    } else {
+                        await addMessage(`😕 Omlouváme se, ale menu ${dayName} není k dispozici.`, false);
+                    }
+                } else {
+                    await addMessage('😕 Nepodařilo se načíst jídelní lístek.', false);
+                }
+            } catch (error) {
+                console.error('Chyba při načítání menu:', error);
+                await addMessage('😕 Nastala chyba při načítání menu.', false);
+            }
+        }
+
         // Funkce pro detekci dotazu na vedení školy (zobrazí modal kontaktů)
         function detectLeadershipRequest(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
@@ -2999,6 +3125,24 @@
             if (rozvrhClass) {
                 // Rovnou zobraz rozvrh pro danou třídu
                 rozvrhClass.func();
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
+            // Zkontroluj dotaz na menu konkrétního dne
+            const requestedDay = detectCanteenDayRequest(message);
+            if (requestedDay) {
+                await showMenuForDay(requestedDay);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
+            // Zkontroluj dotaz na jídelnu (zobrazí modal jídelny)
+            if (detectCanteenRequest(message)) {
+                await addMessage('🍽️ Otevírám jídelní lístek...', false);
+                setTimeout(() => showJidelna(), 500);
                 sendBtn.disabled = false;
                 userInput.focus();
                 return;
