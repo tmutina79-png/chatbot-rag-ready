@@ -120,26 +120,26 @@ Společně to dáme! 💙"""
         return random.choice([
             """Hmm, úplně nerozumím, co tím myslíš. 🤔
 
-Zkus se zeptat jinak nebo mi řekni:
-• Co potřebuješ vysvětlit?
-• S čím potřebuješ pomoc?
-• Jaký máš dotaz ke škole?
+Zkus zadat konkrétní klíčové slovo:
+• Rozvrh, Jídelna, Kontakty
+• Předmět (matematika, fyzika...)
+• Učitel + předmět
 
 Jsem tu pro tebe!""",
             """Nerozpoznávám tento pokyn. 😅
 
 Ale zkus:
-• Položit otázku jinak
+• Zadat heslovitý dotaz
 • Zeptat se na konkrétní věc
-• Říct mi víc detailů
+• Uvést klíčové slovo (rozvrh, učitel, menu...)
 
 Rád ti pomůžu! 🎯""",
             """Ups, nevím, co tím máš na mysli! 😊
 
 Můžeš zkusit:
-• Přeformulovat otázku?
-• Být konkrétnější?
-• Zeptat se na něco ze školy?
+• Napsat klíčové slovo?
+• Uvést konkrétní dotaz?
+• Zeptat se na rozvrh, jídelnu nebo učitele?
 
 Jsem tady pro tebe! 💫"""
         ])
