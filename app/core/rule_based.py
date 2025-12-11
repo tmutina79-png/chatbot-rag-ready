@@ -118,7 +118,7 @@ Společně to dáme! 💙"""
     
     def _default_response(self) -> str:
         return random.choice([
-            """Hmm, tomu úplně nerozumím. 🤔
+            """Hmm, úplně nerozumím, co tím myslíš. 🤔
 
 Zkus se zeptat jinak nebo mi řekni:
 • Co potřebuješ vysvětlit?
@@ -126,7 +126,7 @@ Zkus se zeptat jinak nebo mi řekni:
 • Jaký máš dotaz ke škole?
 
 Jsem tu pro tebe!""",
-            """Promiň, tohle zatím neumím. 😅
+            """Nerozpoznávám tento pokyn. 😅
 
 Ale zkus:
 • Položit otázku jinak
@@ -134,7 +134,7 @@ Ale zkus:
 • Říct mi víc detailů
 
 Rád ti pomůžu! 🎯""",
-            """Ups, tady jsem trošku mimo! 😊
+            """Ups, nevím, co tím máš na mysli! 😊
 
 Můžeš zkusit:
 • Přeformulovat otázku?
