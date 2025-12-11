@@ -2587,14 +2587,6 @@
         // Zabráníme opakovanému spuštění
         let welcomeShown = false;
 
-        // Spustíme uvítací zprávu po načtení
-        window.addEventListener('load', () => {
-            if (!welcomeShown) {
-                welcomeShown = true;
-                setTimeout(showWelcomeMessage, 500);
-            }
-        });
-
         function addMessage(text, isUser) {
 
             const messageDiv = document.createElement('div');
@@ -3031,6 +3023,12 @@
                 // Skrýt badge při otevření
                 if (chatBadge) {
                     chatBadge.classList.remove('show');
+                }
+                
+                // Zobrazit uvítací zprávu při prvním otevření
+                if (!welcomeShown) {
+                    welcomeShown = true;
+                    setTimeout(showWelcomeMessage, 300);
                 }
                 
                 // Focus na input při otevření
