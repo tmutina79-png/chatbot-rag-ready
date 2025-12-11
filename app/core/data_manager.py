@@ -70,11 +70,38 @@ class DataManager:
     def get_ucitele_by_predmet(self, predmet: str) -> List[Dict]:
         """Vrátí učitele pro daný předmět"""
         predmet_lower = predmet.lower().strip()
-        ucitele = []
         
+        # Mapping pro převod zkratek na názvy předmětů
+        predmet_mapping = {
+            'čj': 'cesky jazyk', 'cj': 'cesky jazyk', 'český jazyk': 'cesky jazyk',
+            'm': 'matematika',
+            'aj': 'anglictina', 'angličtina': 'anglictina', 'anglicky jazyk': 'anglictina',
+            'nj': 'nemcina', 'němčina': 'nemcina',
+            'šj': 'spanelstina', 'sj': 'spanelstina', 'španělština': 'spanelstina',
+            'fj': 'francouzstina', 'francouzština': 'francouzstina',
+            'rj': 'rustina', 'ruština': 'rustina',
+            'la': 'latina',
+            'f': 'fyzika',
+            'ch': 'chemie',
+            'bi': 'biologie',
+            'd': 'dejepis', 'dějepis': 'dejepis',
+            'z': 'zemepis', 'zeměpis': 'zemepis',
+            'zsv': 'zaklady spolecenskych ved', 'základy společenských věd': 'zaklady spolecenskych ved',
+            'ov': 'obcanska vychova', 'občanská výchova': 'obcanska vychova',
+            'eks': 'ekonomie',
+            'ivt': 'informatika',
+            'tv': 'telesna vychova', 'tělesná výchova': 'telesna vychova',
+            'hv': 'hudebni vychova', 'hudební výchova': 'hudebni vychova',
+            'vv': 'vytvarnavychova', 'výtvarná výchova': 'vytvarnavychova'
+        }
+        
+        # Převedeme zkratku na název předmětu
+        hledany_predmet = predmet_mapping.get(predmet_lower, predmet_lower)
+        
+        ucitele = []
         for ucitel in self.get_ucitele():
             predmety = ucitel.get("predmety", [])
-            if any(predmet_lower in p.lower() for p in predmety):
+            if any(hledany_predmet in p.lower() for p in predmety):
                 ucitele.append(ucitel)
         
         return ucitele
