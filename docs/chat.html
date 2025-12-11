@@ -2842,9 +2842,9 @@
                 // Biologie
                 'biologie': 'Bi', 'bi': 'Bi', 'prirodopis': 'Bi', 'biolog': 'Bi', 'bio': 'Bi',
                 // Dějepis
-                'dejepis': 'D', 'd': 'D', 'dejak': 'D', 'historie': 'D',
+                'dejepis': 'D', 'dejak': 'D', 'historie': 'D',
                 // Zeměpis
-                'zemepis': 'Z', 'z': 'Z', 'zemak': 'Z', 'geografie': 'Z', 'geografia': 'Z',
+                'zemepis': 'Z', 'zemak': 'Z', 'geografie': 'Z', 'geografia': 'Z',
                 // Občanská výchova / ZSV
                 'obcanska vychova': 'Ov', 'obcanstvi': 'Ov', 'ov': 'Ov',
                 'zsv': 'ZSV', 'zaklady spolecenskych ved': 'ZSV', 'spolecenske vedy': 'ZSV',
@@ -2860,9 +2860,19 @@
                 'vytvarnavychova': 'Vv', 'vytvarko': 'Vv', 'vv': 'Vv', 'vytvarka': 'Vv', 'art': 'Vv'
             };
             
+            // Kontrolujeme, zda zpráva obsahuje celé slovo nebo frázi
             for (const [keyword, subjectId] of Object.entries(subjectKeywords)) {
-                if (lowerMessage.includes(keyword)) {
-                    return subjectId;
+                // Pro víceslovné klíče (obsahují mezeru)
+                if (keyword.includes(' ')) {
+                    if (lowerMessage.includes(keyword)) {
+                        return subjectId;
+                    }
+                } else {
+                    // Pro jednoslovné klíče - kontrola celého slova pomocí word boundary
+                    const regex = new RegExp(`\\b${keyword}\\b`);
+                    if (regex.test(lowerMessage)) {
+                        return subjectId;
+                    }
                 }
             }
             
