@@ -2735,18 +2735,35 @@
                         targetDate.setDate(today.getDate() + daysToAdd);
                     }
                     
-                    const dateStr = targetDate.toLocaleDateString('cs-CZ', { 
-                        day: 'numeric', 
-                        month: 'numeric' 
+                    // Formát data pro hledání (např. "10.12.")
+                    const dateDay = targetDate.getDate();
+                    const dateMonth = targetDate.getMonth() + 1;
+                    
+                    // Data mohou být buď v "dny" poli nebo přímo jako pole
+                    const menuArray = result.data.dny || result.data;
+                    
+                    // Najdeme menu pro tento den - hledáme podle čísla dne v poli "den"
+                    const menuItem = menuArray.find(item => {
+                        if (item.den) {
+                            // Formát: "Pondělí 10.12." nebo podobně
+                            const match = item.den.match(/(\d{1,2})\.(\d{1,2})\./);
+                            if (match) {
+                                const itemDay = parseInt(match[1]);
+                                const itemMonth = parseInt(match[2]);
+                                return itemDay === dateDay && itemMonth === dateMonth;
+                            }
+                        }
+                        return false;
                     });
                     
-                    // Najdeme menu pro tento den
-                    const menuItem = result.data.find(item => item.datum === dateStr);
-                    
                     if (menuItem) {
+                        const dateStr = `${dateDay}. ${dateMonth}.`;
                         let menuText = `🍽️ Menu ${dayName} (${dateStr}):\n\n`;
                         menuText += `🥗 Polévka: ${menuItem.polevka}\n\n`;
-                        menuText += `🍖 Hlavní jídlo: ${menuItem.hlavni_jidlo}\n`;
+                        menuText += `🍖 Oběd 1: ${menuItem.obed1}\n`;
+                        if (menuItem.obed2) {
+                            menuText += `🥗 Oběd 2: ${menuItem.obed2}\n`;
+                        }
                         
                         await addMessage(menuText, false);
                     } else {
