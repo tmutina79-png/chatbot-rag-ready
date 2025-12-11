@@ -1357,6 +1357,7 @@
         let currentTypingElement = null;
         let currentFullText = '';
         let skipTyping = false;
+        let activeTypingCount = 0; // Počítadlo aktivních typing efektů
         
         // Funkce pro přeskočení typing efektu
         function skipCurrentTyping() {
@@ -1387,9 +1388,12 @@
         
         // Funkce pro skrytí tlačítka stopky
         function hideSkipButton() {
-            const skipBtn = document.getElementById('skipTypingBtn');
-            if (skipBtn) {
-                skipBtn.classList.remove('active');
+            // Skryjeme tlačítko jen pokud neběží žádný typing
+            if (activeTypingCount <= 0) {
+                const skipBtn = document.getElementById('skipTypingBtn');
+                if (skipBtn) {
+                    skipBtn.classList.remove('active');
+                }
             }
         }
         
@@ -2463,6 +2467,9 @@
                 return;
             }
             
+            // Zvýšíme počítadlo aktivních typing efektů
+            activeTypingCount++;
+            
             // Nastavíme globální proměnné pro možnost přeskočení
             currentTypingElement = element;
             currentFullText = text;
@@ -2493,7 +2500,10 @@
             currentFullText = '';
             skipTyping = false;
             
-            // Skryjeme tlačítko stopky
+            // Snížíme počítadlo aktivních typing efektů
+            activeTypingCount--;
+            
+            // Skryjeme tlačítko stopky (jen pokud už neběží žádný typing)
             hideSkipButton();
             
             // Finální scroll dolů pouze pokud je chat plný
@@ -2504,6 +2514,9 @@
 
         // Funkce pro typing efekt s HTML obsahem - JEDNODUCHÁ VERZE s přirozeným rytmem
         async function typeHtmlMessage(element, htmlContent, speed = 5) {
+            // Zvýšíme počítadlo aktivních typing efektů
+            activeTypingCount++;
+            
             // Nastavíme globální proměnné
             currentTypingElement = element;
             currentFullText = htmlContent;
@@ -2556,7 +2569,10 @@
             currentFullText = '';
             skipTyping = false;
             
-            // Skryjeme tlačítko stopky
+            // Snížíme počítadlo aktivních typing efektů
+            activeTypingCount--;
+            
+            // Skryjeme tlačítko stopky (jen pokud už neběží žádný typing)
             hideSkipButton();
             
             // Finální plynulý scroll
