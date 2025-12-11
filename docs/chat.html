@@ -2735,35 +2735,30 @@
                         targetDate.setDate(today.getDate() + daysToAdd);
                     }
                     
-                    // Formát data pro hledání (např. "10.12.")
-                    const dateDay = targetDate.getDate();
-                    const dateMonth = targetDate.getMonth() + 1;
+                    // Formát data pro hledání (např. "12.12.2025")
+                    const dateStr = `${targetDate.getDate()}.${targetDate.getMonth() + 1}.${targetDate.getFullYear()}`;
                     
                     // Data mohou být buď v "dny" poli nebo přímo jako pole
                     const menuArray = result.data.dny || result.data;
                     
-                    // Najdeme menu pro tento den - hledáme podle čísla dne v poli "den"
+                    // Najdeme menu pro tento den - API vrací pole "datum" ve formátu "12.12.2025"
                     const menuItem = menuArray.find(item => {
-                        if (item.den) {
-                            // Formát: "Pondělí 10.12." nebo podobně
-                            const match = item.den.match(/(\d{1,2})\.(\d{1,2})\./);
-                            if (match) {
-                                const itemDay = parseInt(match[1]);
-                                const itemMonth = parseInt(match[2]);
-                                return itemDay === dateDay && itemMonth === dateMonth;
-                            }
+                        if (item.datum) {
+                            return item.datum === dateStr;
                         }
                         return false;
                     });
                     
-                    if (menuItem) {
-                        const dateStr = `${dateDay}. ${dateMonth}.`;
+                    if (menuItem && menuItem.menu && menuItem.menu.length > 0) {
                         let menuText = `🍽️ Menu ${dayName} (${dateStr}):\n\n`;
-                        menuText += `🥗 Polévka: ${menuItem.polevka}\n\n`;
-                        menuText += `🍖 Oběd 1: ${menuItem.obed1}\n`;
-                        if (menuItem.obed2) {
-                            menuText += `🥗 Oběd 2: ${menuItem.obed2}\n`;
-                        }
+                        
+                        // API vrací menu jako pole objektů s "typ" a "nazev"
+                        menuItem.menu.forEach(item => {
+                            if (item.typ && item.nazev && item.nazev !== "Informace není dostupná") {
+                                const icon = item.typ.includes('Oběd') ? '🍖' : '🥗';
+                                menuText += `${icon} ${item.typ}: ${item.nazev}\n\n`;
+                            }
+                        });
                         
                         await addMessage(menuText, false);
                     } else {
