@@ -2635,6 +2635,82 @@
             }
         }
 
+        // Funkce pro detekci dotazu na učitele/pedagogy (zobrazí modal s kontakty)
+        function detectTeacherRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            
+            const teacherKeywords = [
+                'ucitel', 'ucitele', 'ucitelka', 'ucitelu', 'ucitelem',
+                'pedagog', 'pedagoga', 'pedagogy', 'pedagogu',
+                'vyucujici',
+                'pan ucitel', 'pani ucitelka', 'pan profesor', 'pani profesorka',
+                'vedouci', 'vedeni'
+            ];
+            
+            for (const keyword of teacherKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        // Funkce pro detekci dotazu na konkrétní předmět (zobrazí modal s předměty)
+        function detectSubjectRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            
+            const subjectKeywords = {
+                // Matematika
+                'matematika': 'M', 'matika': 'M', 'matek': 'M', 'matka': 'M', 'mat': 'M',
+                // Čeština
+                'cestina': 'Čj', 'cesky jazyk': 'Čj', 'cesky': 'Čj', 'cj': 'Čj', 'cestinare': 'Čj',
+                // Angličtina
+                'anglictina': 'Aj', 'anglicky': 'Aj', 'aj': 'Aj', 'anglicky jazyk': 'Aj', 'anglist': 'Aj',
+                // Němčina
+                'nemcina': 'Nj', 'nemecky': 'Nj', 'nj': 'Nj', 'nemecky jazyk': 'Nj',
+                // Španělština
+                'spanelstina': 'Šj', 'spanelsky': 'Šj', 'sj': 'Šj', 'spanelsky jazyk': 'Šj',
+                // Francouzština
+                'francouzstina': 'Fj', 'francouzsky': 'Fj', 'fj': 'Fj', 'francouzsky jazyk': 'Fj',
+                // Ruština
+                'rustina': 'Rj', 'rusky': 'Rj', 'rj': 'Rj', 'rusky jazyk': 'Rj',
+                // Latina
+                'latina': 'La', 'latinsky': 'La', 'la': 'La',
+                // Fyzika
+                'fyzika': 'F', 'fyzik': 'F', 'f': 'F',
+                // Chemie
+                'chemie': 'Ch', 'ch': 'Ch', 'chemik': 'Ch',
+                // Biologie
+                'biologie': 'Bi', 'bi': 'Bi', 'prirodopis': 'Bi', 'biolog': 'Bi', 'bio': 'Bi',
+                // Dějepis
+                'dejepis': 'D', 'd': 'D', 'dejak': 'D', 'historie': 'D',
+                // Zeměpis
+                'zemepis': 'Z', 'z': 'Z', 'zemak': 'Z', 'geografie': 'Z', 'geografia': 'Z',
+                // Občanská výchova / ZSV
+                'obcanska vychova': 'Ov', 'obcanstvi': 'Ov', 'ov': 'Ov',
+                'zsv': 'ZSV', 'zaklady spolecenskych ved': 'ZSV', 'spolecenske vedy': 'ZSV',
+                // Ekonomie
+                'ekonomie': 'EKS', 'ekonomika': 'EKS', 'eks': 'EKS', 'ekon': 'EKS',
+                // Informatika
+                'informatika': 'IVT', 'ivt': 'IVT', 'ict': 'IVT', 'pocitace': 'IVT', 'it': 'IVT',
+                // Tělesná výchova
+                'telesna vychova': 'Tv', 'telocvik': 'Tv', 'tv': 'Tv', 'sport': 'Tv',
+                // Hudební výchova
+                'hudebni vychova': 'Hv', 'hv': 'Hv', 'hudba': 'Hv', 'zpev': 'Hv',
+                // Výtvarná výchova
+                'vytvarnavychova': 'Vv', 'vytvarko': 'Vv', 'vv': 'Vv', 'vytvarka': 'Vv', 'art': 'Vv'
+            };
+            
+            for (const [keyword, subjectId] of Object.entries(subjectKeywords)) {
+                if (lowerMessage.includes(keyword)) {
+                    return subjectId;
+                }
+            }
+            
+            return null;
+        }
+
         // Funkce pro detekci jména učitele v dotazu
         async function detectTeacherName(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
@@ -2903,6 +2979,34 @@
             if (rozvrhClass) {
                 // Rovnou zobraz rozvrh pro danou třídu
                 rozvrhClass.func();
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
+            // Zkontroluj dotaz na učitele/pedagogy (zobrazí modal s kontakty)
+            if (detectTeacherRequest(message)) {
+                await addMessage('👨‍🏫 Otevírám kontakty na učitele...', false);
+                setTimeout(() => showUciteleMenu(), 500);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
+            // Zkontroluj dotaz na konkrétní předmět (zobrazí modal s předměty)
+            const subjectId = detectSubjectRequest(message);
+            if (subjectId) {
+                const subjectNames = {
+                    'Čj': 'Český jazyk', 'M': 'Matematika', 'Aj': 'Angličtina', 
+                    'Nj': 'Němčina', 'Šj': 'Španělština', 'Fj': 'Francouzština', 
+                    'Rj': 'Ruština', 'La': 'Latina', 'F': 'Fyzika', 'Ch': 'Chemie', 
+                    'Bi': 'Biologie', 'D': 'Dějepis', 'Z': 'Zeměpis', 'Ov': 'Občanská výchova',
+                    'ZSV': 'Základy společenských věd', 'EKS': 'Ekonomie', 'IVT': 'Informatika',
+                    'Tv': 'Tělesná výchova', 'Hv': 'Hudební výchova', 'Vv': 'Výtvarná výchova'
+                };
+                const subjectName = subjectNames[subjectId] || subjectId;
+                await addMessage(`📚 Zobrazuji učitele předmětu ${subjectName}...`, false);
+                setTimeout(() => showUciteleByPredmetModal(subjectName, subjectId), 500);
                 sendBtn.disabled = false;
                 userInput.focus();
                 return;
