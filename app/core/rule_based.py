@@ -124,6 +124,7 @@ Zkus zadat konkrétní klíčové slovo:
 • Rozvrh, Jídelna, Kontakty
 • Předmět (matematika, fyzika...)
 • Učitel + předmět
+• Klikni nahoře na tlačítka rychlé volby
 
 Jsem tu pro tebe!""",
             """Nerozpoznávám tento pokyn. 😅
@@ -132,6 +133,7 @@ Ale zkus:
 • Zadat heslovitý dotaz
 • Zeptat se na konkrétní věc
 • Uvést klíčové slovo (rozvrh, učitel, menu...)
+• Klikni nahoře na tlačítka rychlé volby
 
 Rád ti pomůžu! 🎯""",
             """Ups, nevím, co tím máš na mysli! 😊
@@ -140,6 +142,7 @@ Můžeš zkusit:
 • Napsat klíčové slovo?
 • Uvést konkrétní dotaz?
 • Zeptat se na rozvrh, jídelnu nebo učitele?
+• Klikni nahoře na tlačítka rychlé volby
 
 Jsem tady pro tebe! 💫"""
         ])
