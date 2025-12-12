@@ -86,25 +86,20 @@
             flex: 2;
             overflow-y: auto;
             padding: 16px;
-            padding-top: 0;
             background: #f5f5f5;
             position: relative;
         }
-        
-            <Celý obsah souboru byl nahrazen aktuálním obsahem z docs/chat.html, včetně všech rozšířených funkcí, detekce předmětů, modálů a UI.>
+
         .quick-buttons-fixed {
-            position: sticky;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to bottom, #f5f5f5 0%, #f5f5f5 85%, rgba(245, 245, 245, 0) 100%);
-            padding: 8px 16px 12px 16px;
-            margin: 0 -16px 8px -16px;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 16px;
             display: flex;
-            gap: 5px;
+            gap: 8px;
             justify-content: center;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .message {
@@ -295,26 +290,26 @@
         .contact-btn {
             display: inline-block;
             margin-top: 0;
-            padding: 5px 6px;
+            padding: 8px 12px;
             background: white;
             color: #667eea;
-            border: 2px solid #667eea;
-            border-radius: 3px;
-            font-size: 9px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             white-space: nowrap;
             flex: 1;
             min-width: 0;
         }
 
         .contact-btn:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            background: rgba(255, 255, 255, 0.95);
+            color: #764ba2;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Modal styly */
@@ -1134,13 +1129,14 @@
             <button class="header-close-btn" onclick="toggleChat()" title="Zavřít">−</button>
         </div>
         
+        <div class="quick-buttons-fixed" id="quickButtonsFixed">
+            <button class="contact-btn" onclick="showContact()">📧 Kontakt</button>
+            <button class="contact-btn" onclick="showJidelna()">🍽️ Jídelna</button>
+            <button class="contact-btn" onclick="showRozvrh()">📅 Rozvrh</button>
+            <button class="contact-btn" onclick="showOstatni()">📋 Ostatní</button>
+        </div>
+        
         <div class="chat-container" id="chatContainer">
-            <div class="quick-buttons-fixed" id="quickButtonsFixed">
-                <button class="contact-btn" onclick="showContact()">📧 Kontakt</button>
-                <button class="contact-btn" onclick="showJidelna()">🍽️ Jídelna</button>
-                <button class="contact-btn" onclick="showRozvrh()">📅 Rozvrh</button>
-                <button class="contact-btn" onclick="showOstatni()">📋 Ostatní</button>
-            </div>
         </div>
         
         <div class="input-container">
@@ -1214,22 +1210,30 @@
                     
                     <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 První stupeň</h4>
                     <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPA()">PA</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPB()">PB</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSA()">SA</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSB()">SB</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTA()">TA</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTB()">TB</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVA()">KVA</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVB()">KVB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPA()">PA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPB()">PB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSA()">SA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSB()">SB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTA()">TA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTB()">TB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVA()">KVA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVB()">KVB</button>
                     </div>
                     
                     <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎓 Druhý stupeň</h4>
                     <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 70px; height: 40px; padding: 8px;" onclick="showRozvrhTridy('kvinta')">Kvinta</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 70px; height: 40px; padding: 8px;" onclick="showRozvrhTridy('sexta')">Sexta</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 70px; height: 40px; padding: 8px;" onclick="showRozvrhTridy('septima')">Septima</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 70px; height: 40px; padding: 8px;" onclick="showRozvrhTridy('oktava')">Oktáva</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh1A()">1.A</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIA()">KVIA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIB()">KVIB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh2A()">2.A</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXA()">SXA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXB()">SXB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh3A()">3.A</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTA()">SPTA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTB()">SPTB</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh4A()">4.A</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTA()">OKTA</button>
+                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTB()">OKTB</button>
                     </div>
                 </div>
             </div>
@@ -1247,27 +1251,27 @@
                     
                     <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 Jazyky</h4>
                     <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Český jazyk" onclick="showUciteleByPredmetModal('Český jazyk', 'Čj')">Čj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Angličtina" onclick="showUciteleByPredmetModal('Angličtina', 'Aj')">Aj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Němčina" onclick="showUciteleByPredmetModal('Němčina', 'Nj')">Nj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Španělština" onclick="showUciteleByPredmetModal('Španělština', 'Šj')">Šj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Francouzština" onclick="showUciteleByPredmetModal('Francouzština', 'Fj')">Fj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Ruština" onclick="showUciteleByPredmetModal('Ruština', 'Rj')">Rj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Latina" onclick="showUciteleByPredmetModal('Latina', 'La')">La</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Český jazyk" onclick="showUciteleByPredmetModal('Český jazyk', 'Čj')">Čj</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Angličtina" onclick="showUciteleByPredmetModal('Angličtina', 'Aj')">Aj</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Němčina" onclick="showUciteleByPredmetModal('Němčina', 'Nj')">Nj</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Španělština" onclick="showUciteleByPredmetModal('Španělština', 'Šj')">Šj</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Francouzština" onclick="showUciteleByPredmetModal('Francouzština', 'Fj')">Fj</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Ruština" onclick="showUciteleByPredmetModal('Ruština', 'Rj')">Rj</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Latina" onclick="showUciteleByPredmetModal('Latina', 'La')">La</button>
                     </div>
                     
                     <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🔬 Přírodní vědy</h4>
                     <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Matematika" onclick="showUciteleByPredmetModal('Matematika', 'M')">M</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Fyzika" onclick="showUciteleByPredmetModal('Fyzika', 'F')">F</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Chemie" onclick="showUciteleByPredmetModal('Chemie', 'Ch')">Ch</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Biologie" onclick="showUciteleByPredmetModal('Biologie', 'Bi')">Bi</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Informatika" onclick="showUciteleByPredmetModal('Informatika', 'IVT')">IVT</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Matematika" onclick="showUciteleByPredmetModal('Matematika', 'M')">M</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Fyzika" onclick="showUciteleByPredmetModal('Fyzika', 'F')">F</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Chemie" onclick="showUciteleByPredmetModal('Chemie', 'Ch')">Ch</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Biologie" onclick="showUciteleByPredmetModal('Biologie', 'Bi')">Bi</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Informatika" onclick="showUciteleByPredmetModal('Informatika', 'IVT')">IVT</button>
                     </div>
                     
                     <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🌍 Společenské vědy</h4>
                     <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Dějepis" onclick="showUciteleByPredmetModal('Dějepis', 'D')">D</button>
+                        <button class="trida-btn" style="font-size: 16px; min-width: 65px; height: 50px; padding: 10px;" title="Dějepis" onclick="showUciteleByPredmetModal('Dějepis', 'D')">D</button>
                         <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Zeměpis" onclick="showUciteleByPredmetModal('Zeměpis', 'Z')">Z</button>
                         <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Občanská výchova" onclick="showUciteleByPredmetModal('Občanská výchova', 'Ov')">Ov</button>
                         <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Základy společenských věd" onclick="showUciteleByPredmetModal('ZSV', 'ZSV')">ZSV</button>
@@ -2279,8 +2283,88 @@
             await showRozvrhTridyReal('KVB', '/rozvrh/kvb', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/23');
         }
         
+        // Funkce pro načtení a zobrazení rozvrhu třídy 1W z Bakalářů
+        async function showRozvrh1W() {
+            console.log('🔍 showRozvrh1W() zavolána');
+            await showRozvrhTridyReal('1W', '/rozvrh/1w', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1W');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy SXA z Bakalářů
+        async function showRozvrhSXA() {
+            console.log('🔍 showRozvrhSXA() zavolána');
+            await showRozvrhTridyReal('SXA', '/rozvrh/1w', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1W');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy 1.A z Bakalářů
+        async function showRozvrh1A() {
+            console.log('🔍 showRozvrh1A() zavolána');
+            await showRozvrhTridyReal('1.A', '/rozvrh/1a', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1A');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy KVIA z Bakalářů
+        async function showRozvrhKVIA() {
+            console.log('🔍 showRozvrhKVIA() zavolána');
+            await showRozvrhTridyReal('KVIA', '/rozvrh/kvia', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/KVIA');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy KVIB z Bakalářů
+        async function showRozvrhKVIB() {
+            console.log('🔍 showRozvrhKVIB() zavolána');
+            await showRozvrhTridyReal('KVIB', '/rozvrh/kvib', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/KVIB');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy 2.A z Bakalářů
+        async function showRozvrh2A() {
+            console.log('🔍 showRozvrh2A() zavolána');
+            await showRozvrhTridyReal('2.A', '/rozvrh/2a', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2A');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy SXB z Bakalářů
+        async function showRozvrhSXB() {
+            console.log('🔍 showRozvrhSXB() zavolána');
+            await showRozvrhTridyReal('SXB', '/rozvrh/sxb', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SXB');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy 3.A z Bakalářů
+        async function showRozvrh3A() {
+            console.log('🔍 showRozvrh3A() zavolána');
+            await showRozvrhTridyReal('3.A', '/rozvrh/3a', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/3A');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy SPTA z Bakalářů
+        async function showRozvrhSPTA() {
+            console.log('🔍 showRozvrhSPTA() zavolána');
+            await showRozvrhTridyReal('SPTA', '/rozvrh/spta', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SPTA');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy SPTB z Bakalářů
+        async function showRozvrhSPTB() {
+            console.log('🔍 showRozvrhSPTB() zavolána');
+            await showRozvrhTridyReal('SPTB', '/rozvrh/sptb', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SPTB');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy 4.A z Bakalářů
+        async function showRozvrh4A() {
+            console.log('🔍 showRozvrh4A() zavolána');
+            await showRozvrhTridyReal('4.A', '/rozvrh/4a', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/4A');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy OKTA z Bakalářů
+        async function showRozvrhOKTA() {
+            console.log('🔍 showRozvrhOKTA() zavolána');
+            await showRozvrhTridyReal('OKTA', '/rozvrh/okta', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/OKTA');
+        }
+        
+        // Funkce pro načtení a zobrazení rozvrhu třídy OKTB z Bakalářů
+        async function showRozvrhOKTB() {
+            console.log('🔍 showRozvrhOKTB() zavolána');
+            await showRozvrhTridyReal('OKTB', '/rozvrh/oktb', 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/OKTB');
+        }
+        
         // Obecná funkce pro načtení rozvrhu z backendu (funkční verze)
         async function showRozvrhTridyReal(nazevTridy, endpoint, bakalariUrl) {
+            console.log('🔍 showRozvrhTridyReal() zavolána pro třídu:', nazevTridy, 'endpoint:', endpoint);
+            
             // Zavřeme modal
             closeRozvrhModal();
             
@@ -2302,8 +2386,11 @@
             
             try {
                 // Zavoláme backend endpoint pro scraping rozvrhu
+                console.log('🔍 Volám API:', `${CONFIG.API_BASE_URL}${endpoint}`);
                 const response = await fetch(`${CONFIG.API_BASE_URL}${endpoint}`);
+                console.log('🔍 Response status:', response.status);
                 const result = await response.json();
+                console.log('🔍 Výsledek z API:', result);
                 
                 // Odstraníme loading zprávu
                 const loading = document.getElementById('rozvrhLoading');

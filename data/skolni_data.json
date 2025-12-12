@@ -24,60 +24,319 @@
   ],
   "ucitele": [
     {
-      "jmeno": "Mgr. Novák Jan",
-      "aprobace": "Matematika, Fyzika",
-      "predmety": ["matematika", "fyzika"],
-      "email": "novak@mgo.cz",
-      "klapka": "201",
-      "konzultace": "Pondělí 14:00-15:00"
+      "jmeno": "RNDr. Mgr. Adamus Tomáš, Ph.D.",
+      "aprobace": "Bi, Ch",
+      "klapka": "119",
+      "email": "adamus@mgo.cz",
+      "konzultace": "út 14.00 - 14.30"
     },
     {
-      "jmeno": "Mgr. Svobodová Marie",
-      "aprobace": "Český jazyk, Literatura",
-      "predmety": ["cesky jazyk", "literatura"],
-      "email": "svobodova@mgo.cz",
-      "klapka": "202",
-      "konzultace": "Úterý 13:00-14:00"
+      "jmeno": "Mgr. Ballová Petra",
+      "aprobace": "Šj, Nj, ZSV",
+      "klapka": "108",
+      "email": "ballova@mgo.cz",
+      "konzultace": "út 12.00 - 12.45"
     },
     {
-      "jmeno": "Mgr. Dvořák Petr",
-      "aprobace": "Angličtina",
-      "predmety": ["anglictina", "anglicky jazyk"],
-      "email": "dvorak@mgo.cz",
-      "klapka": "203",
-      "konzultace": "Středa 14:00-15:00"
+      "jmeno": "Mgr. Bittová Jana",
+      "aprobace": "Nj, D",
+      "klapka": "124",
+      "email": "bittova@mgo.cz",
+      "konzultace": "út 7. 45 - 8. 15, st 13.45 – 14.00"
     },
     {
-      "jmeno": "Mgr. Černá Jana",
-      "aprobace": "Chemie, Biologie",
-      "predmety": ["chemie", "biologie"],
-      "email": "cerna@mgo.cz",
-      "klapka": "204",
-      "konzultace": "Čtvrtek 13:00-14:00"
+      "jmeno": "PhDr. Borůvková Markéta, Ph.D.",
+      "aprobace": "Hv, Čj, Nj",
+      "klapka": "110",
+      "email": "boruvkova@mgo.cz",
+      "konzultace": "po 7.30 - 9.00, út 7.30 – 8.05"
     },
     {
-      "jmeno": "Mgr. Horák Tomáš",
-      "aprobace": "Dějepis, Občanská výchova",
-      "predmety": ["dejepis", "obcanska vychova", "ov"],
-      "email": "horak@mgo.cz",
-      "klapka": "205",
-      "konzultace": "Pátek 12:00-13:00"
+      "jmeno": "Mgr. Čeledová Platošová Zdeňka",
+      "aprobace": "Bi, Ch",
+      "klapka": "102",
+      "email": "celedova@mgo.cz",
+      "konzultace": "po 8.00 - 9.00"
     },
     {
-      "jmeno": "Mgr. Procházková Eva",
-      "aprobace": "Němčina",
-      "predmety": ["nemcina", "nemecky jazyk"],
-      "email": "prochazkova@mgo.cz",
-      "klapka": "206",
-      "konzultace": "Pondělí 13:00-14:00"
+      "jmeno": "Mgr. Dančíková Lucie",
+      "aprobace": "Aj, Fj",
+      "klapka": "108",
+      "email": "dancikova@mgo.cz",
+      "konzultace": "út 7.45 - 8.15"
     },
     {
-      "jmeno": "Mgr. Kučera Martin",
-      "aprobace": "Zeměpis, Informatika",
-      "predmety": ["zemepis", "informatika", "it"],
-      "email": "kucera@mgo.cz",
-      "klapka": "207",
-      "konzultace": "Úterý 14:00-15:00"
+      "jmeno": "Ing. Dragon Adam",
+      "aprobace": "IVT, F",
+      "klapka": "118",
+      "email": "dragon@mgo.cz",
+      "konzultace": "st 14.00 - 14.45"
+    },
+    {
+      "jmeno": "Mgr. English Hana(Kariérní poradce)",
+      "aprobace": "Aj, Ov, ZSV",
+      "klapka": "108",
+      "email": "english@mgo.cz",
+      "konzultace": "po 8.00-9.00, út 10.00-11.50"
+    },
+    {
+      "jmeno": "Mgr. Fismolová Lucie",
+      "aprobace": "M,Vv",
+      "klapka": "122",
+      "email": "fismolova@mgo.cz",
+      "konzultace": "po 7.30 - 8.00"
+    },
+    {
+      "jmeno": "PhDr. Fuxová Ivana",
+      "aprobace": "Čj, D",
+      "klapka": "123",
+      "email": "fuxova@mgo.cz",
+      "konzultace": "po 14.10 – 15.30"
+    },
+    {
+      "jmeno": "Mgr. Honka Jiří, Ph.D.",
+      "aprobace": "M,Ch, EKS",
+      "klapka": "118",
+      "email": "honka@mgo.cz",
+      "konzultace": "po 7.30 – 8.15"
+    },
+    {
+      "jmeno": "Mgr.Cholevová Iveta, Ph.D.",
+      "aprobace": "M, IVT",
+      "klapka": "118",
+      "email": "iveta@mgo.cz",
+      "konzultace": "po 7.30 – 8.15"
+    },
+    {
+      "jmeno": "Mgr. Kaňková Jaroslava",
+      "aprobace": "M, F",
+      "klapka": "117",
+      "email": "kankova@mgo.cz",
+      "konzultace": "st 7.30 - 8.15"
+    },
+    {
+      "jmeno": "Mgr. Věra Kerlínová, Ph.D.",
+      "aprobace": "M, F",
+      "klapka": "118",
+      "email": "vera@mgo.cz",
+      "konzultace": "čt  14.10 - 14.55"
+    },
+    {
+      "jmeno": "Mgr. Kobesová Martina",
+      "aprobace": "Čj, Aj",
+      "klapka": "107",
+      "email": "kobesova@mgo.cz",
+      "konzultace": "pá 7. 30 - 8.10"
+    },
+    {
+      "jmeno": "Mgr. Lorinczová Tamara",
+      "aprobace": "Šj, D",
+      "klapka": "107",
+      "email": "lorinczova@mgo.cz",
+      "konzultace": "po 14.10- 14.55"
+    },
+    {
+      "jmeno": "Mgr. Macečková Renáta",
+      "aprobace": "Nj, Ov, ZSV",
+      "klapka": "122",
+      "email": "maceckova@mgo.cz",
+      "konzultace": "út 14. 00 - 14. 30"
+    },
+    {
+      "jmeno": "Mgr. Manolcis Nikolas",
+      "aprobace": "Tv, Z",
+      "klapka": "113",
+      "email": "manolcis@mgo.cz",
+      "konzultace": "pá 9.00-10.00"
+    },
+    {
+      "jmeno": "Mgr. Martinák David",
+      "aprobace": "M, IVT, F",
+      "klapka": "118",
+      "email": "martinak@mgo.cz",
+      "konzultace": "út 14.10–15.00"
+    },
+    {
+      "jmeno": "Mgr. Mintonová Blanka",
+      "aprobace": "Aj, Rj",
+      "klapka": "108",
+      "email": "mintonova@mgo.cz",
+      "konzultace": "po 14.00 - 14.30"
+    },
+    {
+      "jmeno": "PaedDr. Mohelník Karel",
+      "aprobace": "M,  F",
+      "klapka": "104",
+      "email": "mohelnik@mgo.cz",
+      "konzultace": "st 14.10–15.00"
+    },
+    {
+      "jmeno": "Mgr. Moricová Jana",
+      "aprobace": "Aj, ZSV",
+      "klapka": "108",
+      "email": "moricova@mgo.cz",
+      "konzultace": "po 15.50 -16.50"
+    },
+    {
+      "jmeno": "Mgr. Murcková Markéta",
+      "aprobace": "Tv,Z",
+      "klapka": "112",
+      "email": "murckova@mgo.cz",
+      "konzultace": "po 12.00 – 12.30"
+    },
+    {
+      "jmeno": "Mgr. Musálková Michaela",
+      "aprobace": "Čj, ZSV",
+      "klapka": "122",
+      "email": "musalkova@mgo.cz",
+      "konzultace": "st 7.30 - 8.15"
+    },
+    {
+      "jmeno": "Ing. Mutina Tomáš",
+      "aprobace": "M, IVT",
+      "klapka": "118",
+      "email": "mutina@mgo.cz",
+      "konzultace": "po 7.15 – 8.00"
+    },
+    {
+      "jmeno": "Mgr. Navrátilová Romana",
+      "aprobace": "ČJ, D",
+      "klapka": "122",
+      "email": "navratilova@mgo.cz",
+      "konzultace": "čt 11.50 - 12.30"
+    },
+    {
+      "jmeno": "Mgr. Nováková Naděžda",
+      "aprobace": "Čj, Aj",
+      "klapka": "121",
+      "email": "novakova@mgo.cz",
+      "konzultace": "st 7.30 - 8.15"
+    },
+    {
+      "jmeno": "Mgr. Pastrňáková Andrea",
+      "aprobace": "Čj, Aj",
+      "klapka": "110",
+      "email": "pastrnakova@mgo.cz",
+      "konzultace": "pá 7.40 - 8. 10"
+    },
+    {
+      "jmeno": "Mgr. Pavelcová Renáta",
+      "aprobace": "Čj, Aj",
+      "klapka": "107",
+      "email": "pavelcova@mgo.cz",
+      "konzultace": "pá 7. 45 - 8. 15"
+    },
+    {
+      "jmeno": "Mgr. Pavlínková Miroslava(Metodik prevence)",
+      "aprobace": "La, Fj, D",
+      "klapka": "109",
+      "email": "pavlinkova@mgo.cz",
+      "konzultace": "st 15.00 – 16.00"
+    },
+    {
+      "jmeno": "Mgr. Pelikánová Marcela",
+      "aprobace": "VV",
+      "klapka": "107",
+      "email": "pelikanova@mgo.cz",
+      "konzultace": "út 11.05 - 11.50"
+    },
+    {
+      "jmeno": "Mgr. Polášková Karolína",
+      "aprobace": "Čj, Hv",
+      "klapka": "122",
+      "email": "polaskova@mgo.cz",
+      "konzultace": "čt 7.30 - 8.15"
+    },
+    {
+      "jmeno": "Mgr. Rašovská Martina",
+      "aprobace": "Bi, Ch",
+      "klapka": "119",
+      "email": "rasovska@mgo.cz",
+      "konzultace": "út13.00 - 14.10"
+    },
+    {
+      "jmeno": "Mgr. Rašovský Petr",
+      "aprobace": "Bi, Ch",
+      "klapka": "119",
+      "email": "rasovsky@mgo.cz",
+      "konzultace": "út 13.00 - 14.10"
+    },
+    {
+      "jmeno": "Mgr. Rychtarčíková Pavla",
+      "aprobace": "IVT, M, Ch",
+      "klapka": "117",
+      "email": "rychtarcikova@mgo.cz",
+      "konzultace": "čt 14.45 – 15.30"
+    },
+    {
+      "jmeno": "Mgr. Schenk Martin",
+      "aprobace": "Ov, Tv",
+      "klapka": "113",
+      "email": "schenk@mgo.cz",
+      "konzultace": "po 13.15 – 14.00"
+    },
+    {
+      "jmeno": "Ing. Srba Anna",
+      "aprobace": "Rj",
+      "klapka": "107",
+      "email": "srba@mgo.cz",
+      "konzultace": "dle domluvy"
+    },
+    {
+      "jmeno": "Mgr. Stašicová–Čejková Petra",
+      "aprobace": "Z, Tv",
+      "klapka": "112",
+      "email": "stasicova–cejkova@mgo.cz",
+      "konzultace": "čt 12.00 - 13.00"
+    },
+    {
+      "jmeno": "Mgr. Szturcová Vanda",
+      "aprobace": "Aj, Nj",
+      "klapka": "121",
+      "email": "szturcova@mgo.cz",
+      "konzultace": "po 8.15 - 9.00"
+    },
+    {
+      "jmeno": "Mgr. Švrčková Zdenka",
+      "aprobace": "Čj, Hv",
+      "klapka": "124",
+      "email": "svrckova@mgo.cz",
+      "konzultace": "po 12.45-13.15, st 10.15-10.45"
+    },
+    {
+      "jmeno": "Mgr. Tkadlecová Daniela",
+      "aprobace": "Nj, ZSV, Ov",
+      "klapka": "122",
+      "email": "tkadlecova@mgo.cz",
+      "konzultace": "st 15.00 - 16.00"
+    },
+    {
+      "jmeno": "Mgr. Trčková Jana(Výchovný poradce)",
+      "aprobace": "Čj, D, Zsv, Ov",
+      "klapka": "110",
+      "email": "trckova@mgo.cz",
+      "konzultace": "st 14.00 –15.00, čt 14.00 -15. 00"
+    },
+    {
+      "jmeno": "Mgr. Vasevič Ladislav",
+      "aprobace": "Čj, D",
+      "klapka": "103",
+      "email": "vasevic@mgo.cz",
+      "konzultace": "po 14.00 – 15.00"
+    },
+    {
+      "jmeno": "Mgr. Vondráček Petr",
+      "aprobace": "M, Bi",
+      "klapka": "117",
+      "email": "vondracek@mgo.cz",
+      "konzultace": "st 14.00 - 15.00"
+    },
+    {
+      "jmeno": "Mgr. Vráželová Iveta",
+      "aprobace": "Tv",
+      "klapka": "112",
+      "email": "vrazelova@mgo.cz",
+      "konzultace": "st 9.00 - 10.00"
     }
   ],
   "jidelna": {
@@ -143,46 +402,7 @@
       ]
     }
   },
-  "rozvrhy": {
-    "KVA": {
-      "trida": "Kvarta A",
-      "den": "Středa",
-      "datum": "10.12.2025",
-      "hodiny": [
-        {"cislo": "1", "cas": "8:00-8:45", "predmet": "Matematika", "ucitel": "Mgr. Novák", "mistnost": "205"},
-        {"cislo": "2", "cas": "8:55-9:40", "predmet": "Český jazyk", "ucitel": "Mgr. Svobodová", "mistnost": "301"},
-        {"cislo": "3", "cas": "9:50-10:35", "predmet": "Angličtina", "ucitel": "Mgr. Dvořák", "mistnost": "210"},
-        {"cislo": "4", "cas": "10:50-11:35", "predmet": "Fyzika", "ucitel": "Mgr. Novák", "mistnost": "Lab1"},
-        {"cislo": "5", "cas": "11:45-12:30", "predmet": "Dějepis", "ucitel": "Mgr. Horák", "mistnost": "302"},
-        {"cislo": "6", "cas": "12:40-13:25", "predmet": "Tělesná výchova", "ucitel": "Mgr. Procházková", "mistnost": "Tělocvična"}
-      ]
-    },
-    "PA": {
-      "trida": "Prima A",
-      "den": "Středa",
-      "datum": "10.12.2025",
-      "hodiny": [
-        {"cislo": "1", "cas": "8:00-8:45", "predmet": "Chemie", "ucitel": "Mgr. Černá", "mistnost": "Lab2"},
-        {"cislo": "2", "cas": "8:55-9:40", "predmet": "Matematika", "ucitel": "Mgr. Novák", "mistnost": "205"},
-        {"cislo": "3", "cas": "9:50-10:35", "predmet": "Český jazyk", "ucitel": "Mgr. Svobodová", "mistnost": "301"},
-        {"cislo": "4", "cas": "10:50-11:35", "predmet": "Angličtina", "ucitel": "Mgr. Dvořák", "mistnost": "210"},
-        {"cislo": "5", "cas": "11:45-12:30", "predmet": "Informatika", "ucitel": "Mgr. Kučera", "mistnost": "PC1"}
-      ]
-    },
-    "TB": {
-      "trida": "Tercie B",
-      "den": "Středa",
-      "datum": "10.12.2025",
-      "hodiny": [
-        {"cislo": "1", "cas": "8:00-8:45", "predmet": "Biologie", "ucitel": "Mgr. Černá", "mistnost": "307"},
-        {"cislo": "2", "cas": "8:55-9:40", "predmet": "Zeměpis", "ucitel": "Mgr. Kučera", "mistnost": "304"},
-        {"cislo": "3", "cas": "9:50-10:35", "predmet": "Český jazyk", "ucitel": "Mgr. Svobodová", "mistnost": "301"},
-        {"cislo": "4", "cas": "10:50-11:35", "predmet": "Matematika", "ucitel": "Mgr. Novák", "mistnost": "205"},
-        {"cislo": "5", "cas": "11:45-12:30", "predmet": "Němčina", "ucitel": "Mgr. Procházková", "mistnost": "211"},
-        {"cislo": "6", "cas": "12:40-13:25", "predmet": "Tělesná výchova", "ucitel": "Mgr. Horák", "mistnost": "Tělocvična"}
-      ]
-    }
-  },
+
   "info": {
     "nazev": "Matiční gymnázium Ostrava",
     "adresa": "Hybešova 131/28, 702 00 Ostrava",
