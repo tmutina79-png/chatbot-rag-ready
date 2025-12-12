@@ -506,6 +506,72 @@ def get_ucitele_by_predmet(predmet_id: str):
         }
 
 
+@app.get("/kontakt/hledat-ucitele/{name}")
+def hledat_ucitele(name: str):
+    """
+    Hledá učitele podle jména nebo příjmení
+    
+    Args:
+        name: Jméno nebo příjmení učitele (case-insensitive)
+    """
+    try:
+        # Nejdřív zkus scraping - načti všechny učitele
+        ucitele_data = []
+        source = "database"
+        try:
+            from app.kontakty.scraper import scrape_ucitele_pedagogicky_sbor
+            ucitele_data = scrape_ucitele_pedagogicky_sbor()
+            if ucitele_data:
+                source = "scraping"
+        except Exception:
+            pass
+        
+        # Fallback na lokální databázi
+        if not ucitele_data:
+            ucitele_data = data_manager.get_ucitele()
+        
+        # Normalizace hledaného jména
+        search_name = name.lower().strip()
+        
+        # Funkce pro odstranění diakritiky
+        import unicodedata
+        def remove_diacritics(text):
+            return ''.join(
+                c for c in unicodedata.normalize('NFD', text)
+                if unicodedata.category(c) != 'Mn'
+            )
+        
+        search_name_normalized = remove_diacritics(search_name)
+        
+        # Hledání učitele
+        nalezeni_ucitele = []
+        for ucitel in ucitele_data:
+            ucitel_jmeno = ucitel.get('jmeno', '').lower()
+            ucitel_jmeno_normalized = remove_diacritics(ucitel_jmeno)
+            
+            # Hledáme shodu v celém jméně nebo v jeho částech
+            if (search_name in ucitel_jmeno or 
+                search_name_normalized in ucitel_jmeno_normalized or
+                any(search_name in part.lower() or search_name_normalized in remove_diacritics(part.lower()) 
+                    for part in ucitel_jmeno.split())):
+                nalezeni_ucitele.append(ucitel)
+        
+        return {
+            "success": True,
+            "data": nalezeni_ucitele,
+            "count": len(nalezeni_ucitele),
+            "source": source
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": [],
+            "count": 0
+        }
+
+
+
 @app.get("/jidelna/dnesni-menu")
 def get_dnesni_menu():
     """
