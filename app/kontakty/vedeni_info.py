@@ -1,26 +1,27 @@
 """
 Informace o vedení a správě školy
 Zdroj: https://mgo.cz/jj/kontakty/vedeni-a-sprava-skoly.html
+Aktualizováno: 12.12.2025
 """
 
 VEDENI_SKOLY = [
     {
-        "jmeno": "Mgr. Jana Nováková",
-        "pozice": "Ředitelka školy",
-        "email": "reditelka@mgo.cz",
-        "telefon": "+420 596 136 632"
+        "jmeno": "Mgr. Vasevič Ladislav",
+        "pozice": "Ředitel školy",
+        "email": "",
+        "telefon": "+420 596 11 88 77, linka 103"
     },
     {
-        "jmeno": "Mgr. Petr Svoboda",
-        "pozice": "Zástupce ředitele pro všeobecné předměty",
-        "email": "zastupce1@mgo.cz",
-        "telefon": "+420 596 136 633"
+        "jmeno": "PaedDr. Mohelník Karel",
+        "pozice": "Zástupce ředitele",
+        "email": "",
+        "telefon": "+420 596 11 62 38, linka 104"
     },
     {
-        "jmeno": "Mgr. Marie Dvořáková",
-        "pozice": "Zástupkyně ředitele pro přírodovědné předměty",
-        "email": "zastupce2@mgo.cz",
-        "telefon": "+420 596 136 634"
+        "jmeno": "Mgr. Čeledová Platošová Zdeňka",
+        "pozice": "Zástupce ředitele",
+        "email": "",
+        "telefon": "+420 596 11 62 38, linka 102"
     }
 ]
 

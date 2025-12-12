@@ -1,19 +1,21 @@
 """
 Konfigurace kontaktních informací pro chatbota
+Zdroj: https://mgo.cz/jj/kontakty.html
+Aktualizováno: 12.12.2025
 """
 
 KONTAKT_INFO = {
     "nazev": "Matiční gymnázium Ostrava",
     "adresa": "Mánesova 1/7, 702 00 Ostrava-Moravská Ostrava",
-    "email": "skola@mgo.cz",
-    "telefon": "+420 596 136 632",
+    "email": "skopkova@mgo.cz",  # Sekretariát školy
+    "telefon": "+420 596 116 239",
     "web": "https://www.mgo.cz",
     "uredni_hodiny": {
-        "pondeli": "8:00 - 16:00",
-        "utery": "8:00 - 16:00",
-        "streda": "8:00 - 16:00",
-        "ctvrtek": "8:00 - 16:00",
-        "patek": "8:00 - 14:00"
+        "pondeli": "7:00 - 15:00",
+        "utery": "7:00 - 15:00",
+        "streda": "7:00 - 15:00",
+        "ctvrtek": "7:00 - 15:00",
+        "patek": "7:00 - 15:00"
     },
     "social_media": {
         "facebook": "https://www.facebook.com/MaticniGO",

@@ -20,9 +20,19 @@ from app.jidelna.scraper import (
     scrape_dnesni_menu,
     scrape_tydenni_menu
 )
-from app.rozvrh.scraper import scrape_rozvrh_kva, scrape_rozvrh_pa, scrape_rozvrh_tb
+
+from app.rozvrh.scraper import (
+    scrape_rozvrh_kva, scrape_rozvrh_pa, scrape_rozvrh_tb,
+    scrape_rozvrh_pb, scrape_rozvrh_sa, scrape_rozvrh_sb, scrape_rozvrh_ta, scrape_rozvrh_kvb,
+    scrape_rozvrh_1w, scrape_rozvrh_sxa,
+    scrape_rozvrh_1a, scrape_rozvrh_kvia, scrape_rozvrh_kvib, scrape_rozvrh_2a,
+    scrape_rozvrh_sxb, scrape_rozvrh_3a, scrape_rozvrh_spta, scrape_rozvrh_sptb,
+    scrape_rozvrh_4a, scrape_rozvrh_okta, scrape_rozvrh_oktb
+)
+
 import os
 
+# Inicializace FastAPI aplikace a middleware
 app = FastAPI(
     title="MATIČÁK",
     description="Matiční AI Pomocník - inteligentní školní asistent",
@@ -43,6 +53,342 @@ db = ConversationDB()
 
 # Servírovat statické soubory (obrázky, atd.)
 app.mount("/static", StaticFiles(directory="app/ui"), name="static")
+
+@app.get("/rozvrh/pb")
+def get_rozvrh_pb():
+    """
+    Získá rozvrh třídy PB - používá lokální databázi
+    """
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_pb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("PB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/sa")
+def get_rozvrh_sa():
+    """
+    Získá rozvrh třídy SA - používá lokální databázi
+    """
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_sa()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("SA")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/sb")
+def get_rozvrh_sb():
+    """
+    Získá rozvrh třídy SB - používá lokální databázi
+    """
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_sb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("SB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/ta")
+def get_rozvrh_ta():
+    """
+    Získá rozvrh třídy TA - používá lokální databázi
+    """
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_ta()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("TA")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/kvb")
+def get_rozvrh_kvb():
+    """
+    Získá rozvrh třídy KVB - používá lokální databázi
+    """
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_kvb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("KVB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/1w")
+def get_rozvrh_1w():
+    """
+    Získá rozvrh třídy 1W - používá lokální databázi
+    """
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_1w()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("1W")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/sxa")
+def get_rozvrh_sxa():
+    """Získá rozvrh třídy SXA - používá lokální databázi"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_sxa()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("SXA")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/1a")
+def get_rozvrh_1a():
+    """Získá rozvrh třídy 1.A"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_1a()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("1A")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/kvia")
+def get_rozvrh_kvia():
+    """Získá rozvrh třídy KVIA"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_kvia()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("KVIA")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/kvib")
+def get_rozvrh_kvib():
+    """Získá rozvrh třídy KVIB"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_kvib()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("KVIB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/2a")
+def get_rozvrh_2a():
+    """Získá rozvrh třídy 2.A"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_2a()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("2A")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/sxb")
+def get_rozvrh_sxb():
+    """Získá rozvrh třídy SXB"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_sxb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("SXB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/3a")
+def get_rozvrh_3a():
+    """Získá rozvrh třídy 3.A"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_3a()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("3A")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/spta")
+def get_rozvrh_spta():
+    """Získá rozvrh třídy SPTA"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_spta()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("SPTA")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/sptb")
+def get_rozvrh_sptb():
+    """Získá rozvrh třídy SPTB"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_sptb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("SPTB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/4a")
+def get_rozvrh_4a():
+    """Získá rozvrh třídy 4.A"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_4a()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("4A")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/okta")
+def get_rozvrh_okta():
+    """Získá rozvrh třídy OKTA"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_okta()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("OKTA")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
+
+@app.get("/rozvrh/oktb")
+def get_rozvrh_oktb():
+    """Získá rozvrh třídy OKTB"""
+    try:
+        rozvrh_data = None
+        source = "database"
+        try:
+            rozvrh_data = scrape_rozvrh_oktb()
+            if rozvrh_data:
+                source = "scraping"
+        except:
+            pass
+        if not rozvrh_data:
+            rozvrh_data = data_manager.get_rozvrh("OKTB")
+        return {"success": True, "data": rozvrh_data, "source": source}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
@@ -128,101 +474,28 @@ def get_ucitele_by_predmet(predmet_id: str):
     try:
         # Převedeme ID na zkratku předmětu
         predmet_zkratka = get_predmet_zkratka(predmet_id)
-        
         if not predmet_zkratka:
             return {
                 "success": False,
                 "error": f"Neznámý předmět: {predmet_id}",
                 "data": []
             }
-        
         # Nejdřív zkus scraping
         ucitele_data = []
         source = "database"
         try:
+            from app.kontakty.scraper import filter_ucitele_by_predmet
             ucitele_data = filter_ucitele_by_predmet(predmet_zkratka)
             if ucitele_data:
                 source = "scraping"
-        except:
+        except Exception:
             pass
-        
         # Fallback na lokální databázi
         if not ucitele_data:
-            ucitele_data = data_manager.get_ucitele_by_predmet(predmet_id.lower())
-        
-        # Získáme čitelný název předmětu
-        predmet_nazvy = {
-            # Jazyky
-            'cestina': 'Český jazyk',
-            'cj': 'Český jazyk',
-            'čj': 'Český jazyk',
-            'český jazyk': 'Český jazyk',
-            'cesky jazyk': 'Český jazyk',
-            'matematika': 'Matematika',
-            'm': 'Matematika',
-            'anglictina': 'Angličtina',
-            'aj': 'Angličtina',
-            'angličtina': 'Angličtina',
-            'nemcina': 'Němčina',
-            'nj': 'Němčina',
-            'němčina': 'Němčina',
-            'spanelstina': 'Španělština',
-            'sj': 'Španělština',
-            'šj': 'Španělština',
-            'španělština': 'Španělština',
-            'francouzstina': 'Francouzština',
-            'fj': 'Francouzština',
-            'francouzština': 'Francouzština',
-            'rustina': 'Ruština',
-            'rj': 'Ruština',
-            'ruština': 'Ruština',
-            'latina': 'Latina',
-            'la': 'Latina',
-            # Přírodní vědy
-            'fyzika': 'Fyzika',
-            'f': 'Fyzika',
-            'chemie': 'Chemie',
-            'ch': 'Chemie',
-            'biologie': 'Biologie',
-            'bi': 'Biologie',
-            # Společenské vědy
-            'dejepis': 'Dějepis',
-            'd': 'Dějepis',
-            'dějepis': 'Dějepis',
-            'zemepis': 'Zeměpis',
-            'z': 'Zeměpis',
-            'zeměpis': 'Zeměpis',
-            'zsv': 'Základy společenských věd',
-            'základy společenských věd': 'Základy společenských věd',
-            'zaklady spolecenskych ved': 'Základy společenských věd',
-            'ov': 'Občanská výchova',
-            'obcanska-vychova': 'Občanská výchova',
-            'občanská výchova': 'Občanská výchova',
-            'obcanska vychova': 'Občanská výchova',
-            'eks': 'EKS',
-            'ekonomie': 'EKS',
-            # IT a umění
-            'informatika': 'Informatika',
-            'ivt': 'Informatika',
-            'tv': 'Tělesná výchova',
-            'telesna-vychova': 'Tělesná výchova',
-            'tělesná výchova': 'Tělesná výchova',
-            'telesna vychova': 'Tělesná výchova',
-            'hv': 'Hudební výchova',
-            'hudebni-vychova': 'Hudební výchova',
-            'hudební výchova': 'Hudební výchova',
-            'hudebni vychova': 'Hudební výchova',
-            'vv': 'Výtvarná výchova',
-            'vytvarnavychova': 'Výtvarná výchova',
-            'výtvarná výchova': 'Výtvarná výchova'
-        }
-        predmet_nazev = predmet_nazvy.get(predmet_id.lower(), predmet_id)
-        
+            ucitele_data = data_manager.get_ucitele_by_predmet(predmet_zkratka)
         return {
             "success": True,
             "data": ucitele_data,
-            "predmet": predmet_nazev,
-            "formatted_text": format_ucitele_info(ucitele_data, predmet_nazev),
             "source": source
         }
     except Exception as e:
@@ -230,70 +503,6 @@ def get_ucitele_by_predmet(predmet_id: str):
             "success": False,
             "error": str(e),
             "data": []
-        }
-
-
-@app.get("/kontakt/hledat-ucitele/{jmeno}")
-def hledat_ucitele(jmeno: str):
-    """
-    Vyhledá učitele podle jména nebo příjmení - používá lokální databázi
-    
-    Args:
-        jmeno: Jméno nebo příjmení učitele (bez diakritiky)
-    """
-    try:
-        # Nejdřív zkus scraping
-        ucitele_data = []
-        source = "database"
-        try:
-            ucitele_data = search_ucitele_by_name(jmeno)
-            if ucitele_data:
-                source = "scraping"
-        except:
-            pass
-        
-        # Fallback na lokální databázi
-        if not ucitele_data:
-            ucitele_data = data_manager.search_ucitele_by_name(jmeno)
-        
-        if not ucitele_data:
-            return {
-                "success": True,
-                "data": [],
-                "message": f"Nebyl nalezen žádný učitel se jménem nebo příjmením '{jmeno}'.",
-                "source": source
-            }
-        
-        return {
-            "success": True,
-            "data": ucitele_data,
-            "count": len(ucitele_data),
-            "source": source
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "error": str(e),
-            "data": []
-        }
-
-
-@app.get("/jidelna/info")
-def get_jidelna():
-    """
-    Získá informace o školní jídelně
-    """
-    try:
-        jidelna_data = get_jidelna_info()
-        return {
-            "success": True,
-            "data": jidelna_data
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "error": str(e),
-            "data": None
         }
 
 
