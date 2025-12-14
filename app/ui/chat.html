@@ -412,6 +412,55 @@
             text-decoration: underline;
         }
 
+        /* Styly pro sekce v modalu Ostatní */
+        .info-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .info-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none !important;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            min-height: 48px;
+        }
+
+        .info-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .info-link-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
         .contact-links {
             display: flex;
             flex-direction: column;
@@ -821,6 +870,18 @@
                 font-size: 16px;
             }
 
+            /* Responzivní button-grid pro tablet */
+            .button-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 8px;
+            }
+
+            .info-link-btn {
+                font-size: 12px;
+                padding: 10px 12px;
+                min-height: 44px;
+            }
+
             .modal-header h2 {
                 font-size: 20px;
             }
@@ -922,6 +983,18 @@
 
             .modal-body h3 {
                 font-size: 16px;
+            }
+
+            /* Responzivní button-grid pro mobil */
+            .button-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .info-link-btn {
+                font-size: 13px;
+                padding: 12px 14px;
+                min-height: 48px;
             }
 
             .modal-header h2 {
@@ -1044,6 +1117,18 @@
 
             .modal-body h3 {
                 font-size: 15px;
+            }
+
+            /* Responzivní button-grid pro malý mobil */
+            .button-grid {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+
+            .info-link-btn {
+                font-size: 12px;
+                padding: 10px 12px;
+                min-height: 44px;
             }
 
             .modal-header h2 {
@@ -1335,8 +1420,109 @@
                     <button class="close-btn" onclick="closeOstatniModal()">&times;</button>
                 </div>
                 <div class="modal-body" id="ostatniModalBody">
-                    <div style="padding: 30px 0; text-align: center;">
-                        <p style="font-size: 1.1em; color: #888;">Sekce <b>Ostatní</b> se připravuje.<br>Odkazy na jednotlivé části budou doplněny později.</p>
+                    <!-- Sekce 1: Pro studenty -->
+                    <div class="info-section">
+                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            📚 Pro studenty
+                        </h3>
+                        <div class="button-grid">
+                            <a href="https://mgo.bakalari.cz/bakaweb/next/zmeny.aspx" target="_blank" class="info-link-btn">
+                                🔄 Suplování
+                            </a>
+                            <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" class="info-link-btn">
+                                📅 Org. školního roku
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/zvoneni.html" target="_blank" class="info-link-btn">
+                                🔔 Zvonění
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/rozmisteni-trid.html" target="_blank" class="info-link-btn">
+                                🗺️ Rozmístění tříd
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/maturitni-zkouska.html" target="_blank" class="info-link-btn">
+                                🎓 Maturitní zkouška
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sekce 2: Služby školy -->
+                    <div class="info-section">
+                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            📖 Služby školy
+                        </h3>
+                        <div class="button-grid">
+                            <a href="https://mgo.cz/jj/studium/skolni-knihovna.html" target="_blank" class="info-link-btn">
+                                📚 Školní knihovna
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/skolni-poradenske-pracoviste.html" target="_blank" class="info-link-btn">
+                                💬 Poradenství
+                            </a>
+                            <a href="https://www.nntb.cz/" target="_blank" class="info-link-btn">
+                                📮 Schránka důvěry
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/studentske-tiskove-centrum.html" target="_blank" class="info-link-btn">
+                                🖨️ Tiskové centrum
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sekce 3: Kroužky a aktivity -->
+                    <div class="info-section">
+                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            🎯 Kroužky a aktivity
+                        </h3>
+                        <div class="button-grid">
+                            <a href="https://mgo.cz/jj/zajmove-krouzky.html" target="_blank" class="info-link-btn">
+                                🎨 Zájmové kroužky
+                            </a>
+                            <a href="https://mgo.cz/jj/o-skole/aktivity-studentu.html" target="_blank" class="info-link-btn">
+                                ⚡ Aktivity studentů
+                            </a>
+                            <a href="https://mgo.cz/jj/o-skole/erasmus.html" target="_blank" class="info-link-btn">
+                                🌍 Erasmus+
+                            </a>
+                            <a href="https://mgo.cz/jj/o-skole/spoluprace-a-projekty/dofe-na-mgo.html" target="_blank" class="info-link-btn">
+                                🏆 DofE program
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sekce 4: O škole -->
+                    <div class="info-section">
+                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            🏫 O škole
+                        </h3>
+                        <div class="button-grid">
+                            <a href="https://my.matterport.com/show/?m=WGv9Vtb5Nvf" target="_blank" class="info-link-btn">
+                                🎥 Virtuální prohlídka
+                            </a>
+                            <a href="https://mgo.cz/jj/o-skole.html" target="_blank" class="info-link-btn">
+                                📜 Historie školy
+                            </a>
+                            <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
+                                🏅 Úspěchy žáků
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sekce 5: Užitečné odkazy -->
+                    <div class="info-section">
+                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            🔗 Užitečné odkazy
+                        </h3>
+                        <div class="button-grid">
+                            <a href="https://mgo.cz/jj/studium/bakalari-navod.html" target="_blank" class="info-link-btn">
+                                📖 Bakaláři - návod
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=cz.impire.bakalari.student&hl=cs" target="_blank" class="info-link-btn">
+                                📱 Bakaláři Android
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/vysoke-skoly.html" target="_blank" class="info-link-btn">
+                                🎓 Vysoké školy
+                            </a>
+                            <a href="https://mgo.cz/jj/studium/cambridge-esol-exam-preparation-centre.html" target="_blank" class="info-link-btn">
+                                🇬🇧 Cambridge certifikáty
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
