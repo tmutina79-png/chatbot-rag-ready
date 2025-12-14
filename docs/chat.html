@@ -53,6 +53,52 @@
             font-size: 9px;
             opacity: 0.9;
         }
+        
+        /* Badge NOVINKA v hlavičce */
+        .novinka-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+            animation: blinkBadge 2s ease-in-out infinite;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .novinka-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.6);
+        }
+        
+        .novinka-icon {
+            font-size: 12px;
+        }
+        
+        .novinka-text {
+            font-size: 9px;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes blinkBadge {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+        }
 
         /* Minimalistické tlačítko v záhlaví */
         .header-close-btn {
@@ -1285,6 +1331,11 @@
             <h1>🤖 MATIČÁK</h1>
             <p>Matiční AI Pomocník</p>
             <button class="header-close-btn" onclick="toggleChat()" title="Zavřít">−</button>
+            <!-- Badge NOVINKA v hlavičce -->
+            <div class="novinka-badge" id="novinkaBadge" onclick="showAnnouncementModal()" title="Klikni pro více informací">
+                <span class="novinka-icon">📋</span>
+                <span class="novinka-text">NOVINKA</span>
+            </div>
         </div>
         
         <div class="quick-buttons-fixed" id="quickButtonsFixed">
@@ -1441,6 +1492,56 @@
                         <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Tělesná výchova" onclick="showUciteleByPredmetModal('Tělesná výchova', 'Tv')">Tv</button>
                         <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Hudební výchova" onclick="showUciteleByPredmetModal('Hudební výchova', 'Hv')">Hv</button>
                         <button class="trida-btn" style="font-size: 12px; min-width: 55px; height: 40px; padding: 8px;" title="Výtvarná výchova" onclick="showUciteleByPredmetModal('Výtvarná výchova', 'Vv')">Vv</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal okno pro NOVINKA - Přijímací řízení -->
+        <div id="novinkaModal" class="modal">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
+                    <h2 style="color: white;">📋 NOVINKA: Přijímací řízení 2025/2026</h2>
+                    <button class="close-btn" onclick="closeNovinkaModal()" style="color: white;">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 24px;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            🗓️ Termíny podání přihlášek
+                        </h3>
+                        <div style="background: #f8f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
+                            <p style="margin: 0; font-size: 14px;">📝 Do <strong>1. března 2025</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            📝 Termíny přijímacích zkoušek
+                        </h3>
+                        <div style="background: #f8f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
+                            <p style="margin: 0 0 6px 0; font-size: 14px;">📌 <strong>1. kolo:</strong> 14.–15. dubna 2025</p>
+                            <p style="margin: 0; font-size: 14px;">📌 <strong>2. kolo:</strong> 16.–17. dubna 2025</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            📄 Potřebné dokumenty
+                        </h3>
+                        <div style="background: #f8f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
+                            <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+                                <li style="margin-bottom: 4px;">Vyplněná přihláška</li>
+                                <li style="margin-bottom: 4px;">Základní listy 7. a 8. ročník</li>
+                                <li>Lékařské potvrzení</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); padding: 16px; border-radius: 8px; text-align: center;">
+                        <p style="margin: 0; font-size: 14px; color: #555;">
+                            💡 <strong>Více informací</strong> najdeš na oficiálním webu školy<br>
+                            nebo se zeptej chatbota! 🤖
+                        </p>
                     </div>
                 </div>
             </div>
@@ -2908,122 +3009,21 @@
             await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATIČÁK, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
-            
-            // Po 1 sekundě zobraz oznámení o přijímacím řízení
-            setTimeout(() => showAnnouncementMessage(), 1000);
         }
         
-        // Oznámení o aktualitách (přijímací řízení apod.)
-        async function showAnnouncementMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message bot announcement-message';
+        // Modal s oznámením o přijímacím řízení
+        function showAnnouncementModal() {
+            document.getElementById('novinkaModal').style.display = 'block';
             
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content announcement-bubble';
-            contentDiv.style.maxWidth = '75%';
-            contentDiv.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-            contentDiv.style.color = 'white';
-            contentDiv.style.padding = '14px 18px';
-            contentDiv.style.borderRadius = '12px';
-            contentDiv.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
-            contentDiv.style.cursor = 'pointer';
-            contentDiv.style.transition = 'all 0.3s ease';
-            contentDiv.style.position = 'relative';
-            
-            // Vytvořím collapsed (sbalený) stav
-            const collapsedContent = document.createElement('div');
-            collapsedContent.className = 'announcement-collapsed';
-            collapsedContent.style.display = 'flex';
-            collapsedContent.style.alignItems = 'center';
-            collapsedContent.style.justifyContent = 'space-between';
-            collapsedContent.style.gap = '10px';
-            collapsedContent.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 20px;">📋</span>
-                    <div>
-                        <div style="font-weight: 600; font-size: 14px;">NOVINKA</div>
-                        <div style="font-size: 12px; opacity: 0.9;">Přijímací řízení 2025/2026</div>
-                    </div>
-                </div>
-                <span style="font-size: 24px; transition: transform 0.3s;">▼</span>
-            `;
-            
-            // Vytvořím expanded (rozbalený) stav
-            const expandedContent = document.createElement('div');
-            expandedContent.className = 'announcement-expanded';
-            expandedContent.style.display = 'none';
-            expandedContent.style.marginTop = '12px';
-            expandedContent.style.paddingTop = '12px';
-            expandedContent.style.borderTop = '1px solid rgba(255, 255, 255, 0.3)';
-            expandedContent.innerHTML = `
-                <div style="font-weight: 600; font-size: 15px; margin-bottom: 12px;">📋 Přijímací řízení 2025/2026</div>
-                
-                <div style="margin-bottom: 10px;">
-                    <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">🗓️ Termíny podání přihlášek:</div>
-                    <div style="font-size: 12px; padding-left: 10px;">• Do 1. března 2025</div>
-                </div>
-                
-                <div style="margin-bottom: 10px;">
-                    <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">📝 Termíny přijímacích zkoušek:</div>
-                    <div style="font-size: 12px; padding-left: 10px;">• 1. kolo: 14.–15. dubna 2025</div>
-                    <div style="font-size: 12px; padding-left: 10px;">• 2. kolo: 16.–17. dubna 2025</div>
-                </div>
-                
-                <div style="margin-bottom: 10px;">
-                    <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">📄 Potřebné dokumenty:</div>
-                    <div style="font-size: 12px; padding-left: 10px;">• Vyplněná přihláška</div>
-                    <div style="font-size: 12px; padding-left: 10px;">• Základní listy 7. a 8. ročník</div>
-                    <div style="font-size: 12px; padding-left: 10px;">• Lékařské potvrzení</div>
-                </div>
-                
-                <div style="font-size: 12px; opacity: 0.9; margin-top: 12px;">
-                    💡 Více informací najdeš na webu školy nebo se zeptej!
-                </div>
-            `;
-            
-            contentDiv.appendChild(collapsedContent);
-            contentDiv.appendChild(expandedContent);
-            
-            // Přidám klikací funkcionalitu
-            let isExpanded = false;
-            contentDiv.addEventListener('click', () => {
-                isExpanded = !isExpanded;
-                const arrow = collapsedContent.querySelector('span:last-child');
-                
-                if (isExpanded) {
-                    expandedContent.style.display = 'block';
-                    // Trigger reflow pro animaci
-                    expandedContent.offsetHeight;
-                    expandedContent.classList.add('announcement-expanded');
-                    arrow.style.transform = 'rotate(180deg)';
-                    contentDiv.style.padding = '16px 18px';
-                } else {
-                    expandedContent.style.display = 'none';
-                    expandedContent.classList.remove('announcement-expanded');
-                    arrow.style.transform = 'rotate(0deg)';
-                    contentDiv.style.padding = '14px 18px';
-                }
-                
-                setTimeout(() => {
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                }, 100);
-            });
-            
-            // Hover efekt
-            contentDiv.addEventListener('mouseenter', () => {
-                contentDiv.style.transform = 'translateY(-2px)';
-                contentDiv.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
-            });
-            
-            contentDiv.addEventListener('mouseleave', () => {
-                contentDiv.style.transform = 'translateY(0)';
-                contentDiv.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
-            });
-            
-            messageDiv.appendChild(contentDiv);
-            chatContainer.appendChild(messageDiv);
-            
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            // Zastavit blikání badge po otevření
+            const badge = document.getElementById('novinkaBadge');
+            if (badge) {
+                badge.style.animation = 'none';
+            }
+        }
+        
+        function closeNovinkaModal() {
+            document.getElementById('novinkaModal').style.display = 'none';
         }
 
         // Zabráníme opakovanému spuštění
