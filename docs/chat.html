@@ -2840,7 +2840,22 @@
                     let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni}</h3>`;
                     
                     if (jePoPoslednHodine) {
-                        htmlContent += `<p style="margin: 5px 0; padding: 8px; background: #e8f4f8; border-radius: 5px; font-size: 11px;">ℹ️ Poslední hodina už skončila, zobrazuji rozvrh na zítřek.</p>`;
+                        htmlContent += `
+                            <div style="margin: 10px 0; padding: 12px; background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); border-left: 4px solid #ff9800; border-radius: 8px;">
+                                <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #e65100;">
+                                    ⚠️ Dnešní rozvrh již není aktuální
+                                </p>
+                                <p style="margin: 0; font-size: 11px; color: #555; line-height: 1.5;">
+                                    Poslední hodina již skončila. Momentálně neumím načíst data z webové stránky pro další den, protože nejsou na webu k dispozici.
+                                </p>
+                                <p style="margin: 8px 0 0 0; font-size: 11px;">
+                                    📅 <strong>Kompletní rozvrh najdeš na:</strong><br>
+                                    <a href="https://mgo.bakalari.cz/next/login" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                                        🔗 mgo.bakalari.cz
+                                    </a>
+                                </p>
+                            </div>
+                        `;
                     }
                     
                     if (result.data.hodiny && result.data.hodiny.length > 0) {
