@@ -2840,25 +2840,27 @@
                     let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni}</h3>`;
                     
                     if (jePoPoslednHodine) {
+                        // Když skončil den, zobraz jen upozornění s odkazem
                         htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">⚠️ <strong>Dnešní rozvrh již není aktuální.</strong> Poslední hodina již skončila. Momentálně neumím načíst data z webové stránky pro další den, protože nejsou na webu k dispozici.<br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
-                    }
-                    
-                    if (result.data.hodiny && result.data.hodiny.length > 0) {
-                        result.data.hodiny.forEach(hodina => {
-                            htmlContent += `<p style="margin: 5px 0; font-size: 11px;"><strong>${hodina.cislo}. hodina (${hodina.cas}):</strong> ${hodina.predmet}`;
-                            if (hodina.ucitel) {
-                                htmlContent += ` - ${hodina.ucitel}`;
-                            }
-                            if (hodina.mistnost) {
-                                htmlContent += ` (${hodina.mistnost})`;
-                            }
-                            htmlContent += '</p>';
-                        });
                     } else {
-                        htmlContent += '<p style="font-size: 11px;">Dnes nejsou žádné hodiny.</p>';
+                        // Zobraz rozvrh normálně, když ještě není konec dne
+                        if (result.data.hodiny && result.data.hodiny.length > 0) {
+                            result.data.hodiny.forEach(hodina => {
+                                htmlContent += `<p style="margin: 5px 0; font-size: 11px;"><strong>${hodina.cislo}. hodina (${hodina.cas}):</strong> ${hodina.predmet}`;
+                                if (hodina.ucitel) {
+                                    htmlContent += ` - ${hodina.ucitel}`;
+                                }
+                                if (hodina.mistnost) {
+                                    htmlContent += ` (${hodina.mistnost})`;
+                                }
+                                htmlContent += '</p>';
+                            });
+                        } else {
+                            htmlContent += '<p style="font-size: 11px;">Dnes nejsou žádné hodiny.</p>';
+                        }
+                        
+                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">💡 Pokud chceš zobrazit ostatní dny, klikni na níže uvedený odkaz<br>📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
                     }
-                    
-                    htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">💡 Pokud chceš zobrazit ostatní dny, klikni na níže uvedený odkaz<br>📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
                     
                     // Použijeme typing efekt pro HTML obsah
                     await typeHtmlMessage(contentDiv, htmlContent, 1);
