@@ -2011,6 +2011,7 @@
         
         // Funkce pro zobrazení učitelů z modalu (zavře modal a zobrazí v chatu)
         async function showUciteleByPredmetModal(nazevPredmetu, idPredmetu) {
+            console.log(`🔍 showUciteleByPredmetModal voláno s: nazevPredmetu="${nazevPredmetu}", idPredmetu="${idPredmetu}"`);
             closeUciteleModal();
             await showUciteleByPredmet(nazevPredmetu, idPredmetu);
         }
@@ -2102,8 +2103,10 @@
             
             try {
                 // Načteme data z backendu
+                console.log(`🔍 Načítám učitele: nazevPredmetu="${nazevPredmetu}", idPredmetu="${idPredmetu}"`);
                 const response = await fetch(`${CONFIG.API_BASE_URL}/kontakt/ucitele/${idPredmetu}`);
                 const result = await response.json();
+                console.log('🔍 Backend response:', result);
                 
                 // Odstraníme loading zprávu
                 const loading = document.getElementById('uciteleLoading');
@@ -2122,7 +2125,7 @@
                     chatContainer.appendChild(messageDiv);
                     
                     // Vytvoříme HTML strukturu s klikacími odkazy
-                    let htmlContent = `<strong>📚 ${result.predmet} - Vyučující</strong><br><br>`;
+                    let htmlContent = `<strong>📚 ${nazevPredmetu} - Vyučující</strong><br><br>`;
                     
                     result.data.forEach(ucitel => {
                         htmlContent += `▪️ ${ucitel.jmeno}<br>`;
@@ -3291,7 +3294,7 @@
             const hasTeacherKeyword = detectTeacherRequest(message);
             
             // Pokud zpráva obsahuje "učitel" + předmět → zobraz učitele daného předmětu
-            if (hasTeacherKeyword && subjectId) {
+            if (hasTeacherKeyword && subjectId && subjectId !== null) {
                 const subjectNames = {
                     'Čj': 'Český jazyk', 'M': 'Matematika', 'Aj': 'Angličtina', 
                     'Nj': 'Němčina', 'Šj': 'Španělština', 'Fj': 'Francouzština', 
@@ -3300,7 +3303,7 @@
                     'ZSV': 'Základy společenských věd', 'EKS': 'Ekonomie', 'IVT': 'Informatika',
                     'Tv': 'Tělesná výchova', 'Hv': 'Hudební výchova', 'Vv': 'Výtvarná výchova'
                 };
-                const subjectName = subjectNames[subjectId] || subjectId;
+                const subjectName = subjectNames[subjectId] || subjectId || 'tohoto předmětu';
                 await addMessage(`📚 Zobrazuji učitele předmětu ${subjectName}...`, false);
                 setTimeout(() => showUciteleByPredmetModal(subjectName, subjectId), 500);
                 sendBtn.disabled = false;

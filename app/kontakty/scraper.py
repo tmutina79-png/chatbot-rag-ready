@@ -275,68 +275,88 @@ def get_predmet_zkratka(predmet_nazev: str) -> str:
         # Jazyky
         'cestina': 'Čj',
         'cj': 'Čj',
+        'Čj': 'Čj',  # Přidáno: pokud už je zkratka
         'český jazyk': 'Čj',
         'cesky jazyk': 'Čj',
         'matematika': 'M',
         'm': 'M',
+        'M': 'M',  # Přidáno
         'anglictina': 'Aj',
         'aj': 'Aj',
+        'Aj': 'Aj',  # Přidáno
         'angličtina': 'Aj',
         'nemcina': 'Nj',
         'nj': 'Nj',
+        'Nj': 'Nj',  # Přidáno
         'němčina': 'Nj',
         'spanelstina': 'Šj',
         'sj': 'Šj',
+        'Šj': 'Šj',  # Přidáno
         'španělština': 'Šj',
         'šj': 'Šj',
         'francouzstina': 'Fj',
         'fj': 'Fj',
+        'Fj': 'Fj',  # Přidáno
         'francouzština': 'Fj',
         'rustina': 'Rj',
         'rj': 'Rj',
+        'Rj': 'Rj',  # Přidáno
         'ruština': 'Rj',
         'latina': 'La',
         'la': 'La',
+        'La': 'La',  # Přidáno
         # Přírodní vědy
         'fyzika': 'F',
         'f': 'F',
+        'F': 'F',  # Přidáno
         'chemie': 'Ch',
         'ch': 'Ch',
+        'Ch': 'Ch',  # Přidáno
         'biologie': 'Bi',
         'bi': 'Bi',
+        'Bi': 'Bi',  # Přidáno
         # Společenské vědy
         'dejepis': 'D',
         'd': 'D',
+        'D': 'D',  # Přidáno
         'dějepis': 'D',
         'zemepis': 'Z',
         'z': 'Z',
+        'Z': 'Z',  # Přidáno
         'zeměpis': 'Z',
         'zsv': 'ZSV',
+        'ZSV': 'ZSV',  # Přidáno
         'základy společenských věd': 'ZSV',
         'zaklady spolecenskych ved': 'ZSV',
         'ov': 'Ov',
+        'Ov': 'Ov',  # Přidáno
         'obcanska-vychova': 'Ov',
         'občanská výchova': 'Ov',
         'obcanska vychova': 'Ov',
         'eks': 'EKS',
+        'EKS': 'EKS',  # Přidáno
         'ekonomie': 'EKS',
         # IT a umění
         'informatika': 'IVT',
         'ivt': 'IVT',
+        'IVT': 'IVT',  # Přidáno
         'tv': 'Tv',
+        'Tv': 'Tv',  # Přidáno
         'telesna-vychova': 'Tv',
         'tělesná výchova': 'Tv',
         'telesna vychova': 'Tv',
         'hv': 'Hv',
+        'Hv': 'Hv',  # Přidáno
         'hudebni-vychova': 'Hv',
         'hudební výchova': 'Hv',
         'hudebni vychova': 'Hv',
         'vv': 'Vv',
+        'Vv': 'Vv',  # Přidáno
         'vytvarnavychova': 'Vv',
         'výtvarná výchova': 'Vv',
         'vytvarnavychova': 'Vv'
     }
-    return mapping.get(predmet_nazev.lower(), '')
+    return mapping.get(predmet_nazev.lower(), predmet_nazev)  # Vrátíme původní hodnotu místo prázdného stringu
 
 
 def get_fallback_ucitele_data() -> List[Dict[str, str]]:

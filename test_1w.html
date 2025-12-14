@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Rozvrh 1W</title>
+</head>
+<body>
+    <h1>Test načítání rozvrhu 1W</h1>
+    <button onclick="testEndpoint()">Test /rozvrh/1w</button>
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+    <script>
+        async function testEndpoint() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>⏳ Načítám data...</p>';
+            
+            try {
+                console.log('Volám: http://127.0.0.1:8000/rozvrh/1w');
+                const response = await fetch('http://127.0.0.1:8000/rozvrh/1w');
+                console.log('Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Data:', data);
+                
+                if (data.success && data.data) {
+                    let html = `<h2>✅ Úspěšně načteno!</h2>`;
+                    html += `<p><strong>Zdroj:</strong> ${data.source}</p>`;
+                    html += `<p><strong>Den:</strong> ${data.data.den}</p>`;
+                    html += `<p><strong>Datum:</strong> ${data.data.datum}</p>`;
+                    html += `<h3>Hodiny:</h3><ul>`;
+                    
+                    data.data.hodiny.forEach(h => {
+                        html += `<li>${h.cislo}. (${h.cas}) - ${h.predmet}`;
+                        if (h.ucitel) html += ` - ${h.ucitel}`;
+                        if (h.mistnost) html += ` (${h.mistnost})`;
+                        html += `</li>`;
+                    });
+                    
+                    html += '</ul>';
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<p>❌ Chyba: ${data.error || 'Neznámá chyba'}</p>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p>❌ Chyba při načítání: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
