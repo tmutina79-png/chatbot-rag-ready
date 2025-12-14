@@ -112,6 +112,27 @@
             animation: fadeIn 0.5s ease-in, pulse 2s ease-in-out;
         }
         
+        .announcement-bubble {
+            user-select: none;
+        }
+        
+        .announcement-expanded {
+            animation: expandDown 0.3s ease-out;
+        }
+        
+        @keyframes expandDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+                transform: translateY(0);
+            }
+        }
+        
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
@@ -2898,19 +2919,109 @@
             messageDiv.className = 'message bot announcement-message';
             
             const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
+            contentDiv.className = 'message-content announcement-bubble';
             contentDiv.style.maxWidth = '75%';
             contentDiv.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
             contentDiv.style.color = 'white';
-            contentDiv.style.padding = '16px';
+            contentDiv.style.padding = '14px 18px';
             contentDiv.style.borderRadius = '12px';
             contentDiv.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
+            contentDiv.style.cursor = 'pointer';
+            contentDiv.style.transition = 'all 0.3s ease';
+            contentDiv.style.position = 'relative';
+            
+            // Vytvořím collapsed (sbalený) stav
+            const collapsedContent = document.createElement('div');
+            collapsedContent.className = 'announcement-collapsed';
+            collapsedContent.style.display = 'flex';
+            collapsedContent.style.alignItems = 'center';
+            collapsedContent.style.justifyContent = 'space-between';
+            collapsedContent.style.gap = '10px';
+            collapsedContent.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 20px;">📋</span>
+                    <div>
+                        <div style="font-weight: 600; font-size: 14px;">NOVINKA</div>
+                        <div style="font-size: 12px; opacity: 0.9;">Přijímací řízení 2025/2026</div>
+                    </div>
+                </div>
+                <span style="font-size: 24px; transition: transform 0.3s;">▼</span>
+            `;
+            
+            // Vytvořím expanded (rozbalený) stav
+            const expandedContent = document.createElement('div');
+            expandedContent.className = 'announcement-expanded';
+            expandedContent.style.display = 'none';
+            expandedContent.style.marginTop = '12px';
+            expandedContent.style.paddingTop = '12px';
+            expandedContent.style.borderTop = '1px solid rgba(255, 255, 255, 0.3)';
+            expandedContent.innerHTML = `
+                <div style="font-weight: 600; font-size: 15px; margin-bottom: 12px;">📋 Přijímací řízení 2025/2026</div>
+                
+                <div style="margin-bottom: 10px;">
+                    <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">🗓️ Termíny podání přihlášek:</div>
+                    <div style="font-size: 12px; padding-left: 10px;">• Do 1. března 2025</div>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">📝 Termíny přijímacích zkoušek:</div>
+                    <div style="font-size: 12px; padding-left: 10px;">• 1. kolo: 14.–15. dubna 2025</div>
+                    <div style="font-size: 12px; padding-left: 10px;">• 2. kolo: 16.–17. dubna 2025</div>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">📄 Potřebné dokumenty:</div>
+                    <div style="font-size: 12px; padding-left: 10px;">• Vyplněná přihláška</div>
+                    <div style="font-size: 12px; padding-left: 10px;">• Základní listy 7. a 8. ročník</div>
+                    <div style="font-size: 12px; padding-left: 10px;">• Lékařské potvrzení</div>
+                </div>
+                
+                <div style="font-size: 12px; opacity: 0.9; margin-top: 12px;">
+                    💡 Více informací najdeš na webu školy nebo se zeptej!
+                </div>
+            `;
+            
+            contentDiv.appendChild(collapsedContent);
+            contentDiv.appendChild(expandedContent);
+            
+            // Přidám klikací funkcionalitu
+            let isExpanded = false;
+            contentDiv.addEventListener('click', () => {
+                isExpanded = !isExpanded;
+                const arrow = collapsedContent.querySelector('span:last-child');
+                
+                if (isExpanded) {
+                    expandedContent.style.display = 'block';
+                    // Trigger reflow pro animaci
+                    expandedContent.offsetHeight;
+                    expandedContent.classList.add('announcement-expanded');
+                    arrow.style.transform = 'rotate(180deg)';
+                    contentDiv.style.padding = '16px 18px';
+                } else {
+                    expandedContent.style.display = 'none';
+                    expandedContent.classList.remove('announcement-expanded');
+                    arrow.style.transform = 'rotate(0deg)';
+                    contentDiv.style.padding = '14px 18px';
+                }
+                
+                setTimeout(() => {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 100);
+            });
+            
+            // Hover efekt
+            contentDiv.addEventListener('mouseenter', () => {
+                contentDiv.style.transform = 'translateY(-2px)';
+                contentDiv.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
+            });
+            
+            contentDiv.addEventListener('mouseleave', () => {
+                contentDiv.style.transform = 'translateY(0)';
+                contentDiv.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
+            });
             
             messageDiv.appendChild(contentDiv);
             chatContainer.appendChild(messageDiv);
-
-            // Typing efekt pro oznámení
-            await typeMessage(contentDiv, '📋 **NOVINKA: Přijímací řízení 2025/2026**\n\n🗓️ **Termíny podání přihlášek:**\n   • Do 1. března 2025\n\n📝 **Termíny přijímacích zkoušek:**\n   • 1. kolo: 14.–15. dubna 2025\n   • 2. kolo: 16.–17. dubna 2025\n\n📄 **Potřebné dokumenty:**\n   • Vyplněná přihláška\n   • Základní listy 7. a 8. ročník\n   • Lékařské potvrzení\n\n💡 Více informací najdeš na webu školy nebo se zeptej!', 40);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
