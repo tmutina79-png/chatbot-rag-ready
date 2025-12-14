@@ -137,6 +137,18 @@
                 transform: scale(1.05);
             }
         }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-5px) rotate(-10deg);
+            }
+            75% {
+                transform: translateY(-3px) rotate(10deg);
+            }
+        }
 
         /* Minimalistické tlačítko v záhlaví */
         .header-close-btn {
@@ -1538,9 +1550,16 @@
         <!-- Modal okno pro NOVÉ - Aktuální novinky -->
         <div id="novinkaModal" class="modal">
             <div class="modal-content" style="max-width: 600px;">
-                <div class="modal-header" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
-                    <h2 style="color: white;">� Aktuální novinky</h2>
-                    <button class="close-btn" onclick="closeNovinkaModal()" style="color: white;">&times;</button>
+                <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; padding: 20px;">
+                    <!-- Dekorativní kruhy v pozadí -->
+                    <div style="position: absolute; top: -50%; right: -10%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(40px);"></div>
+                    <div style="position: absolute; bottom: -30%; left: -5%; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(30px);"></div>
+                    
+                    <h2 style="color: white; position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 0.5px; margin: 0; font-size: 22px;">
+                        <span style="font-size: 32px; animation: bounce 2s ease-in-out infinite;">🔔</span>
+                        <span>Aktuální novinky</span>
+                    </h2>
+                    <button class="close-btn" onclick="closeNovinkaModal()" style="color: white; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); z-index: 2; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 24px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-50%) rotate(90deg)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(-50%) rotate(0deg)'">&times;</button>
                 </div>
                 <div class="modal-body" id="novinkyModalBody" style="padding: 20px; max-height: 60vh; overflow-y: auto;">
                     <!-- Novinky se načtou dynamicky -->
