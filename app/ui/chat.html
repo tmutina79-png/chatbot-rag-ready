@@ -1535,51 +1535,17 @@
             </div>
         </div>
 
-        <!-- Modal okno pro NOVÉ - Přijímací řízení -->
+        <!-- Modal okno pro NOVÉ - Aktuální novinky -->
         <div id="novinkaModal" class="modal">
-            <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-content" style="max-width: 600px;">
                 <div class="modal-header" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
-                    <h2 style="color: white;">📋 NOVÉ: Přijímací řízení 2025/2026</h2>
+                    <h2 style="color: white;">� Aktuální novinky</h2>
                     <button class="close-btn" onclick="closeNovinkaModal()" style="color: white;">&times;</button>
                 </div>
-                <div class="modal-body" style="padding: 24px;">
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                            🗓️ Termíny podání přihlášek
-                        </h3>
-                        <div style="background: #f8f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
-                            <p style="margin: 0; font-size: 14px;">📝 Do <strong>1. března 2025</strong></p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                            📝 Termíny přijímacích zkoušek
-                        </h3>
-                        <div style="background: #f8f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
-                            <p style="margin: 0 0 6px 0; font-size: 14px;">📌 <strong>1. kolo:</strong> 14.–15. dubna 2025</p>
-                            <p style="margin: 0; font-size: 14px;">📌 <strong>2. kolo:</strong> 16.–17. dubna 2025</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                            📄 Potřebné dokumenty
-                        </h3>
-                        <div style="background: #f8f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
-                            <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
-                                <li style="margin-bottom: 4px;">Vyplněná přihláška</li>
-                                <li style="margin-bottom: 4px;">Základní listy 7. a 8. ročník</li>
-                                <li>Lékařské potvrzení</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); padding: 16px; border-radius: 8px; text-align: center;">
-                        <p style="margin: 0; font-size: 14px; color: #555;">
-                            💡 <strong>Více informací</strong> najdeš na oficiálním webu školy<br>
-                            nebo se zeptej chatbota! 🤖
-                        </p>
+                <div class="modal-body" id="novinkyModalBody" style="padding: 20px; max-height: 60vh; overflow-y: auto;">
+                    <!-- Novinky se načtou dynamicky -->
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <p>⏳ Načítám novinky...</p>
                     </div>
                 </div>
             </div>
@@ -3054,14 +3020,196 @@
         }
         
         // Modal s oznámením o přijímacím řízení
-        function showAnnouncementModal() {
-            document.getElementById('novinkaModal').style.display = 'block';
+        // Načtení a zobrazení novinek z JSON
+        async function loadNovinky() {
+            try {
+                const response = await fetch('data/novinky/novinky.json');
+                const data = await response.json();
+                
+                // Filtrovat pouze aktivní novinky a seřadit od nejnovějšího
+                const aktivniNovinky = data.novinky
+                    .filter(n => n.aktivni)
+                    .sort((a, b) => new Date(b.datum) - new Date(a.datum))
+                    .slice(0, 5); // Maximum 5 novinek
+                
+                return aktivniNovinky;
+            } catch (error) {
+                console.error('Chyba při načítání novinek:', error);
+                return [];
+            }
+        }
+        
+        // Zobrazení novinek v modalu
+        async function showAnnouncementModal() {
+            const modal = document.getElementById('novinkaModal');
+            const modalBody = document.getElementById('novinkyModalBody');
+            
+            modal.style.display = 'block';
             
             // Zastavit blikání badge po otevření
             const badge = document.getElementById('novinkaBadge');
             if (badge) {
                 badge.style.animation = 'none';
             }
+            
+            // Načíst novinky
+            const novinky = await loadNovinky();
+            
+            if (novinky.length === 0) {
+                modalBody.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <p style="font-size: 48px; margin: 0;">📭</p>
+                        <p style="font-size: 16px; margin-top: 10px;">Momentálně nejsou žádné novinky</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Vygenerovat HTML pro novinky
+            let html = '';
+            
+            novinky.forEach((novinka, index) => {
+                const kategorieBadge = getCategoryBadge(novinka.kategorie);
+                const formatovaneDatum = formatDatum(novinka.datum);
+                
+                html += `
+                    <div style="background: white; border: 2px solid #f0f0f0; border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: all 0.3s; cursor: pointer;" 
+                         onmouseover="this.style.borderColor='#667eea'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.2)'" 
+                         onmouseout="this.style.borderColor='#f0f0f0'; this.style.boxShadow='none'"
+                         onclick="toggleNovinkaDetail(${novinka.id})">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 28px;">${novinka.ikona}</span>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 17px; color: #333;">${novinka.nadpis}</h3>
+                                    <p style="margin: 4px 0 0 0; font-size: 12px; color: #999;">📅 ${formatovaneDatum}</p>
+                                </div>
+                            </div>
+                            ${kategorieBadge}
+                        </div>
+                        <div id="novinka-detail-${novinka.id}" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+                            ${renderNovinkaContent(novinka)}
+                        </div>
+                        <div style="text-align: center; margin-top: 8px; color: #667eea; font-size: 12px; font-weight: 600;">
+                            <span id="novinka-toggle-${novinka.id}">▼ Zobrazit detail</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            modalBody.innerHTML = html;
+        }
+        
+        // Rozbalení/sbalení detailu novinky
+        function toggleNovinkaDetail(id) {
+            const detail = document.getElementById(`novinka-detail-${id}`);
+            const toggle = document.getElementById(`novinka-toggle-${id}`);
+            
+            if (detail.style.display === 'none') {
+                detail.style.display = 'block';
+                toggle.textContent = '▲ Skrýt detail';
+            } else {
+                detail.style.display = 'none';
+                toggle.textContent = '▼ Zobrazit detail';
+            }
+        }
+        
+        // Získat badge podle kategorie
+        function getCategoryBadge(kategorie) {
+            const badges = {
+                'Důležité': '<span style="background: #ff6b6b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">⚠️ Důležité</span>',
+                'Akce': '<span style="background: #4ecdc4; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">🎉 Akce</span>',
+                'Technologie': '<span style="background: #667eea; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">💻 Tech</span>',
+                'Info': '<span style="background: #95a5a6; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">ℹ️ Info</span>'
+            };
+            return badges[kategorie] || badges['Info'];
+        }
+        
+        // Formátovat datum
+        function formatDatum(datum) {
+            const d = new Date(datum);
+            const den = d.getDate().toString().padStart(2, '0');
+            const mesic = (d.getMonth() + 1).toString().padStart(2, '0');
+            const rok = d.getFullYear();
+            return `${den}.${mesic}.${rok}`;
+        }
+        
+        // Vykreslit obsah novinky podle typu
+        function renderNovinkaContent(novinka) {
+            let html = '';
+            const obsah = novinka.obsah;
+            
+            // Speciální formátování pro přijímací řízení
+            if (obsah.prihlaskyTermin) {
+                html += `
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; font-size: 14px; color: #667eea; margin-bottom: 6px;">🗓️ Termíny podání přihlášek</div>
+                        <div style="background: #f8f9ff; padding: 10px; border-radius: 6px; border-left: 3px solid #667eea;">
+                            <p style="margin: 0; font-size: 13px;">📝 ${obsah.prihlaskyTermin}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (obsah.zkouskyTerminy) {
+                html += `
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; font-size: 14px; color: #667eea; margin-bottom: 6px;">📝 Termíny přijímacích zkoušek</div>
+                        <div style="background: #f8f9ff; padding: 10px; border-radius: 6px; border-left: 3px solid #667eea;">
+                            ${obsah.zkouskyTerminy.map(t => `<p style="margin: 0 0 4px 0; font-size: 13px;">📌 ${t}</p>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (obsah.dokumenty) {
+                html += `
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; font-size: 14px; color: #667eea; margin-bottom: 6px;">📄 Potřebné dokumenty</div>
+                        <div style="background: #f8f9ff; padding: 10px; border-radius: 6px; border-left: 3px solid #667eea;">
+                            <ul style="margin: 0; padding-left: 18px; font-size: 13px;">
+                                ${obsah.dokumenty.map(d => `<li style="margin-bottom: 2px;">${d}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Obecný text
+            if (obsah.text) {
+                html += `<p style="font-size: 14px; line-height: 1.6; color: #555; margin: 0 0 12px 0;">${obsah.text}</p>`;
+            }
+            
+            // Termín akce
+            if (obsah.termin) {
+                html += `
+                    <div style="background: #fff9e6; padding: 10px; border-radius: 6px; border-left: 3px solid #ffd93d; margin-bottom: 12px;">
+                        <p style="margin: 0; font-size: 13px;"><strong>📅 Termín:</strong> ${obsah.termin}</p>
+                    </div>
+                `;
+            }
+            
+            // Funkce/seznam
+            if (obsah.funkce) {
+                html += `
+                    <div style="margin-bottom: 12px;">
+                        <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #555;">
+                            ${obsah.funkce.map(f => `<li style="margin-bottom: 4px;">${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Dodatek
+            if (obsah.dodatek) {
+                html += `
+                    <div style="background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); padding: 12px; border-radius: 6px; text-align: center; margin-top: 12px;">
+                        <p style="margin: 0; font-size: 12px; color: #555;">💡 ${obsah.dodatek}</p>
+                    </div>
+                `;
+            }
+            
+            return html;
         }
         
         function closeNovinkaModal() {

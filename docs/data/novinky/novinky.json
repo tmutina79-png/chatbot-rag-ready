@@ -1,0 +1,54 @@
+{
+  "novinky": [
+    {
+      "id": 1,
+      "datum": "2024-12-14",
+      "nadpis": "Přijímací řízení 2025/2026",
+      "ikona": "📋",
+      "kategorie": "Důležité",
+      "obsah": {
+        "prihlaskyTermin": "Do 1. března 2025",
+        "zkouskyTerminy": [
+          "1. kolo: 14.–15. dubna 2025",
+          "2. kolo: 16.–17. dubna 2025"
+        ],
+        "dokumenty": [
+          "Vyplněná přihláška",
+          "Základní listy 7. a 8. ročník",
+          "Lékařské potvrzení"
+        ],
+        "dodatek": "Více informací najdeš na oficiálním webu školy nebo se zeptej chatbota!"
+      },
+      "aktivni": true
+    },
+    {
+      "id": 2,
+      "datum": "2024-12-10",
+      "nadpis": "Vánoční prázdniny",
+      "ikona": "🎄",
+      "kategorie": "Akce",
+      "obsah": {
+        "text": "Vánoční prázdniny začínají 23. prosince 2024 a končí 3. ledna 2025. Škola bude uzavřena. Všem přejeme krásné svátky!",
+        "termin": "23. 12. 2024 - 3. 1. 2025"
+      },
+      "aktivni": true
+    },
+    {
+      "id": 3,
+      "datum": "2024-12-05",
+      "nadpis": "Nový chatbot MATIČÁK",
+      "ikona": "🤖",
+      "kategorie": "Technologie",
+      "obsah": {
+        "text": "Spustili jsme nového AI chatbota MATIČÁK, který ti pomůže s informacemi o škole, rozvrhem, jídelnou a kontakty na učitele. Vyzkoušej ho!",
+        "funkce": [
+          "Informace o škole",
+          "Rozvrh hodin",
+          "Jídelníček",
+          "Kontakty na učitele"
+        ]
+      },
+      "aktivni": true
+    }
+  ]
+}

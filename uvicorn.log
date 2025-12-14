@@ -12,3 +12,4 @@ INFO:     127.0.0.1:50701 - "GET /kontakt/ucitele/M HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50703 - "GET /kontakt/ucitele/%C4%8Cj HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50735 - "GET /rozvrh/1w HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50750 - "GET /rozvrh/kvib HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51098 - "GET /rozvrh/pa HTTP/1.1" 200 OK
