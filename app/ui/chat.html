@@ -2844,7 +2844,7 @@
                     
                     if (jePoPoslednHodine) {
                         // Když skončil den, zobraz jen upozornění s odkazem
-                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">⚠️ <strong>Dnešní rozvrh již není aktuální.</strong> Poslední hodina již skončila. Momentálně neumím načíst data z webové stránky pro další den, protože nejsou na webu k dispozici.<br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
+                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">⚠️ <strong>Dnešní rozvrh již není aktuální.</strong> Poslední hodina již skončila. Momentálně neumím načíst data z webové stránky pro další den, protože nejsou na webu k dispozici. Jakmile budou data k dispozici, zobrazím ti rozvrh.<br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
                     } else if (maHodiny) {
                         // Zobraz rozvrh pouze když jsou dostupné hodiny
                         result.data.hodiny.forEach(hodina => {
