@@ -107,6 +107,19 @@
             display: flex;
             animation: fadeIn 0.3s ease-in;
         }
+        
+        .message.announcement-message {
+            animation: fadeIn 0.5s ease-in, pulse 2s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
 
         @keyframes fadeIn {
             from {
@@ -2872,6 +2885,32 @@
 
             // Typing efekt pro uvítací zprávu
             await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATIČÁK, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Po 1 sekundě zobraz oznámení o přijímacím řízení
+            setTimeout(() => showAnnouncementMessage(), 1000);
+        }
+        
+        // Oznámení o aktualitách (přijímací řízení apod.)
+        async function showAnnouncementMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot announcement-message';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.style.maxWidth = '75%';
+            contentDiv.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            contentDiv.style.color = 'white';
+            contentDiv.style.padding = '16px';
+            contentDiv.style.borderRadius = '12px';
+            contentDiv.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+
+            // Typing efekt pro oznámení
+            await typeMessage(contentDiv, '📋 **NOVINKA: Přijímací řízení 2025/2026**\n\n🗓️ **Termíny podání přihlášek:**\n   • Do 1. března 2025\n\n📝 **Termíny přijímacích zkoušek:**\n   • 1. kolo: 14.–15. dubna 2025\n   • 2. kolo: 16.–17. dubna 2025\n\n📄 **Potřebné dokumenty:**\n   • Vyplněná přihláška\n   • Základní listy 7. a 8. ročník\n   • Lékařské potvrzení\n\n💡 Více informací najdeš na webu školy nebo se zeptej!', 40);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
