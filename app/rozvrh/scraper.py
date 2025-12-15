@@ -26,27 +26,27 @@ def scrape_rozvrh_tb():
 
 
 def scrape_rozvrh_pb():
-    url = "https://bakalari.mgo.cz/rozvrh/pb"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2C"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_sa():
-    url = "https://bakalari.mgo.cz/rozvrh/sa"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/28"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_sb():
-    url = "https://bakalari.mgo.cz/rozvrh/sb"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/29"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_ta():
-    url = "https://bakalari.mgo.cz/rozvrh/ta"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/25"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_kvb():
-    url = "https://bakalari.mgo.cz/rozvrh/kvb"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/23"
     return _scrape_rozvrh_generic(url)
 
 
