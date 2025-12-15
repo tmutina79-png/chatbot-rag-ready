@@ -68,67 +68,67 @@ def scrape_rozvrh_sxa():
 
 def scrape_rozvrh_1a():
     """Získá rozvrh třídy 1.A z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1A"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2A"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_kvia():
     """Získá rozvrh třídy KVIA z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/KVIA"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1Z"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_kvib():
     """Získá rozvrh třídy KVIB z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/KVIB"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/20"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_2a():
     """Získá rozvrh třídy 2.A z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2A"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/27"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_sxb():
     """Získá rozvrh třídy SXB z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SXB"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1X"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_3a():
     """Získá rozvrh třídy 3.A z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/3A"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/24"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_spta():
     """Získá rozvrh třídy SPTA z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SPTA"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1T"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_sptb():
     """Získá rozvrh třídy SPTB z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SPTB"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1U"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_4a():
     """Získá rozvrh třídy 4.A z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/4A"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/21"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_okta():
     """Získá rozvrh třídy OKTA z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/OKTA"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1Q"
     return _scrape_rozvrh_generic(url)
 
 
 def scrape_rozvrh_oktb():
     """Získá rozvrh třídy OKTB z Bakalářů"""
-    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/OKTB"
+    url = "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1R"
     return _scrape_rozvrh_generic(url)
 
 
