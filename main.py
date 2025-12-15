@@ -36,7 +36,7 @@ import os
 app = FastAPI(
     title="MATIČÁK",
     description="Matiční AI Pomocník - inteligentní školní asistent",
-    version="0.1.0"
+    version="0.1.1"  # Aktualizováno: Oprava scraperu rozvrhu TA
 )
 
 # CORS middleware pro povolení requestů z browseru
