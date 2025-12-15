@@ -188,14 +188,15 @@
 
         .quick-buttons-fixed {
             position: relative;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 10px 24px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
             display: flex;
             gap: 8px;
             justify-content: center;
             z-index: 500;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .message {
@@ -418,28 +419,66 @@
         }
 
         .contact-btn {
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
             margin-top: 0;
-            padding: 5px 6px;
-            background: white;
-            color: #667eea;
+            padding: 10px 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             font-size: 9px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
             white-space: nowrap;
             flex: 1;
             min-width: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .contact-btn:hover::before {
+            left: 100%;
         }
 
         .contact-btn:hover {
-            background: rgba(255, 255, 255, 0.95);
-            color: #764ba2;
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .contact-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-icon {
+            font-size: 18px;
+            line-height: 1;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+        }
+        
+        .btn-text {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         /* Modal styly */
@@ -1389,10 +1428,22 @@
         </div>
         
         <div class="quick-buttons-fixed" id="quickButtonsFixed">
-            <button class="contact-btn" onclick="showContact()">📧 Kontakt</button>
-            <button class="contact-btn" onclick="showJidelna()">🍽️ Jídelna</button>
-            <button class="contact-btn" onclick="showRozvrh()">📅 Rozvrh</button>
-            <button class="contact-btn" onclick="showOstatni()">📋 Ostatní</button>
+            <button class="contact-btn" onclick="showContact()">
+                <span class="btn-icon">📧</span>
+                <span class="btn-text">Kontakt</span>
+            </button>
+            <button class="contact-btn" onclick="showJidelna()">
+                <span class="btn-icon">🍽️</span>
+                <span class="btn-text">Jídelna</span>
+            </button>
+            <button class="contact-btn" onclick="showRozvrh()">
+                <span class="btn-icon">📅</span>
+                <span class="btn-text">Rozvrh</span>
+            </button>
+            <button class="contact-btn" onclick="showOstatni()">
+                <span class="btn-icon">📋</span>
+                <span class="btn-text">Ostatní</span>
+            </button>
         </div>
         
         <div class="chat-container" id="chatContainer">
