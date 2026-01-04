@@ -4201,17 +4201,16 @@
             
             console.log('💓 Keep-alive aktivován pro:', CONFIG.API_BASE_URL);
             
-            // První ping po 30 sekundách (pro případ, že uživatel bude brouzdat)
-            setTimeout(async () => {
-                try {
-                    const response = await fetch(`${CONFIG.API_BASE_URL}/`, { method: 'HEAD' });
-                    console.log('💓 Backend ping:', response.ok ? 'OK' : 'FAILED');
-                } catch (error) {
-                    console.log('💓 Backend ping failed:', error.message);
-                }
-            }, 30000); // 30 sekund
+            // OKAMŽITÝ ping při načtení stránky - probudí backend HNED!
+            console.log('🚀 Probouzím backend...');
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/`, { method: 'HEAD' });
+                console.log('� Backend preload:', response.ok ? '✅ READY' : '❌ FAILED');
+            } catch (error) {
+                console.log('� Backend preload failed:', error.message);
+            }
             
-            // Pak každých 10 minut
+            // Pak pravidelné pingy každých 10 minut
             setInterval(async () => {
                 try {
                     const response = await fetch(`${CONFIG.API_BASE_URL}/`, { method: 'HEAD' });
