@@ -249,6 +249,11 @@
             }
         }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .message.user {
             justify-content: flex-end;
         }
@@ -2908,7 +2913,15 @@
             
             const loadingContent = document.createElement('div');
             loadingContent.className = 'message-content';
-            loadingContent.textContent = `⏳ Načítám rozvrh pro třídu ${nazevTridy} z Bakalářů...`;
+            loadingContent.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;"></div>
+                    <span>Načítám rozvrh pro třídu ${nazevTridy}...</span>
+                </div>
+                <p style="font-size: 12px; color: #888; margin-top: 8px; font-style: italic;">
+                    ⏱️ První načtení může trvat až 30 sekund (probouzí se server)
+                </p>
+            `;
             
             loadingDiv.appendChild(loadingContent);
             chatContainer.appendChild(loadingDiv);
@@ -4172,7 +4185,42 @@
         window.addEventListener('load', function() {
             // Zobrazíme uvítací bublinu po načtení
             showWelcomeBubble();
+            
+            // Keep-alive mechanismus - pingnout backend každých 10 minut
+            // Zabrání uspání serveru na Render.com free tier
+            keepBackendAlive();
         });
+
+        // Funkce pro udržení backendu při životě
+        async function keepBackendAlive() {
+            // Pouze pokud NENÍ lokální vývoj
+            if (CONFIG.API_BASE_URL.includes('localhost') || CONFIG.API_BASE_URL.includes('127.0.0.1')) {
+                console.log('🏠 Lokální vývoj - keep-alive VYPNUT');
+                return;
+            }
+            
+            console.log('💓 Keep-alive aktivován pro:', CONFIG.API_BASE_URL);
+            
+            // První ping po 30 sekundách (pro případ, že uživatel bude brouzdat)
+            setTimeout(async () => {
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/`, { method: 'HEAD' });
+                    console.log('💓 Backend ping:', response.ok ? 'OK' : 'FAILED');
+                } catch (error) {
+                    console.log('💓 Backend ping failed:', error.message);
+                }
+            }, 30000); // 30 sekund
+            
+            // Pak každých 10 minut
+            setInterval(async () => {
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/`, { method: 'HEAD' });
+                    console.log('💓 Backend keep-alive ping:', response.ok ? 'OK' : 'FAILED');
+                } catch (error) {
+                    console.log('💓 Backend keep-alive failed:', error.message);
+                }
+            }, 600000); // 10 minut = 600000 ms
+        }
     </script>
 </body>
 </html>
