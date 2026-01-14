@@ -161,8 +161,11 @@ def _scrape_rozvrh_generic(url):
 
         den_zkratky = ['po', 'út', 'st', 'čt', 'pá', 'so', 'ne']
         hledany_den = den_zkratky[den_v_tydnu if den_v_tydnu < 7 else 0]
-        datum_den = datum_zobrazit.strftime('%d.%m.')
-        hledany_pattern = f"{hledany_den} {datum_den.lstrip('0')}"
+        
+        # Správné formátování data bez úvodních nul
+        den_cislo = datum_zobrazit.day
+        mesic_cislo = datum_zobrazit.month
+        hledany_pattern = f"{hledany_den} {den_cislo}.{mesic_cislo}."
 
         for hodina_div in hodiny_items:
             try:
