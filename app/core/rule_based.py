@@ -141,8 +141,7 @@ Rád ti pomůžu! 🎯""",
 Můžeš zkusit:
 • Napsat klíčové slovo?
 • Uvést konkrétní dotaz?
-• Zeptat se na rozvrh, jídelnu nebo učitele?
-• Klikni nahoře na tlačítka rychlé volby
+• Kliknout nahoře na tlačítka rychlé volby
 
 Jsem tady pro tebe! 💫"""
         ])
