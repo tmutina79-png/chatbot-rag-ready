@@ -3788,15 +3788,21 @@
                 'oktava': () => showRozvrhTridy('oktava')
             };
             
-            // Kontrola názvu třídy (s nebo bez slova "rozvrh")
+            // Přesná shoda - nejprve zkontrolujeme celý text
             for (const [className, func] of Object.entries(classMap)) {
-                // Přesná shoda nebo slovo "rozvrh" + název třídy (ignoruje velikost písmen)
-                if (
-                    lowerMessage === className ||
-                    lowerMessage === className.toUpperCase() ||
-                    lowerMessage === className.charAt(0).toUpperCase() + className.slice(1) ||
-                    (lowerMessage.includes('rozvrh') && (lowerMessage.includes(className) || lowerMessage.includes(className.toUpperCase()) || lowerMessage.includes(className.charAt(0).toUpperCase() + className.slice(1))))
-                ) {
+                // Přesná shoda (case-insensitive)
+                if (lowerMessage === className) {
+                    return { class: className, func: func };
+                }
+            }
+            
+            // Pokud není přesná shoda, zkusíme pattern "rozvrh TŘÍDA" nebo "TŘÍDA rozvrh"
+            for (const [className, func] of Object.entries(classMap)) {
+                // Vytvoříme regex pro word boundary - třída musí být samostatné slovo
+                const regex = new RegExp(`\\b${className}\\b`, 'i');
+                
+                // Kontrola pouze pokud zpráva obsahuje "rozvrh" NEBO je to krátká zpráva (2-6 znaků)
+                if ((lowerMessage.includes('rozvrh') || lowerMessage.length <= 6) && regex.test(lowerMessage)) {
                     return { class: className, func: func };
                 }
             }
