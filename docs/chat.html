@@ -3907,14 +3907,15 @@
             const message = userInput.value.trim();
             if (!message) return;
 
-            // Google Analytics tracking - odeslání zprávy
+            // Google Analytics tracking - odeslání zprávy s textem
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'chat_message', {
                     'event_category': 'Chat',
-                    'event_label': 'User Message',
+                    'event_label': message,  // Celý text zprávy
                     'message_length': message.length,
                     'value': 1
                 });
+                console.log(`GA Event: Chat - chat_message - "${message}"`);
             }
 
             // Zobraz zprávu uživatele

@@ -13,3 +13,42 @@ INFO:     127.0.0.1:50703 - "GET /kontakt/ucitele/%C4%8Cj HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50735 - "GET /rozvrh/1w HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50750 - "GET /rozvrh/kvib HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51098 - "GET /rozvrh/pa HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/rozvrh/scraper.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [54753]
+INFO:     Started server process [2006]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/rozvrh/scraper.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2006]
+INFO:     Started server process [2027]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/rozvrh/scraper.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2027]
+INFO:     Started server process [2030]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:56162 - "GET /rozvrh/ta HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/rozvrh/scraper.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2030]
+INFO:     Started server process [2936]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:56215 - "GET /rozvrh/ta HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2936]
+INFO:     Stopping reloader process [54702]
