@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MATIČÁK - Matiční AI Pomocník</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <script src="config.js"></script>
     <style>
         * {
@@ -1425,26 +1435,26 @@
             <p>Matiční AI Pomocník</p>
             <button class="header-close-btn" onclick="toggleChat()" title="Zavřít">−</button>
             <!-- Řečová bublina NOVÉ v hlavičce -->
-            <div class="novinka-badge" id="novinkaBadge" onclick="showAnnouncementModal()" title="Klikni pro více informací">
+            <div class="novinka-badge" id="novinkaBadge" onclick="trackEvent('Button', 'click', 'Novinky'); showAnnouncementModal()" title="Klikni pro více informací">
                 <span class="novinka-icon">📋</span>
                 <span class="novinka-text">NOVÉ</span>
             </div>
         </div>
         
         <div class="quick-buttons-fixed" id="quickButtonsFixed">
-            <button class="contact-btn" onclick="showContact()">
+            <button class="contact-btn" onclick="trackEvent('Button', 'click', 'Kontakt'); showContact()">
                 <span class="btn-icon">📧</span>
                 <span class="btn-text">Kontakt</span>
             </button>
-            <button class="contact-btn" onclick="showJidelna()">
+            <button class="contact-btn" onclick="trackEvent('Button', 'click', 'Jídelna'); showJidelna()">
                 <span class="btn-icon">🍽️</span>
                 <span class="btn-text">Jídelna</span>
             </button>
-            <button class="contact-btn" onclick="showRozvrh()">
+            <button class="contact-btn" onclick="trackEvent('Button', 'click', 'Rozvrh'); showRozvrh()">
                 <span class="btn-icon">📅</span>
                 <span class="btn-text">Rozvrh</span>
             </button>
-            <button class="contact-btn" onclick="showOstatni()">
+            <button class="contact-btn" onclick="trackEvent('Button', 'click', 'Ostatní'); showOstatni()">
                 <span class="btn-icon">📋</span>
                 <span class="btn-text">Ostatní</span>
             </button>
@@ -1803,6 +1813,18 @@
     </div>
 
     <script>
+        // Google Analytics tracking funkce
+        function trackEvent(category, action, label, value) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    'event_category': category,
+                    'event_label': label,
+                    'value': value || 1
+                });
+                console.log(`GA Event: ${category} - ${action} - ${label}`);
+            }
+        }
+
         // Fallback pro CONFIG, pokud config.js není načten
         if (typeof CONFIG === 'undefined') {
             window.CONFIG = {
@@ -3884,6 +3906,16 @@
         async function sendMessage() {
             const message = userInput.value.trim();
             if (!message) return;
+
+            // Google Analytics tracking - odeslání zprávy
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'chat_message', {
+                    'event_category': 'Chat',
+                    'event_label': 'User Message',
+                    'message_length': message.length,
+                    'value': 1
+                });
+            }
 
             // Zobraz zprávu uživatele
             addMessage(message, true);
