@@ -3820,6 +3820,9 @@
             // Rozvrh klíčová slova (bez diakritiky)
             const rozvrhKeywords = ['rozvrh', 'hodiny', 'vyucovani', 'vyucovaci hodiny', 'kdy mam'];
             
+            // Novinky klíčová slova (bez diakritiky)
+            const novinkyKeywords = ['novinky', 'nove', 'aktuality', 'novinka', 'co je noveho', 'co noveho', 'aktualni', 'uspechy'];
+            
             // Kontrola klíčových slov
             for (const keyword of kontaktKeywords) {
                 if (lowerMessage.includes(keyword)) {
@@ -3836,6 +3839,12 @@
             for (const keyword of rozvrhKeywords) {
                 if (lowerMessage.includes(keyword)) {
                     return 'rozvrh';
+                }
+            }
+            
+            for (const keyword of novinkyKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return 'novinky';
                 }
             }
             
@@ -3900,6 +3909,11 @@
                     // Otevřeme rozvrh
                     await addMessage('📅 Otevírám rozvrh...', false);
                     setTimeout(() => showRozvrh(), 500);
+                    break;
+                    
+                case 'novinky':
+                    // Otevřeme novinky
+                    showAnnouncementModal();
                     break;
             }
             
