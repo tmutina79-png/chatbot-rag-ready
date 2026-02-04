@@ -127,7 +127,7 @@ Zkus zadat konkrétní klíčové slovo:
 • Klikni nahoře na tlačítka rychlé volby
 
 Jsem tu pro tebe!""",
-            """Nerozpoznávám tento pokyn. 😅
+            """Nejsem napojený na AI, tak některým delším textům nerozumím, neumím si s tebou povídat o všem, ale jsem tady, abych ti pomohl s informacemi spojené se školou :-)
 
 Ale zkus:
 • Zadat heslovitý dotaz
