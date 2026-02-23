@@ -49,24 +49,10 @@
             border: none;
         }
 
-        /* Standalone režim (NENÍ v iframe) - použij widget styling */
-        html.standalone .container {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 400px;
-            height: 600px;
-            border-radius: 24px;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            top: auto;
-            left: auto;
-            display: none; /* Skrytý dokud není otevřen */
-        }
-
-        /* Zobrazit container když je otevřený */
-        html.standalone .container.show {
-            display: flex;
+        /* V standalone režimu skrýt toggle button a mascot */
+        html.standalone .chat-toggle-btn,
+        html.standalone .maty-mascot {
+            display: none !important;
         }
 
         .header {
@@ -947,17 +933,6 @@
             animation: maty-float 3s ease-in-out infinite;
             transition: transform 0.3s ease, filter 0.3s ease;
             filter: drop-shadow(0 8px 16px rgba(102, 126, 234, 0.3));
-        }
-
-        /* V iframe skrýt mascot a toggle button */
-        html:not(.standalone) .maty-mascot,
-        html:not(.standalone) .chat-toggle-btn {
-            display: none !important;
-        }
-
-        /* V iframe zobrazit container vždy */
-        html:not(.standalone) .container {
-            display: flex !important;
         }
 
         .maty-mascot:hover {
