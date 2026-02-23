@@ -1086,7 +1086,8 @@
 
         /* Tablet - portrait (768px a méně) */
         @media screen and (max-width: 768px) {
-            .container {
+            /* V standalone režimu zachovat widget dole vpravo i na mobilu */
+            html:not(.standalone) .container {
                 position: fixed;
                 bottom: 0;
                 right: 5%;
@@ -1097,6 +1098,15 @@
                 max-height: 600px;
                 border-radius: 20px 20px 0 0;
                 margin: 0;
+            }
+
+            /* Standalone na mobilu - menší widget */
+            html.standalone .container {
+                width: 95%;
+                height: 85vh;
+                bottom: 12px;
+                right: 2.5%;
+                max-height: none;
             }
 
             /* Tlačítka rychlé volby pro tablet */
