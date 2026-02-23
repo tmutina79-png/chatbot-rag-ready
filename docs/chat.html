@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATIČÁK - Matiční AI Pomocník</title>
+    <title>MATY - Matiční AI Pomocník</title>
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-D6EJ7PCD6H"></script>
@@ -68,11 +68,11 @@
             font-weight: 400;
         }
         
-        /* Řečová bublina NOVÉ v hlavičce */
+        /* Řečová bublina NOVINKY v hlavičce */
         .novinka-badge {
             position: absolute;
             top: 10px;
-            left: 10px;
+            right: 55px;
             background: white;
             color: #333;
             padding: 6px 12px;
@@ -95,7 +95,7 @@
             content: '';
             position: absolute;
             bottom: -8px;
-            left: 25%;
+            right: 25%;
             width: 0;
             height: 0;
             border-left: 8px solid transparent;
@@ -108,13 +108,13 @@
             content: '';
             position: absolute;
             bottom: -10px;
-            left: 25%;
+            right: 25%;
             width: 0;
             height: 0;
             border-left: 9px solid transparent;
             border-right: 9px solid transparent;
             border-top: 9px solid #ff6b6b;
-            margin-left: -1px;
+            margin-right: -1px;
         }
         
         .novinka-badge:hover {
@@ -3288,7 +3288,7 @@
             chatContainer.appendChild(messageDiv);
 
             // Typing efekt pro uvítací zprávu
-            await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATIČÁK, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
+            await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATY, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
