@@ -922,38 +922,40 @@
         .welcome-bubble-mascot {
             flex-shrink: 0;
             margin-right: 12px;
-        }
-
-        .maty-character {
-            position: relative;
             display: flex;
-            flex-direction: column;
             align-items: center;
         }
 
-        .maty-head {
-            font-size: 32px;
+        .maty-character {
             animation: maty-bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
-        .maty-hand {
-            font-size: 20px;
-            position: absolute;
-            top: 8px;
-            right: -8px;
-            animation: maty-wave 1s ease-in-out infinite;
-            transform-origin: bottom center;
+        .maty-head,
+        .maty-body {
+            animation: maty-pulse 2s ease-in-out infinite;
+        }
+
+        .maty-arm-right {
+            animation: maty-wave 1.5s ease-in-out infinite;
+            transform-origin: 57px 50px;
         }
 
         @keyframes maty-wave {
             0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(20deg); }
-            75% { transform: rotate(-20deg); }
+            25% { transform: rotate(-25deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-25deg); }
         }
 
         @keyframes maty-bounce {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes maty-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
 
         .welcome-bubble-text {
@@ -1454,10 +1456,42 @@
         <button class="welcome-bubble-close" onclick="closeWelcomeBubble()" title="Zavřít">&times;</button>
         <div class="welcome-bubble-content">
             <div class="welcome-bubble-mascot">
-                <div class="maty-character">
-                    <div class="maty-head">😊</div>
-                    <div class="maty-hand">👋</div>
-                </div>
+                <svg class="maty-character" width="80" height="100" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Tělo -->
+                    <ellipse class="maty-body" cx="40" cy="60" rx="18" ry="25" fill="#667eea"/>
+                    
+                    <!-- Nohy -->
+                    <rect class="maty-leg-left" x="30" y="80" width="8" height="15" rx="4" fill="#5568d3"/>
+                    <rect class="maty-leg-right" x="42" y="80" width="8" height="15" rx="4" fill="#5568d3"/>
+                    
+                    <!-- Ruce -->
+                    <g class="maty-arm-left">
+                        <rect x="20" y="52" width="6" height="18" rx="3" fill="#5568d3"/>
+                        <circle cx="23" cy="72" r="4" fill="#ffd700"/>
+                    </g>
+                    <g class="maty-arm-right">
+                        <rect x="54" y="52" width="6" height="18" rx="3" fill="#5568d3"/>
+                        <circle cx="57" cy="72" r="4" fill="#ffd700"/>
+                    </g>
+                    
+                    <!-- Hlava -->
+                    <circle class="maty-head" cx="40" cy="35" r="20" fill="#ffcc80"/>
+                    
+                    <!-- Oči -->
+                    <circle cx="33" cy="32" r="3" fill="#333"/>
+                    <circle cx="47" cy="32" r="3" fill="#333"/>
+                    <circle cx="34" cy="31" r="1.5" fill="#fff"/>
+                    <circle cx="48" cy="31" r="1.5" fill="#fff"/>
+                    
+                    <!-- Úsměv -->
+                    <path d="M 30 40 Q 40 45 50 40" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    
+                    <!-- Vlasy -->
+                    <path d="M 25 25 Q 20 18 25 15" stroke="#764ba2" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M 35 20 Q 35 13 40 12" stroke="#764ba2" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M 45 20 Q 48 13 45 10" stroke="#764ba2" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M 55 25 Q 60 18 55 15" stroke="#764ba2" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
             </div>
             <div class="welcome-bubble-text">
                 <p class="welcome-bubble-title">Ahoj! Jsem MATY</p>
