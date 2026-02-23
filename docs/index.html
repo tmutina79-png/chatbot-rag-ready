@@ -426,10 +426,10 @@
             
             if (chatOpen) {
                 iframe.style.display = 'block';
-                btn.innerHTML = '✕';
-                btn.style.transform = 'scale(0.9)';
+                btn.style.display = 'none'; // Skrýt tlačítko když je chatbot otevřený
             } else {
                 iframe.style.display = 'none';
+                btn.style.display = 'flex'; // Zobrazit tlačítko když je chatbot zavřený
                 btn.innerHTML = '💬';
                 btn.style.transform = 'scale(1)';
             }
