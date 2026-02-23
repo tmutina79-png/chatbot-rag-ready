@@ -63,8 +63,14 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        /* V standalone režimu skrýt toggle button a mascot */
-        html.standalone .chat-toggle-btn,
+        /* V standalone režimu začne chatbot skrytý */
+        html.standalone .container.hidden {
+            transform: translateY(calc(100% + 24px));
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* V standalone režimu skrýt mascot, ale ponechat toggle button */
         html.standalone .maty-mascot {
             display: none !important;
         }
@@ -1575,7 +1581,7 @@
         </svg>
     </div>
 
-    <div class="container" id="chatWidget">
+    <div class="container hidden" id="chatWidget">
         <div class="header">
             <h1>🤖 MATY</h1>
             <p>Matiční AI Pomocník</p>
