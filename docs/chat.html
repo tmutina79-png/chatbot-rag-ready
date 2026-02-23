@@ -4073,16 +4073,14 @@
         userInput.focus();
 
         // ===== TOGGLE CHATBOTA =====
-        // ===== FUNKCE PRO UVÍTACÍ BUBLINU =====
+        // ===== FUNKCE PRO MATÝHO MASCOTA =====
         
         // Zobrazení MATY mascota po načtení stránky
         function showWelcomeBubble() {
             const matyMascot = document.getElementById('matyMascot');
             if (matyMascot) {
-                // Zobrazíme MATY s mírným zpožděním pro efekt
-                setTimeout(() => {
-                    matyMascot.classList.add('show');
-                }, 800);
+                // MATY je už viditelný, nic nepotřebujeme dělat
+                matyMascot.style.opacity = '1';
             }
         }
         
