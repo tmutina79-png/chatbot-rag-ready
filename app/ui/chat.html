@@ -30,20 +30,43 @@
             padding: 0;
         }
 
+        /* Detekce iframe - pokud je v iframe, zabere celou plochu */
         .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 0;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            border: none;
+        }
+
+        /* Standalone režim (NENÍ v iframe) - použij widget styling */
+        html.standalone .container {
             position: fixed;
             bottom: 24px;
             right: 24px;
             width: 400px;
             height: 600px;
-            background: white;
             border-radius: 24px;
             box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1000;
             border: 1px solid rgba(0, 0, 0, 0.08);
+            top: auto;
+            left: auto;
+            display: none; /* Skrytý dokud není otevřen */
+        }
+
+        /* Zobrazit container když je otevřený */
+        html.standalone .container.show {
+            display: flex;
         }
 
         .header {
@@ -926,6 +949,17 @@
             filter: drop-shadow(0 8px 16px rgba(102, 126, 234, 0.3));
         }
 
+        /* V iframe skrýt mascot a toggle button */
+        html:not(.standalone) .maty-mascot,
+        html:not(.standalone) .chat-toggle-btn {
+            display: none !important;
+        }
+
+        /* V iframe zobrazit container vždy */
+        html:not(.standalone) .container {
+            display: flex !important;
+        }
+
         .maty-mascot:hover {
             transform: scale(1.1);
             filter: drop-shadow(0 12px 24px rgba(102, 126, 234, 0.5));
@@ -1468,6 +1502,14 @@
     </style>
 </head>
 <body>
+    <script>
+        // Detekce, zda je stránka v iframe
+        if (window.self === window.top) {
+            // Nejsme v iframe - standalone režim
+            document.documentElement.classList.add('standalone');
+        }
+    </script>
+    
     <!-- Plovoucí tlačítko pro otevření/zavření chatbota -->
     <button class="chat-toggle-btn pulse" id="chatToggleBtn" onclick="toggleChat()">
         <span class="icon">💬</span>
