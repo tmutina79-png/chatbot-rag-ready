@@ -1504,6 +1504,276 @@
                 border-radius: 4px;
             }
         }
+        /* Landing page styly */
+        .page-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .page-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #5B6FE8;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .page-nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .page-nav-links a {
+            color: #1D1D1F;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .page-nav-links a:hover {
+            color: #5B6FE8;
+        }
+
+        .page-cta-btn {
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(91, 111, 232, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+        .page-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 111, 232, 0.4);
+        }
+
+        .page-hero {
+            padding: 140px 48px 80px;
+            text-align: center;
+            background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
+        }
+
+        .page-hero h1 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-hero p {
+            font-size: 22px;
+            color: #494949;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-primary-btn {
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 28px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(91, 111, 232, 0.35);
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .page-primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(91, 111, 232, 0.45);
+        }
+
+        .page-secondary-btn {
+            background: white;
+            color: #5B6FE8;
+            padding: 16px 40px;
+            border-radius: 28px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid #5B6FE8;
+            display: inline-block;
+        }
+
+        .page-secondary-btn:hover {
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .page-features {
+            padding: 80px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-section-title {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+        }
+
+        .page-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .page-feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .page-feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .page-feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .page-feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #1D1D1F;
+        }
+
+        .page-feature-card p {
+            color: #494949;
+            line-height: 1.6;
+        }
+
+        .page-stats {
+            padding: 80px 48px;
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .page-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-stat-item h4 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-stat-item p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .page-footer {
+            padding: 60px 48px 30px;
+            background: #1D1D1F;
+            color: white;
+        }
+
+        .page-footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .page-footer-section h4 {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .page-footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .page-footer-section a:hover {
+            color: white;
+        }
+
+        .page-footer-section p {
+            color: rgba(255,255,255,0.7);
+            margin-top: 8px;
+        }
+
+        .page-footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .page-nav {
+                padding: 16px 24px;
+            }
+            .page-nav-links {
+                display: none;
+            }
+            .page-hero h1 {
+                font-size: 40px;
+            }
+            .page-hero p {
+                font-size: 18px;
+            }
+            .page-features, .page-stats {
+                padding: 60px 24px;
+            }
+            .page-section-title {
+                font-size: 36px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1514,6 +1784,107 @@
             document.documentElement.classList.add('standalone');
         }
     </script>
+
+    <!-- Landing Page Content -->
+    <nav class="page-nav">
+        <a href="#" class="page-logo">🤖 MATY</a>
+        <ul class="page-nav-links">
+            <li><a href="#funkce">Funkce</a></li>
+            <li><a href="#onas">O nás</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+        <button class="page-cta-btn" onclick="toggleChat()">Vyzkoušej ZDARMA</button>
+    </nav>
+
+    <section class="page-hero">
+        <h1>Tvůj AI pomocník<br>pro školu</h1>
+        <p>MATY ti pomůže s rozvrhem, jídelnou, informacemi o učitelích a všemi školními záležitostmi. Rychle, jednoduše a zdarma!</p>
+        <div class="page-hero-buttons">
+            <button class="page-primary-btn" onclick="toggleChat()">Zahájit chat 💬</button>
+            <a href="#funkce" class="page-secondary-btn">Zjistit více</a>
+        </div>
+    </section>
+
+    <section class="page-features" id="funkce">
+        <h2 class="page-section-title">Co umím?</h2>
+        <div class="page-features-grid">
+            <div class="page-feature-card">
+                <div class="page-feature-icon">📅</div>
+                <h3>Rozvrh hodin</h3>
+                <p>Zeptej se na rozvrh na dnešní nebo zítřejší den. Vždy aktuální informace přímo z Bakalářů.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">🍽️</div>
+                <h3>Školní jídelna</h3>
+                <p>Zjisti, co se dnes vaří ve školní jídelně. Menu aktualizované denně.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">👨‍🏫</div>
+                <h3>Informace o učitelích</h3>
+                <p>Najdi kontakty na učitele, jejich konzultační hodiny a další užitečné informace.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">📢</div>
+                <h3>Školní novinky</h3>
+                <p>Buď v obraze díky aktualitám ze školního webu přímo v chatu.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">🤖</div>
+                <h3>AI asistent</h3>
+                <p>Zeptej se na cokoliv školního a MATY ti odpoví pomocí umělé inteligence.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">⚡</div>
+                <h3>Rychlé odpovědi</h3>
+                <p>Okamžité odpovědi 24/7. Žádné čekání, žádné hledání po webu.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-stats">
+        <h2 class="page-section-title" style="color: white; margin-bottom: 48px;">MATY v číslech</h2>
+        <div class="page-stats-grid">
+            <div class="page-stat-item">
+                <h4>24/7</h4>
+                <p>Dostupnost</p>
+            </div>
+            <div class="page-stat-item">
+                <h4>&lt;1s</h4>
+                <p>Průměrná odezva</p>
+            </div>
+            <div class="page-stat-item">
+                <h4>100%</h4>
+                <p>Zdarma</p>
+            </div>
+            <div class="page-stat-item">
+                <h4>∞</h4>
+                <p>Počet dotazů</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="page-footer" id="kontakt">
+        <div class="page-footer-content">
+            <div class="page-footer-section">
+                <h4>MATY</h4>
+                <p>Tvůj AI pomocník pro Matiční gymnázium Ostrava</p>
+            </div>
+            <div class="page-footer-section">
+                <h4>Užitečné odkazy</h4>
+                <a href="https://www.maticni.cz" target="_blank">Školní web</a>
+                <a href="https://bakalari.maticni.cz" target="_blank">Bakaláři</a>
+                <a href="#" onclick="event.preventDefault(); toggleChat();">Chatbot</a>
+            </div>
+            <div class="page-footer-section">
+                <h4>Kontakt</h4>
+                <a href="mailto:info@maticni.cz">info@maticni.cz</a>
+                <a href="tel:+420596114714">+420 596 114 714</a>
+            </div>
+        </div>
+        <div class="page-footer-bottom">
+            <p>&copy; 2026 Matiční gymnázium Ostrava. Všechna práva vyhrazena.</p>
+        </div>
+    </footer>
     
     <!-- Plovoucí tlačítko pro otevření/zavření chatbota -->
     <button class="chat-toggle-btn pulse" id="chatToggleBtn" onclick="toggleChat()">
