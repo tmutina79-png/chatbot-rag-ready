@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATIČÁK Chatbot - Příklad integrace pro skolni-nastenka.cz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            background: white;
+            color: #333;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .content h3 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .feature-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .feature-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #dcdcdc;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: transform 0.3s;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+        }
+        
+        .notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 MATIČÁK Chatbot</h1>
+            <p>Příklad integrace pro skolni-nastenka.cz</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                ⬇️ Podívej se do pravého dolního rohu! ⬇️
+            </p>
+        </header>
+        
+        <div class="content">
+            <h2>✅ Chatbot je aktivní!</h2>
+            <p>
+                Pokud vidíš <strong>plovoucí tlačítko 💬 v pravém dolním rohu</strong>, integrace funguje správně!
+            </p>
+            
+            <div class="feature-box">
+                <h4>🎯 Vyzkoušej tyto funkce:</h4>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>Klikni na tlačítko 💬 pro otevření chatbota</li>
+                    <li>Použij rychlé akce: <strong>Kontakt</strong>, <strong>Jídelna</strong>, <strong>Rozvrh</strong></li>
+                    <li>Zkus psát zprávy do chatu</li>
+                    <li>Otevři stránku na mobilu - chatbot je responzivní</li>
+                </ul>
+            </div>
+            
+            <h3>📝 Jak integrovat na skolni-nastenka.cz</h3>
+            
+            <p>
+                <strong>Krok 1:</strong> Nahraj soubor <code>chatbot-widget.js</code> na server do složky <code>/js/</code>
+            </p>
+            
+            <p>
+                <strong>Krok 2:</strong> Přidej tento kód <strong>před uzavírací tag &lt;/body&gt;</strong>:
+            </p>
+            
+            <div class="code-block">
+&lt;!-- MATIČÁK Chatbot --&gt;
+&lt;script src="/js/chatbot-widget.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  MaticakChatbot.init({
+    apiUrl: 'https://deploy-web-service-enfc.onrender.com'
+  });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+            
+            <div class="notice">
+                <strong>💡 Tip:</strong> Pokud máš chatbot na vlastním serveru, změň <code>apiUrl</code> na svou adresu.
+            </div>
+            
+            <h3>🔧 Co se stane po integraci?</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>✅ Chatbot se objeví na <strong>všech stránkách</strong>, kde přidáš kód</li>
+                <li>✅ <strong>Neovlivní</strong> existující design nebo funkce webu</li>
+                <li>✅ Automaticky se <strong>přizpůsobí</strong> mobilu i počítači</li>
+                <li>✅ Načítá data <strong>v reálném čase</strong> z API serveru</li>
+            </ul>
+            
+            <h3>📱 Responzivní design</h3>
+            <p>
+                Chatbot je optimalizovaný pro všechna zařízení. Na mobilu se automaticky roztáhne přes celou šířku obrazovky a umístí se na spodní okraj.
+            </p>
+            
+            <h3>🎨 Přizpůsobení</h3>
+            <p>
+                Pokud chceš změnit barvy, pozici nebo vzhled chatbota, stačí editovat CSS styly v souboru <code>chatbot-widget.js</code>.
+            </p>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="README.md" class="button">📖 Kompletní dokumentace</a>
+                <a href="chatbot-widget.js" class="button" download>⬇️ Stáhnout widget</a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>🎓 Vytvořili žáci Matičního gymnázia Ostrava</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                © 2026 - Všechna práva vyhrazena
+            </p>
+        </footer>
+    </div>
+    
+    <!-- ============================================ -->
+    <!-- INTEGRACE CHATBOTA ZAČÍNÁ ZDE -->
+    <!-- ============================================ -->
+    
+    <!-- MATIČÁK Chatbot -->
+    <script src="chatbot-widget.js"></script>
+    <script>
+        MaticakChatbot.init({
+            apiUrl: 'https://deploy-web-service-enfc.onrender.com'
+        });
+    </script>
+    
+    <!-- ============================================ -->
+    <!-- INTEGRACE CHATBOTA KONČÍ ZDE -->
+    <!-- ============================================ -->
+    
+</body>
+</html>

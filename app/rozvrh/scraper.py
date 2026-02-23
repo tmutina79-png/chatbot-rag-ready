@@ -279,14 +279,20 @@ def _scrape_rozvrh_generic(url):
             datum_zobrazit = datum_zitra
 
         if not hodiny_list:
-            hodiny_list = [
-                {'cislo': '1', 'cas': '8:15-9:00', 'predmet': 'Žádné hodiny', 'ucitel': '', 'mistnost': '', 'tema': '', 'skupina': ''}
-            ]
+            # Pokud se jednalo o zítřejší den a nejsou data, vrátíme speciální flag
+            return {
+                'den': den_nazev,
+                'datum': datum_zobrazit.strftime('%d.%m.%Y'),
+                'hodiny': [],
+                'data_nedostupna': True,
+                'je_zitra': je_po_posledni_hodine
+            }
 
         return {
             'den': den_nazev,
             'datum': datum_zobrazit.strftime('%d.%m.%Y'),
-            'hodiny': hodiny_list
+            'hodiny': hodiny_list,
+            'data_nedostupna': False
         }
 
     except Exception as e:

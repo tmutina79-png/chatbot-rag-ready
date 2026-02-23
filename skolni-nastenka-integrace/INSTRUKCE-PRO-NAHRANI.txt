@@ -1,0 +1,126 @@
+╔══════════════════════════════════════════════════════════════╗
+║  MATIČÁK CHATBOT - Instrukce pro nahrání na skolni-nastenka.cz  ║
+╚══════════════════════════════════════════════════════════════╝
+
+📦 CO POTŘEBUJEŠ NAHRÁT:
+├─ chatbot-widget.js  ← HLAVNÍ SOUBOR (tento je nutný!)
+
+🚀 POSTUP NAHRÁNÍ:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KROK 1: Připoj se k serveru
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Způsob A - FTP/SFTP:
+  → Použij FTP klienta (např. FileZilla)
+  → Připoj se k serveru skolni-nastenka.cz
+  → Údaje pro připojení máš od správce webu
+
+Způsob B - cPanel:
+  → Přihlaš se do cPanel administrace
+  → Sekce "Soubory" → "Správce souborů"
+  → Najdi složku s webem (obvykle public_html/)
+
+Způsob C - WordPress admin:
+  → Přihlaš se do WP administrace
+  → Jdi do: Vzhled → Editor motivů
+  → Nebo použij FTP plugin
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KROK 2: Nahraj soubor
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vytvoř složku (pokud ještě neexistuje):
+   
+   /public_html/js/
+   
+   nebo
+   
+   /wp-content/themes/nazev-motivu/js/
+
+2. Nahraj do ní soubor:
+   
+   chatbot-widget.js
+
+3. Výsledná cesta by měla být:
+   
+   https://skolni-nastenka.cz/js/chatbot-widget.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KROK 3: Přidej kód do HTML
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRO STATICKÉ STRÁNKY:
+  → Otevři soubor index.html (nebo jinou stránku)
+  → Najdi uzavírací tag </body>
+  → PŘED něj vlož tento kód:
+
+┌────────────────────────────────────────────────────────┐
+│ <!-- MATIČÁK Chatbot -->                              │
+│ <script src="/js/chatbot-widget.js"></script>         │
+│ <script>                                               │
+│   MaticakChatbot.init({                                │
+│     apiUrl: 'https://deploy-web-service-enfc.onrender.com' │
+│   });                                                  │
+│ </script>                                              │
+│ </body>                                                │
+│ </html>                                                │
+└────────────────────────────────────────────────────────┘
+
+PRO WORDPRESS:
+  → Jdi do: Vzhled → Editor motivů
+  → Najdi soubor footer.php
+  → PŘED <?php wp_footer(); ?> vlož:
+
+┌────────────────────────────────────────────────────────┐
+│ <!-- MATIČÁK Chatbot -->                              │
+│ <script src="<?php echo get_template_directory_uri(); ?>/js/chatbot-widget.js"></script> │
+│ <script>                                               │
+│   MaticakChatbot.init({                                │
+│     apiUrl: 'https://deploy-web-service-enfc.onrender.com' │
+│   });                                                  │
+│ </script>                                              │
+│                                                        │
+│ <?php wp_footer(); ?>                                 │
+└────────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KROK 4: Otestuj
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Otevři stránku skolni-nastenka.cz
+2. Mělo by být vidět plovoucí tlačítko 💬 v pravém dolním rohu
+3. Klikni na něj - měl by se otevřít chatbot
+4. Vyzkoušej tlačítka: Kontakt, Jídelna, Rozvrh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ❓ ŘEŠENÍ PROBLÉMŮ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLÉM: Chatbot se nezobrazuje
+ŘEŠENÍ: 
+  → Zkontroluj, že cesta k souboru je správně: /js/chatbot-widget.js
+  → Otevři konzoli prohlížeče (F12) a hledej chyby
+  → Zkontroluj, že soubor je skutečně nahrán na serveru
+
+PROBLÉM: Tlačítka nefungují
+ŘEŠENÍ:
+  → Zkontroluj API URL v kódu
+  → Otevři https://deploy-web-service-enfc.onrender.com/jidelna/dnesni-menu
+  → Pokud to nefunguje, API je nedostupné
+
+PROBLÉM: Chatbot ruší design
+ŘEŠENÍ:
+  → Edituj v chatbot-widget.js pozici tlačítka (bottom, right)
+  → Nebo změň z-index hodnotu
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📞 PODPORA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+E-mail: info@mgo.cz
+GitHub: github.com/maticni-gympl/chatbot
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ HOTOVO! Chatbot by měl fungovat na skolni-nastenka.cz
