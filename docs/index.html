@@ -409,7 +409,57 @@
         </div>
     </footer>
 
-    <!-- Chatbot widget - kompletně integrovaný -->
-    <script src="chatbot-embed.js"></script>
+    <!-- Chatbot widget - plná funkčnost přes iframe -->
+    <iframe id="chatbot-iframe" src="chat.html" style="position: fixed; bottom: 24px; right: 24px; width: 400px; height: 600px; border: none; border-radius: 24px; box-shadow: 0 12px 48px rgba(0,0,0,0.15); z-index: 9999; display: none;"></iframe>
+    
+    <button id="chat-toggle" onclick="toggleChatbot()" style="position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%); color: white; border: none; border-radius: 50%; font-size: 30px; cursor: pointer; box-shadow: 0 8px 24px rgba(91,111,232,0.35); z-index: 9998; transition: all 0.3s; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
+        💬
+    </button>
+
+    <script>
+        let chatOpen = false;
+
+        function toggleChatbot() {
+            const iframe = document.getElementById('chatbot-iframe');
+            const btn = document.getElementById('chat-toggle');
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                iframe.style.display = 'block';
+                btn.style.display = 'none';
+            } else {
+                iframe.style.display = 'none';
+                btn.style.display = 'flex';
+            }
+        }
+
+        function openChat() {
+            if (!chatOpen) {
+                toggleChatbot();
+            }
+        }
+
+        // Automatické otevření pokud je v URL ?openChat=true
+        if (window.location.search.includes('openChat=true')) {
+            setTimeout(() => {
+                toggleChatbot();
+            }, 500);
+        }
+
+        // Hover efekt na tlačítko
+        document.getElementById('chat-toggle').addEventListener('mouseenter', function() {
+            if (!chatOpen) {
+                this.style.transform = 'scale(1.08) translateY(-2px)';
+                this.style.boxShadow = '0 12px 32px rgba(91,111,232,0.45)';
+            }
+        });
+
+        document.getElementById('chat-toggle').addEventListener('mouseleave', function() {
+            if (!chatOpen) {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 8px 24px rgba(91,111,232,0.35)';
+            }
+        });
+    </script>
 </body>
 </html>
