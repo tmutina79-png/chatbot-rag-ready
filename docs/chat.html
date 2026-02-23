@@ -912,6 +912,42 @@
             display: block;
         }
 
+        /* Animace pro pravá ruka - mává */
+        .maty-arm-right {
+            animation: maty-wave-right 1.5s ease-in-out infinite;
+            transform-origin: 120px 80px;
+        }
+
+        @keyframes maty-wave-right {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-25deg); }
+            50% { transform: rotate(-35deg); }
+            75% { transform: rotate(-25deg); }
+        }
+
+        /* Animace pro levá ruka - jímavost */
+        .maty-arm-left {
+            animation: maty-wave-left 2s ease-in-out infinite;
+            transform-origin: 40px 85px;
+        }
+
+        @keyframes maty-wave-left {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-15deg); }
+        }
+
+        /* Animace antény */
+        .maty-antenna {
+            animation: maty-antenna-bounce 2.5s ease-in-out infinite;
+            transform-origin: 80px 15px;
+        }
+
+        @keyframes maty-antenna-bounce {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
         @keyframes maty-float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             25% { transform: translateY(-8px) rotate(-2deg); }
@@ -1414,7 +1450,62 @@
 
     <!-- MATY Mascot -->
     <div class="maty-mascot" id="matyMascot" onclick="toggleChat()">
-        <img src="Obrázky/Maty.jpeg" alt="MATY" class="maty-character" />
+        <svg class="maty-character" width="160" height="180" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- Stín -->
+            <ellipse cx="80" cy="170" rx="35" ry="6" fill="#000" opacity="0.15"/>
+            
+            <!-- Tělo (fialové) -->
+            <ellipse cx="80" cy="110" rx="40" ry="50" fill="#7B68EE"/>
+            <ellipse cx="80" cy="105" rx="35" ry="42" fill="#9370DB" opacity="0.6"/>
+            
+            <!-- Nohy -->
+            <rect x="60" y="150" width="15" height="25" rx="7" fill="#6A5ACD"/>
+            <rect x="85" y="150" width="15" height="25" rx="7" fill="#6A5ACD"/>
+            <ellipse cx="67.5" cy="175" rx="10" ry="6" fill="#483D8B"/>
+            <ellipse cx="92.5" cy="175" rx="10" ry="6" fill="#483D8B"/>
+            
+            <!-- Levá ruka (animovaná) -->
+            <g class="maty-arm-left">
+                <ellipse cx="40" cy="100" rx="12" ry="28" fill="#6A5ACD" transform="rotate(-15 40 100)"/>
+                <circle cx="35" cy="125" r="10" fill="#FFD700"/>
+                <circle cx="35" cy="125" r="7" fill="#FFA500"/>
+            </g>
+            
+            <!-- Pravá ruka (mává) -->
+            <g class="maty-arm-right">
+                <ellipse cx="120" cy="95" rx="12" ry="30" fill="#6A5ACD" transform="rotate(20 120 95)"/>
+                <circle cx="127" cy="120" r="10" fill="#FFD700"/>
+                <circle cx="127" cy="120" r="7" fill="#FFA500"/>
+            </g>
+            
+            <!-- Hlava -->
+            <circle cx="80" cy="55" r="35" fill="#FFA07A"/>
+            <circle cx="80" cy="55" r="32" fill="#FFB89D"/>
+            
+            <!-- Oči -->
+            <circle cx="68" cy="50" r="6" fill="#2C3E50"/>
+            <circle cx="92" cy="50" r="6" fill="#2C3E50"/>
+            <circle cx="70" cy="48" r="2.5" fill="#fff"/>
+            <circle cx="94" cy="48" r="2.5" fill="#fff"/>
+            
+            <!-- Úsměv -->
+            <path d="M 60 62 Q 80 72 100 62" stroke="#E74C3C" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M 63 63 Q 80 70 97 63" stroke="#FF6B7A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            
+            <!-- Nos -->
+            <ellipse cx="80" cy="58" rx="4" ry="5" fill="#FF8C69"/>
+            
+            <!-- Tváře -->
+            <circle cx="55" cy="60" r="8" fill="#FF6B7A" opacity="0.4"/>
+            <circle cx="105" cy="60" r="8" fill="#FF6B7A" opacity="0.4"/>
+            
+            <!-- Anténa -->
+            <g class="maty-antenna">
+                <line x1="80" y1="22" x2="80" y2="8" stroke="#9370DB" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="80" cy="5" r="6" fill="#9370DB"/>
+                <circle cx="80" cy="5" r="3" fill="#BA55D3"/>
+            </g>
+        </svg>
     </div>
 
     <div class="container hidden" id="chatWidget">
