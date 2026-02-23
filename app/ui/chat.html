@@ -919,9 +919,41 @@
             gap: 12px;
         }
 
-        .welcome-bubble-icon {
-            font-size: 24px;
+        .welcome-bubble-mascot {
             flex-shrink: 0;
+            margin-right: 12px;
+        }
+
+        .maty-character {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .maty-head {
+            font-size: 32px;
+            animation: maty-bounce 2s ease-in-out infinite;
+        }
+
+        .maty-hand {
+            font-size: 20px;
+            position: absolute;
+            top: 8px;
+            right: -8px;
+            animation: maty-wave 1s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        @keyframes maty-wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        @keyframes maty-bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
 
         .welcome-bubble-text {
@@ -1421,10 +1453,15 @@
     <div class="welcome-bubble" id="welcomeBubble">
         <button class="welcome-bubble-close" onclick="closeWelcomeBubble()" title="Zavřít">&times;</button>
         <div class="welcome-bubble-content">
-            <div class="welcome-bubble-icon">👋</div>
+            <div class="welcome-bubble-mascot">
+                <div class="maty-character">
+                    <div class="maty-head">😊</div>
+                    <div class="maty-hand">👋</div>
+                </div>
+            </div>
             <div class="welcome-bubble-text">
-                <p class="welcome-bubble-title">Ahoj! Jsem MATIČÁK</p>
-                <p class="welcome-bubble-message">Jsem tady, abych ti pomohl s informacemi o škole. Klikni na mě! 🚀</p>
+                <p class="welcome-bubble-title">Ahoj! Jsem MATY</p>
+                <p class="welcome-bubble-message">Tvůj kamarád z Matičního gymnázia! Pomůžu ti s rozvrhem, jídelnou a informacemi o škole. Klikni na mě! 🚀</p>
             </div>
         </div>
     </div>
