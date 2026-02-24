@@ -3051,6 +3051,12 @@
                 
                 // Zavřeme chatbot (historie zůstane zachována, ikona tlačítka zůstává stejná)
                 chatWidget.classList.add('hidden');
+                // Odstranit inline styles, aby CSS mělo přednost
+                chatWidget.style.display = '';
+                chatWidget.style.visibility = '';
+                chatWidget.style.opacity = '';
+                chatWidget.style.transform = '';
+                chatWidget.style.pointerEvents = '';
                 
                 // BADGE se nezobrazuje při zavření - jen při nových zprávách
             }
