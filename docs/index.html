@@ -1842,6 +1842,40 @@
             border: none;
             width: 100%;
             min-height: 600px;
+            display: none; /* Skrytý dokud se nenačte */
+        }
+
+        .feedback-modal-iframe.loaded {
+            display: block;
+        }
+
+        .feedback-loading {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            color: #666;
+        }
+
+        .feedback-loading.hidden {
+            display: none;
+        }
+
+        .feedback-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #7B68EE;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -1995,13 +2029,17 @@
             <div class="feedback-modal-body">
                 <p>Zde je 6 otázek, které nám pomohou vylepšit Matyho. Zabere ti to 1-2 minuty :-)</p>
             </div>
+            <div class="feedback-loading" id="feedbackLoading">
+                <div class="feedback-spinner"></div>
+                <p>Načítám formulář...</p>
+            </div>
             <iframe 
                 class="feedback-modal-iframe" 
-                src="https://forms.office.com/e/h6ELbz7dgD" 
+                id="feedbackIframe"
+                data-src="https://forms.office.com/e/h6ELbz7dgD" 
                 frameborder="0" 
                 allowfullscreen 
                 allow="autoplay; encrypted-media; fullscreen"
-                loading="eager"
             ></iframe>
         </div>
     </div>
@@ -4762,8 +4800,30 @@
         // Feedback Modal Functions
         function openFeedbackModal() {
             const modal = document.getElementById('feedbackModal');
+            const iframe = document.getElementById('feedbackIframe');
+            const loading = document.getElementById('feedbackLoading');
+            
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Lazy loading - načíst iframe jen při prvním otevření
+            if (!iframe.src) {
+                const src = iframe.getAttribute('data-src');
+                iframe.src = src;
+                
+                // Skrýt loading a zobrazit iframe po načtení
+                iframe.onload = function() {
+                    loading.classList.add('hidden');
+                    iframe.classList.add('loaded');
+                };
+                
+                // Fallback pokud se iframe nenačte do 10 sekund
+                setTimeout(() => {
+                    if (!iframe.classList.contains('loaded')) {
+                        loading.innerHTML = '<p style="color: #e74c3c;">⚠️ Nepodařilo se načíst formulář.<br><a href="' + src + '" target="_blank" style="color: #7B68EE; text-decoration: underline;">Otevřít v novém okně</a></p>';
+                    }
+                }, 10000);
+            }
         }
 
         function closeFeedbackModal() {
