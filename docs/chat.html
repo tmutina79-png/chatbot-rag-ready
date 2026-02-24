@@ -1888,6 +1888,191 @@
             }
         }
 
+        /* Welcome Modal Styles */
+        .welcome-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 15000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .welcome-modal.active {
+            display: flex;
+        }
+
+        .welcome-modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 0;
+            max-width: 560px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .welcome-modal-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 32px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-modal-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-modal-header h2 {
+            color: white;
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .welcome-modal-header .beta-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .welcome-modal-body {
+            background: white;
+            padding: 32px;
+        }
+
+        .welcome-modal-body p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 0 0 20px 0;
+        }
+
+        .welcome-modal-body p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .welcome-modal-body strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .welcome-modal-footer {
+            background: white;
+            padding: 0 32px 32px 32px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .welcome-modal-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-modal-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .welcome-modal-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .welcome-modal-btn.secondary {
+            background: #f3f4f6;
+            color: #666;
+        }
+
+        .welcome-modal-btn.secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .welcome-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-modal-content {
+                max-width: 95%;
+            }
+
+            .welcome-modal-header h2 {
+                font-size: 24px;
+            }
+
+            .welcome-modal-body {
+                padding: 24px;
+            }
+
+            .welcome-modal-footer {
+                flex-direction: column;
+                padding: 0 24px 24px 24px;
+            }
+        }
+
         @media (max-width: 768px) {
             .page-nav {
                 padding: 16px 24px;
