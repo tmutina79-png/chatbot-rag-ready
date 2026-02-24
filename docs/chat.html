@@ -3044,6 +3044,11 @@
             const chatToggleBtn = document.getElementById('chatToggleBtn');
             const chatBadge = document.getElementById('chatBadge');
             
+            // Ignorovat klik na tlačítko "Zahájit chat" (má vlastní handler)
+            if (event.target.closest('.page-primary-btn')) {
+                return;
+            }
+            
             // Pokud je chatbot otevřený a kliknutí není uvnitř chatbota ani na toggle tlačítku
             if (!chatWidget.classList.contains('hidden') && 
                 !chatWidget.contains(event.target) && 
