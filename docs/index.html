@@ -4771,12 +4771,16 @@
             const icon = toggleBtn.querySelector('.icon');
             const chatBadge = document.getElementById('chatBadge');
             
+            console.log('toggleChat called, chatWidget exists:', !!chatWidget);
+            console.log('chatWidget has hidden class:', chatWidget?.classList.contains('hidden'));
+            
             // Při otevření chatu zavřeme uvítací bublinu
             closeWelcomeBubble();
             
             if (chatWidget.classList.contains('hidden')) {
                 // Otevřít chat
                 chatWidget.classList.remove('hidden');
+                console.log('Removed hidden class, chatWidget classes:', chatWidget.className);
                 toggleBtn.classList.add('active');
                 toggleBtn.classList.remove('pulse');
                 icon.textContent = '✕';
