@@ -68,6 +68,15 @@
             transform: translateY(calc(100% + 24px));
             opacity: 0;
             pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* V standalone režimu viditelný chatbot */
+        html.standalone .container:not(.hidden) {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         /* V standalone režimu skrýt mascot, ale ponechat toggle button */
