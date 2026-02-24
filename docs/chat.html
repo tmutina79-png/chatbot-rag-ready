@@ -4802,6 +4802,12 @@
             } else {
                 // Zavřít chat
                 chatWidget.classList.add('hidden');
+                // Odstranit inline styles, aby CSS mělo přednost
+                chatWidget.style.display = '';
+                chatWidget.style.visibility = '';
+                chatWidget.style.opacity = '';
+                chatWidget.style.transform = '';
+                chatWidget.style.pointerEvents = '';
                 toggleBtn.classList.remove('active');
                 toggleBtn.classList.add('pulse');
                 icon.textContent = '💬';
