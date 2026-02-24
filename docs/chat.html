@@ -4777,6 +4777,12 @@
             if (chatWidget.classList.contains('hidden')) {
                 // Otevřít chat
                 chatWidget.classList.remove('hidden');
+                // Force zobrazení pomocí inline styles
+                chatWidget.style.display = 'flex';
+                chatWidget.style.visibility = 'visible';
+                chatWidget.style.opacity = '1';
+                chatWidget.style.transform = 'translateY(0)';
+                chatWidget.style.pointerEvents = 'all';
                 toggleBtn.classList.add('active');
                 toggleBtn.classList.remove('pulse');
                 icon.textContent = '✕';
