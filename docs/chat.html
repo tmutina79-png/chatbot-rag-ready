@@ -2019,6 +2019,28 @@
         </div>
     </footer>
 
+    <!-- Welcome Modal -->
+    <div class="welcome-modal" id="welcomeModal">
+        <div class="welcome-modal-content">
+            <button class="welcome-modal-close" onclick="closeWelcomeModal()">&times;</button>
+            <div class="welcome-modal-header">
+                <div class="welcome-modal-icon">🤖</div>
+                <h2>Vítejte u MATY!</h2>
+                <span class="beta-badge">Beta Verze</span>
+            </div>
+            <div class="welcome-modal-body">
+                <p><strong>Tenhle chatbot je zatím v testovací verzi.</strong> Vytvářejí ho žáci Matiční gymnázium, takže je pořád ve fázi ladění.</p>
+                <p>Funguje spolehlivě, ale někdy vám třeba nedá přesně ty informace, které jste čekali. A to je v pořádku 🙂</p>
+                <p>Právě <strong>vaše otázky a zpětná vazba</strong> mu pomáhají se zlepšovat.</p>
+                <p>Nebojte se ho zkoušet naplno – jste součástí jeho vývoje. Díky vám bude chytřejší.</p>
+            </div>
+            <div class="welcome-modal-footer">
+                <button class="welcome-modal-btn secondary" onclick="closeWelcomeModal()">Možná později</button>
+                <button class="welcome-modal-btn primary" onclick="closeWelcomeModalAndOpenChat()">Začít chatovat 🚀</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Feedback Modal -->
     <div class="feedback-modal" id="feedbackModal">
         <div class="feedback-modal-content">
@@ -4825,6 +4847,38 @@
                 }, 10000);
             }
         }
+
+        // Welcome Modal Functions
+        function showWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Uložit do localStorage, že uživatel viděl modal
+            localStorage.setItem('matyWelcomeShown', 'true');
+        }
+
+        function closeWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeWelcomeModalAndOpenChat() {
+            closeWelcomeModal();
+            setTimeout(() => {
+                toggleChat();
+            }, 300);
+        }
+
+        // Zobrazit welcome modal po načtení stránky (jen pokud ještě neviděl)
+        window.addEventListener('load', function() {
+            const hasSeenWelcome = localStorage.getItem('matyWelcomeShown');
+            if (!hasSeenWelcome) {
+                setTimeout(() => {
+                    showWelcomeModal();
+                }, 1000); // Po 1 sekundě od načtení
+            }
+        });
 
         function closeFeedbackModal() {
             const modal = document.getElementById('feedbackModal');
