@@ -3052,10 +3052,7 @@
                 // Zavřeme chatbot (historie zůstane zachována, ikona tlačítka zůstává stejná)
                 chatWidget.classList.add('hidden');
                 
-                // Zobrazíme badge upozornění
-                if (chatBadge) {
-                    chatBadge.classList.add('show');
-                }
+                // BADGE se nezobrazuje při zavření - jen při nových zprávách
             }
         });
         
@@ -4812,6 +4809,11 @@
                 toggleBtn.classList.remove('active');
                 toggleBtn.classList.add('pulse');
                 icon.textContent = '💬';
+                
+                // Skrýt badge při zavření
+                if (chatBadge) {
+                    chatBadge.classList.remove('show');
+                }
             }
         }
 
