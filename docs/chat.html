@@ -5042,6 +5042,8 @@
             const modal = document.getElementById('welcomeModal');
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            // Uložit do localStorage, že uživatel viděl modal
+            localStorage.setItem('matyWelcomeShown_v2', 'true');
             console.log('Welcome modal zobrazen');
         }
 
@@ -5058,12 +5060,18 @@
             }, 300);
         }
 
-        // Zobrazit welcome modal po načtení stránky (vždy)
+        // Zobrazit welcome modal po načtení stránky (jen při první návštěvě)
         window.addEventListener('load', function() {
-            console.log('Zobrazuji welcome modal za 1 sekundu...');
-            setTimeout(() => {
-                showWelcomeModal();
-            }, 1000); // Po 1 sekundě od načtení
+            const hasSeenWelcome = localStorage.getItem('matyWelcomeShown_v2');
+            console.log('Welcome modal check:', hasSeenWelcome);
+            if (!hasSeenWelcome) {
+                console.log('Zobrazuji welcome modal za 1 sekundu...');
+                setTimeout(() => {
+                    showWelcomeModal();
+                }, 1000); // Po 1 sekundě od načtení
+            } else {
+                console.log('Welcome modal již byl zobrazen');
+            }
         });
 
         function closeFeedbackModal() {
