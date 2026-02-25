@@ -14,6 +14,7 @@ class RuleBasedResponder:
         self.subjects_keywords = ["předmět", "predmet", "matematika", "čeština", "cestina", "angličtina", "anglictina", "fyzika", "chemie", "dějepis", "dejepis"]
         self.motivation_keywords = ["unavený", "unaveny", "těžké", "tezke", "nezvládám", "nezvladam", "nemůžu", "nemuzu"]
         self.goodbye_keywords = ["nashle", "nashledanou", "čau", "cau", "ahoj", "zatim", "zatím"]
+        self.how_are_you_keywords = ["jak se máš", "jak se mas", "jak ti je", "co děláš", "co delas", "jak se vede"]
         
     def get_response(self, user_message: str) -> str:
         """
@@ -34,6 +35,14 @@ class RuleBasedResponder:
         # Identita
         if any(keyword in message_lower for keyword in self.identity_keywords):
             return self._identity_response()
+        
+        # Jak se máš
+        if any(keyword in message_lower for keyword in self.how_are_you_keywords):
+            return random.choice([
+                "Mám se skvěle! 😊 Jsem robot, takže neopotřebovávám a mám energie na rozdávání! Co potřebuješ?",
+                "Výborně! 🤖 Jsem připravený ti pomoct. Jak se máš ty?",
+                "Super! 💪 Děkuji za optání. Jak můžu pomoct tobě?"
+            ])
         
         # Poděkování
         if any(keyword in message_lower for keyword in self.thanks_keywords):
