@@ -107,13 +107,20 @@ class DataManager:
         return ucitele
     
     def search_ucitele_by_name(self, jmeno: str) -> List[Dict]:
-        """Vyhledá učitele podle jména"""
+        """Vyhledá učitele podle jména - hledá celá slova, ne substring"""
         jmeno_lower = jmeno.lower().strip()
         vysledky = []
         
         for ucitel in self.get_ucitele():
-            if jmeno_lower in ucitel['jmeno'].lower():
-                vysledky.append(ucitel)
+            # Rozdělíme jméno učitele na části (slova)
+            ucitel_jmeno = ucitel['jmeno'].lower()
+            ucitel_parts = ucitel_jmeno.replace('.', ' ').replace(',', ' ').split()
+            
+            # Hledáme shodu s celým slovem
+            for part in ucitel_parts:
+                if part.strip() == jmeno_lower:
+                    vysledky.append(ucitel)
+                    break
         
         return vysledky
     
