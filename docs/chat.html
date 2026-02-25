@@ -545,18 +545,29 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* Modal styly */
+        /* Modal styly - zobrazí se vedle chat widgetu */
         .modal {
             display: none;
-            position: absolute;
-            z-index: 999999 !important;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            animation: fadeIn 0.3s ease-in;
-            backdrop-filter: blur(4px);
+            position: fixed;
+            z-index: 999998 !important;
+            right: 448px; /* 400px (šířka chatu) + 24px (margin) + 24px (mezera) */
+            bottom: 24px;
+            width: 500px;
+            max-width: calc(100vw - 448px - 48px);
+            height: 600px;
+            background-color: transparent;
+            animation: slideInFromLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .modal-content {
@@ -1885,6 +1896,26 @@
             
             .feedback-modal-iframe {
                 min-height: 500px;
+            }
+
+            /* Na mobilech zobraz modály přes celou obrazovku */
+            .modal {
+                right: 0 !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+            }
+
+            .modal-content {
+                border-radius: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                max-height: 100% !important;
             }
         }
 
