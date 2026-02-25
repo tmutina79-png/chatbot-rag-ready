@@ -34,7 +34,7 @@ import os
 
 # Inicializace FastAPI aplikace a middleware
 app = FastAPI(
-    title="MATIČÁK",
+    title="MATY",
     description="Matiční AI Pomocník - inteligentní školní asistent",
     version="0.1.2"  # Aktualizováno: Rozvrhy 2. stupně + modal prázdnin
 )

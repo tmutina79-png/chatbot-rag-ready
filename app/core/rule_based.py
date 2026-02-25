@@ -26,9 +26,9 @@ class RuleBasedResponder:
             if any(keyword in message_lower for keyword in self.identity_keywords):
                 return self._identity_response()
             return random.choice([
-                "Ahoj! Jsem MATIČÁK, tvůj školní AI pomocník. 👋 Jak ti můžu pomoci?",
-                "Nazdar! 😊 Jsem MATIČÁK a jsem tu pro tebe! Co potřebuješ?",
-                "Čau! 👋 MATIČÁK tady. Jak se vede? S čím můžu pomoct?"
+                "Ahoj! Jsem MATY, tvůj školní AI pomocník. 👋 Jak ti můžu pomoci?",
+                "Nazdar! 😊 Jsem MATY a jsem tu pro tebe! Co potřebuješ?",
+                "Čau! 👋 MATY tady. Jak se vede? S čím můžu pomoct?"
             ])
         
         # Identita
@@ -67,7 +67,7 @@ class RuleBasedResponder:
         return self._default_response()
     
     def _identity_response(self) -> str:
-        return """Jsem MATIČÁK - Matiční AI Pomocník! 🤖
+        return """Jsem MATY - Matiční AI Pomocník! 🤖
 
 Jsem tu, abych ti pomohl se školou:
 • Odpovídám na dotazy
