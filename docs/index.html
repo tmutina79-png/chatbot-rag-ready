@@ -4564,11 +4564,18 @@
             // Rozdělíme zprávu na slova
             const words = lowerMessage.split(/\s+/);
             
+            // Seznam běžných konverzačních slov, která nejsou jména učitelů
+            const commonWords = ['jak', 'mas', 'máš', 'jsi', 'ses', 'jsem', 'mam', 'mám', 'ale', 
+                                'ano', 'nie', 'ted', 'teď', 'kdy', 'kde', 'proc', 'proč', 'jak',
+                                'cos', 'děláš', 'delas', 'vede', 'muzete', 'můžete', 'pomoci',
+                                'pomoc', 'diky', 'díky', 'dekuji', 'děkuji'];
+            
             // Hledáme slova, která vypadají jako příjmení (alespoň 3 znaky)
             for (const word of words) {
-                // Přeskočíme krátká slova a klíčová slova
+                // Přeskočíme krátká slova, klíčová slova a běžné konverzační výrazy
                 if (word.length < 3 || teacherKeywords.includes(word) || 
-                    ['kontakt', 'ucitele', 'rozvrh', 'jidelna', 'menu'].includes(word)) {
+                    ['kontakt', 'ucitele', 'rozvrh', 'jidelna', 'menu'].includes(word) ||
+                    commonWords.includes(word)) {
                     continue;
                 }
                 
