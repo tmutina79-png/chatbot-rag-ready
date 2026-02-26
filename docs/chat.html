@@ -545,24 +545,28 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* Modal styly - zobrazí se vedle chat widgetu */
-        .modal {
-            display: none;
+        /* Modal styly - zobrazí se vedle chat widgetu v standalone režimu */
+        html.standalone .modal {
             position: fixed;
             z-index: 16000 !important;
-            right: 448px; /* 400px (šířka chatu) + 24px (margin) + 24px (mezera) */
+            right: 448px; /* 400px (šířka chatu) + 48px mezera */
             bottom: 24px;
             width: 500px;
-            max-width: calc(100vw - 448px - 48px);
             height: 600px;
-            background-color: transparent;
+            display: none;
         }
 
-        /* Viditelný modal - prostě zobrazený */
+        /* V obyčejném režimu (ne standalone) - modal uvnitř chatu */
         .modal {
-            opacity: 1 !important;
-            pointer-events: all !important;
-            visibility: visible !important;
+            display: none;
+            position: absolute;
+            z-index: 999999 !important;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
         }
 
         @keyframes fadeIn {
