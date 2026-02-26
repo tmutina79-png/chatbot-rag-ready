@@ -549,10 +549,10 @@
         html.standalone .modal {
             position: fixed;
             z-index: 16000 !important;
-            right: 472px; /* 400px (šířka chatu) + 24px (margin chatu) + 48px (mezera) */
-            bottom: 24px;
-            width: 600px;
-            height: 600px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
             display: none;
         }
 
@@ -565,8 +565,6 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
         }
 
         @keyframes fadeIn {
@@ -577,12 +575,16 @@
         /* Modal content - pro standalone režim vedle chatu */
         html.standalone .modal-content {
             background-color: white;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             padding: 32px;
             border-radius: 24px;
-            width: 100%;
-            height: 100%;
+            width: 550px;
+            max-width: 90%;
+            max-height: 80vh;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
-            position: relative;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -591,14 +593,16 @@
         /* Modal content - pro obyčejný režim uvnitř chatu */
         .modal-content {
             background-color: white;
-            margin: 5% auto;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             padding: 32px;
             border-radius: 24px;
-            width: 500px;
+            width: 550px;
             max-width: 90%;
             max-height: 80vh;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            position: relative;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -2154,6 +2158,336 @@
         <button class="page-cta-btn" onclick="openFeedbackModal()">Ohodnoť mě</button>
     </nav>
 
+    <!-- Modal okno pro kontakt -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Kontakt</h2>
+                <button class="close-btn" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Matiční gymnázium Ostrava</h3>
+                <p><strong>📧 E-mail:</strong> <a href="mailto:info@mgo.cz">info@mgo.cz</a></p>
+                
+                <h3>Sekretariát</h3>
+                <p><strong>👤 Škopková Yvona</strong></p>
+                <p><strong>📞 Telefon:</strong> <a href="tel:+420596116239">+420 596 11 62 39</a></p>
+                <p><strong>📝 Kontaktní formulář:</strong> <a href="https://mgo.cz/jj/kontakty/vedeni-a-sprava-skoly/6-zajacovvona.html" target="_blank">Otevřít formulář</a></p>
+                
+                <div class="contact-links">
+                    <a href="#" onclick="showVedeniInfo(event)" class="contact-link">
+                        👔 Vedení školy
+                    </a>
+                    <a href="#" onclick="showUciteleModalWindow(event)" class="contact-link">
+                        👨‍🏫 Učitelé
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro jídelnu -->
+    <div id="jidelnaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🍽️ Jídelna</h2>
+                <button class="close-btn" onclick="closeJidelnaModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="jidelnaModalBody">
+                <p>⏳ Načítám informace o jídelně...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro rozvrh -->
+    <div id="rozvrhModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📅 Rozvrh</h2>
+                <button class="close-btn" onclick="closeRozvrhModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="rozvrhModalBody">
+                <h3>Vyber třídu:</h3>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 První stupeň</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPA()">PA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPB()">PB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSA()">SA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSB()">SB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTA()">TA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTB()">TB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVA()">KVA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVB()">KVB</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎓 Druhý stupeň</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh1A()">1.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIA()">KVIA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIB()">KVIB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh2A()">2.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXA()">SXA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXB()">SXB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh3A()">3.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTA()">SPTA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTB()">SPTB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh4A()">4.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTA()">OKTA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTB()">OKTB</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro učitele -->
+    <div id="uciteleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👨‍🏫 Učitelé</h2>
+                <button class="close-btn" onclick="closeUciteleModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="uciteleModalBody">
+                <h3>Vyber předmět:</h3>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 Jazyky</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Český jazyk" onclick="showUciteleByPredmetModal('Český jazyk', 'Čj')">Čj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Angličtina" onclick="showUciteleByPredmetModal('Angličtina', 'Aj')">Aj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Němčina" onclick="showUciteleByPredmetModal('Němčina', 'Nj')">Nj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Španělština" onclick="showUciteleByPredmetModal('Španělština', 'Šj')">Šj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Francouzština" onclick="showUciteleByPredmetModal('Francouzština', 'Fj')">Fj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ruština" onclick="showUciteleByPredmetModal('Ruština', 'Rj')">Rj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Latina" onclick="showUciteleByPredmetModal('Latina', 'La')">La</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🔬 Přírodní vědy</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Matematika" onclick="showUciteleByPredmetModal('Matematika', 'M')">M</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Fyzika" onclick="showUciteleByPredmetModal('Fyzika', 'F')">F</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 40px; padding: 8px;" onclick="showUciteleByPredmetModal('Chemie', 'Ch')">Ch</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Biologie" onclick="showUciteleByPredmetModal('Biologie', 'Bi')">Bi</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Informatika" onclick="showUciteleByPredmetModal('Informatika', 'IVT')">IVT</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🌍 Společenské vědy</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Dějepis" onclick="showUciteleByPredmetModal('Dějepis', 'D')">D</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Zeměpis" onclick="showUciteleByPredmetModal('Zeměpis', 'Z')">Z</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Občanská výchova" onclick="showUciteleByPredmetModal('Občanská výchova', 'Ov')">Ov</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Základy společenských věd" onclick="showUciteleByPredmetModal('ZSV', 'ZSV')">ZSV</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ekonomie" onclick="showUciteleByPredmetModal('EKS', 'EKS')">EKS</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎨 Umění a sport</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Tělesná výchova" onclick="showUciteleByPredmetModal('Tělesná výchova', 'Tv')">Tv</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Hudební výchova" onclick="showUciteleByPredmetModal('Hudební výchova', 'Hv')">Hv</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Výtvarná výchova" onclick="showUciteleByPredmetModal('Výtvarná výchova', 'Vv')">Vv</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro NOVÉ - Aktuální novinky -->
+    <div id="novinkaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔔 Aktuální novinky</h2>
+                <button class="close-btn" onclick="closeNovinkaModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="novinkyModalBody">
+                <!-- Sekce: Novinky ze školy -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🏅 Úspěchy a aktuality
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
+                            🏅 Úspěchy žáků
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro ostatní -->
+    <div id="ostatniModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Ostatní informace</h2>
+                <button class="close-btn" onclick="closeOstatniModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="ostatniModalBody">
+                <!-- Sekce 1: Pro studenty -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        📚 Pro studenty
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.bakalari.cz/bakaweb/next/zmeny.aspx" target="_blank" class="info-link-btn">
+                            🔄 Suplování
+                        </a>
+                        <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" class="info-link-btn">
+                            📅 Org. školního roku
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 2: Služby školy -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        📖 Služby školy
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/studium/skolni-knihovna.html" target="_blank" class="info-link-btn">
+                            📚 Školní knihovna
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/skolni-poradenske-pracoviste.html" target="_blank" class="info-link-btn">
+                            💬 Poradenství
+                        </a>
+                        <a href="https://www.nntb.cz/" target="_blank" class="info-link-btn">
+                            📮 Schránka důvěry
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/studentske-tiskove-centrum.html" target="_blank" class="info-link-btn">
+                            🖨️ Tiskové centrum
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 3: Kroužky a aktivity -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🎯 Kroužky a aktivity
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/zajmove-krouzky.html" target="_blank" class="info-link-btn">
+                            🎨 Zájmové kroužky
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/aktivity-studentu.html" target="_blank" class="info-link-btn">
+                            ⚡ Aktivity studentů
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/erasmus.html" target="_blank" class="info-link-btn">
+                            🌍 Erasmus+
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/spoluprace-a-projekty/dofe-na-mgo.html" target="_blank" class="info-link-btn">
+                            🏆 DofE program
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 4: O škole -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🏫 O škole
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://my.matterport.com/show/?m=WGv9Vtb5Nvf" target="_blank" class="info-link-btn">
+                            🎥 Virtuální prohlídka
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole.html" target="_blank" class="info-link-btn">
+                            📜 Historie školy
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
+                            🏅 Úspěchy žáků
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 5: Užitečné odkazy -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🔗 Užitečné odkazy
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/studium/bakalari-navod.html" target="_blank" class="info-link-btn">
+                            📖 Bakaláři - návod
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/vysoke-skoly.html" target="_blank" class="info-link-btn">
+                            🎓 Vysoké školy
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/cambridge-esol-exam-preparation-centre.html" target="_blank" class="info-link-btn">
+                            🇬🇧 Cambridge certifikáty
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro prázdniny -->
+    <div id="prazdninyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏖️ Prázdniny 2025/2026</h2>
+                <button class="close-btn" onclick="closePrazdninyModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #f39c12; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🍂 Podzimní prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">27.-29. října 2025</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #e74c3c; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🎄 Vánoční prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">22. prosince 2025 - 4. ledna 2026</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #3498db; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        📚 Pololetní prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">30. ledna 2026</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2ecc71; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🌸 Jarní prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">9.-15. února 2026</p>
+                    <p style="margin-left: 30px; color: #888; font-size: 13px;">Ples MGO</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #9b59b6; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🐰 Velikonoční prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">2. dubna 2026 (středa)</p>
+                    <p style="margin-left: 30px; color: #555;">3. dubna 2026 (Velký pátek)</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #f1c40f; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        ☀️ Hlavní prázdniny (letní)
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">1. července - 31. srpna 2026</p>
+                </div>
+
+                <div style="margin-top: 25px; padding-top: 20px; border-top: 2px solid #eee;">
+                    <h3 style="color: #667eea; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        📅 Další volné dny
+                    </h3>
+                    <ul style="margin-left: 30px; color: #555; line-height: 1.8;">
+                        <li>21.-24. června - Gaudeamus (volno pro maturitní ročníky)</li>
+                        <li>Ředitelské volno pro žáky - přijímací zkoušky</li>
+                        <li>od 27. června - Volno k přípravě na MZ (OKTA, OKTB, 4.A)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                        📄 Stáhnout celou organizaci školního roku
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="page-hero">
         <h1>Jmenuji se MATY,<br>jsem tvůj pomocník</h1>
         <p>MATY ti pomůže s rozvrhem, jídelnou, informacemi o učitelích a všemi školními záležitostmi. Rychle, jednoduše a zdarma!</p>
@@ -2407,336 +2741,6 @@
             <div class="footer-content">
                 <img src="logo_mgo.jpeg" alt="MGO Logo" class="footer-logo">
                 <span>Vytvořili žáci Matičního gymnázia Ostrava</span>
-            </div>
-        </div>
-
-        <!-- Modal okno pro kontakt -->
-        <div id="contactModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>📧 Kontakt</h2>
-                    <button class="close-btn" onclick="closeContactModal()">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <h3>Matiční gymnázium Ostrava</h3>
-                    <p><strong>📧 E-mail:</strong> <a href="mailto:info@mgo.cz">info@mgo.cz</a></p>
-                    
-                    <h3>Sekretariát</h3>
-                    <p><strong>👤 Škopková Yvona</strong></p>
-                    <p><strong>📞 Telefon:</strong> <a href="tel:+420596116239">+420 596 11 62 39</a></p>
-                    <p><strong>📝 Kontaktní formulář:</strong> <a href="https://mgo.cz/jj/kontakty/vedeni-a-sprava-skoly/6-zajacovvona.html" target="_blank">Otevřít formulář</a></p>
-                    
-                    <div class="contact-links">
-                        <a href="#" onclick="showVedeniInfo(event)" class="contact-link">
-                            👔 Vedení školy
-                        </a>
-                        <a href="#" onclick="showUciteleModalWindow(event)" class="contact-link">
-                            👨‍🏫 Učitelé
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro jídelnu -->
-        <div id="jidelnaModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🍽️ Jídelna</h2>
-                    <button class="close-btn" onclick="closeJidelnaModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="jidelnaModalBody">
-                    <p>⏳ Načítám informace o jídelně...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro rozvrh -->
-        <div id="rozvrhModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>📅 Rozvrh</h2>
-                    <button class="close-btn" onclick="closeRozvrhModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="rozvrhModalBody">
-                    <h3>Vyber třídu:</h3>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 První stupeň</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPA()">PA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPB()">PB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSA()">SA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSB()">SB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTA()">TA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTB()">TB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVA()">KVA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVB()">KVB</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎓 Druhý stupeň</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh1A()">1.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIA()">KVIA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIB()">KVIB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh2A()">2.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXA()">SXA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXB()">SXB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh3A()">3.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTA()">SPTA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTB()">SPTB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh4A()">4.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTA()">OKTA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTB()">OKTB</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro učitele -->
-        <div id="uciteleModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>👨‍🏫 Učitelé</h2>
-                    <button class="close-btn" onclick="closeUciteleModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="uciteleModalBody">
-                    <h3>Vyber předmět:</h3>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 Jazyky</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Český jazyk" onclick="showUciteleByPredmetModal('Český jazyk', 'Čj')">Čj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Angličtina" onclick="showUciteleByPredmetModal('Angličtina', 'Aj')">Aj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Němčina" onclick="showUciteleByPredmetModal('Němčina', 'Nj')">Nj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Španělština" onclick="showUciteleByPredmetModal('Španělština', 'Šj')">Šj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Francouzština" onclick="showUciteleByPredmetModal('Francouzština', 'Fj')">Fj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ruština" onclick="showUciteleByPredmetModal('Ruština', 'Rj')">Rj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Latina" onclick="showUciteleByPredmetModal('Latina', 'La')">La</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🔬 Přírodní vědy</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Matematika" onclick="showUciteleByPredmetModal('Matematika', 'M')">M</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Fyzika" onclick="showUciteleByPredmetModal('Fyzika', 'F')">F</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Chemie" onclick="showUciteleByPredmetModal('Chemie', 'Ch')">Ch</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Biologie" onclick="showUciteleByPredmetModal('Biologie', 'Bi')">Bi</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Informatika" onclick="showUciteleByPredmetModal('Informatika', 'IVT')">IVT</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🌍 Společenské vědy</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Dějepis" onclick="showUciteleByPredmetModal('Dějepis', 'D')">D</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Zeměpis" onclick="showUciteleByPredmetModal('Zeměpis', 'Z')">Z</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Občanská výchova" onclick="showUciteleByPredmetModal('Občanská výchova', 'Ov')">Ov</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Základy společenských věd" onclick="showUciteleByPredmetModal('ZSV', 'ZSV')">ZSV</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ekonomie" onclick="showUciteleByPredmetModal('EKS', 'EKS')">EKS</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎨 Umění a sport</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Tělesná výchova" onclick="showUciteleByPredmetModal('Tělesná výchova', 'Tv')">Tv</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Hudební výchova" onclick="showUciteleByPredmetModal('Hudební výchova', 'Hv')">Hv</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Výtvarná výchova" onclick="showUciteleByPredmetModal('Výtvarná výchova', 'Vv')">Vv</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro NOVÉ - Aktuální novinky -->
-        <div id="novinkaModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🔔 Aktuální novinky</h2>
-                    <button class="close-btn" onclick="closeNovinkaModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="novinkyModalBody">
-                    <!-- Sekce: Novinky ze školy -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🏅 Úspěchy a aktuality
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
-                                🏅 Úspěchy žáků
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro ostatní -->
-        <div id="ostatniModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>📋 Ostatní informace</h2>
-                    <button class="close-btn" onclick="closeOstatniModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="ostatniModalBody">
-                    <!-- Sekce 1: Pro studenty -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            📚 Pro studenty
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.bakalari.cz/bakaweb/next/zmeny.aspx" target="_blank" class="info-link-btn">
-                                🔄 Suplování
-                            </a>
-                            <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" class="info-link-btn">
-                                📅 Org. školního roku
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 2: Služby školy -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            📖 Služby školy
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/studium/skolni-knihovna.html" target="_blank" class="info-link-btn">
-                                📚 Školní knihovna
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/skolni-poradenske-pracoviste.html" target="_blank" class="info-link-btn">
-                                💬 Poradenství
-                            </a>
-                            <a href="https://www.nntb.cz/" target="_blank" class="info-link-btn">
-                                📮 Schránka důvěry
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/studentske-tiskove-centrum.html" target="_blank" class="info-link-btn">
-                                🖨️ Tiskové centrum
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 3: Kroužky a aktivity -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🎯 Kroužky a aktivity
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/zajmove-krouzky.html" target="_blank" class="info-link-btn">
-                                🎨 Zájmové kroužky
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/aktivity-studentu.html" target="_blank" class="info-link-btn">
-                                ⚡ Aktivity studentů
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/erasmus.html" target="_blank" class="info-link-btn">
-                                🌍 Erasmus+
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/spoluprace-a-projekty/dofe-na-mgo.html" target="_blank" class="info-link-btn">
-                                🏆 DofE program
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 4: O škole -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🏫 O škole
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://my.matterport.com/show/?m=WGv9Vtb5Nvf" target="_blank" class="info-link-btn">
-                                🎥 Virtuální prohlídka
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole.html" target="_blank" class="info-link-btn">
-                                📜 Historie školy
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
-                                🏅 Úspěchy žáků
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 5: Užitečné odkazy -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🔗 Užitečné odkazy
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/studium/bakalari-navod.html" target="_blank" class="info-link-btn">
-                                📖 Bakaláři - návod
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/vysoke-skoly.html" target="_blank" class="info-link-btn">
-                                🎓 Vysoké školy
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/cambridge-esol-exam-preparation-centre.html" target="_blank" class="info-link-btn">
-                                🇬🇧 Cambridge certifikáty
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro prázdniny -->
-        <div id="prazdninyModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🏖️ Prázdniny 2025/2026</h2>
-                    <button class="close-btn" onclick="closePrazdninyModal()">&times;</button>
-                </div>
-                <div class="modal-body" style="padding: 20px;">
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #f39c12; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🍂 Podzimní prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">27.-29. října 2025</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #e74c3c; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🎄 Vánoční prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">22. prosince 2025 - 4. ledna 2026</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #3498db; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            📚 Pololetní prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">30. ledna 2026</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #2ecc71; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🌸 Jarní prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">9.-15. února 2026</p>
-                        <p style="margin-left: 30px; color: #888; font-size: 13px;">Ples MGO</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #9b59b6; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🐰 Velikonoční prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">2. dubna 2026 (středa)</p>
-                        <p style="margin-left: 30px; color: #555;">3. dubna 2026 (Velký pátek)</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #f1c40f; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            ☀️ Hlavní prázdniny (letní)
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">1. července - 31. srpna 2026</p>
-                    </div>
-
-                    <div style="margin-top: 25px; padding-top: 20px; border-top: 2px solid #eee;">
-                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            📅 Další volné dny
-                        </h3>
-                        <ul style="margin-left: 30px; color: #555; line-height: 1.8;">
-                            <li>21.-24. června - Gaudeamus (volno pro maturitní ročníky)</li>
-                            <li>Ředitelské volno pro žáky - přijímací zkoušky</li>
-                            <li>od 27. června - Volno k přípravě na MZ (OKTA, OKTB, 4.A)</li>
-                        </ul>
-                    </div>
-
-                    <div style="margin-top: 20px; text-align: center;">
-                        <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-                            📄 Stáhnout celou organizaci školního roku
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -3299,38 +3303,6 @@
         
 
         // Zavření modalu při kliknutí mimo něj
-        window.onclick = function(event) {
-            const contactModal = document.getElementById('contactModal');
-            const jidelnaModal = document.getElementById('jidelnaModal');
-            const rozvrhModal = document.getElementById('rozvrhModal');
-            const uciteleModal = document.getElementById('uciteleModal');
-            const ostatniModal = document.getElementById('ostatniModal');
-            const novinkaModal = document.getElementById('novinkaModal');
-            const prazdninyModal = document.getElementById('prazdninyModal');
-            
-            if (event.target === contactModal) {
-                contactModal.style.display = 'none';
-            }
-            if (event.target === jidelnaModal) {
-                jidelnaModal.style.display = 'none';
-            }
-            if (event.target === rozvrhModal) {
-                rozvrhModal.style.display = 'none';
-            }
-            if (event.target === uciteleModal) {
-                uciteleModal.style.display = 'none';
-            }
-            if (event.target === ostatniModal) {
-                ostatniModal.style.display = 'none';
-            }
-            if (event.target === novinkaModal) {
-                novinkaModal.style.display = 'none';
-            }
-            if (event.target === prazdninyModal) {
-                prazdninyModal.style.display = 'none';
-            }
-        }
-        
         // Zavření chatbota při kliknutí mimo něj (zachová historii chatu)
         document.addEventListener('click', function(event) {
             const chatWidget = document.getElementById('chatWidget');
@@ -3339,6 +3311,11 @@
             
             // Ignorovat klik na tlačítko "Zahájit chat" (má vlastní handler)
             if (event.target.closest('.page-primary-btn')) {
+                return;
+            }
+            
+            // Ignorovat klik na modální okna nebo jejich obsah
+            if (event.target.closest('.modal') || event.target.closest('.modal-content')) {
                 return;
             }
             
