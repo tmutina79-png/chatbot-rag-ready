@@ -549,10 +549,10 @@
         html.standalone .modal {
             position: fixed;
             z-index: 16000 !important;
-            right: 472px; /* 400px (šířka chatu) + 24px (margin chatu) + 48px (mezera) */
-            bottom: 24px;
-            width: 600px;
-            height: 600px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
             display: none;
         }
 
@@ -565,8 +565,6 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
         }
 
         @keyframes fadeIn {
@@ -574,46 +572,40 @@
             to { opacity: 1; }
         }
 
-        .modal-content {
+        /* Modal content - pro standalone režim vedle chatu */
+        html.standalone .modal-content {
             background-color: white;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             padding: 32px;
             border-radius: 24px;
-            width: 100%;
-            height: 100%;
+            width: 550px;
+            max-width: 90%;
+            max-height: 80vh;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
-            animation: slideInFromLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
 
-        @keyframes slideInFromLeft {
-            from {
-                transform: translateX(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
+        /* Modal content - pro obyčejný režim uvnitř chatu */
         .modal-content {
             background-color: white;
-            margin: 5% auto;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             padding: 32px;
             border-radius: 24px;
-            width: 500px;
+            width: 550px;
             max-width: 90%;
             max-height: 80vh;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            z-index: 999999 !important;
         }
 
         @keyframes slideUp {
@@ -3322,38 +3314,6 @@
         
 
         // Zavření modalu při kliknutí mimo něj
-        window.onclick = function(event) {
-            const contactModal = document.getElementById('contactModal');
-            const jidelnaModal = document.getElementById('jidelnaModal');
-            const rozvrhModal = document.getElementById('rozvrhModal');
-            const uciteleModal = document.getElementById('uciteleModal');
-            const ostatniModal = document.getElementById('ostatniModal');
-            const novinkaModal = document.getElementById('novinkaModal');
-            const prazdninyModal = document.getElementById('prazdninyModal');
-            
-            if (event.target === contactModal) {
-                contactModal.style.display = 'none';
-            }
-            if (event.target === jidelnaModal) {
-                jidelnaModal.style.display = 'none';
-            }
-            if (event.target === rozvrhModal) {
-                rozvrhModal.style.display = 'none';
-            }
-            if (event.target === uciteleModal) {
-                uciteleModal.style.display = 'none';
-            }
-            if (event.target === ostatniModal) {
-                ostatniModal.style.display = 'none';
-            }
-            if (event.target === novinkaModal) {
-                novinkaModal.style.display = 'none';
-            }
-            if (event.target === prazdninyModal) {
-                prazdninyModal.style.display = 'none';
-            }
-        }
-        
         // Zavření chatbota při kliknutí mimo něj (zachová historii chatu)
         document.addEventListener('click', function(event) {
             const chatWidget = document.getElementById('chatWidget');
@@ -3362,6 +3322,11 @@
             
             // Ignorovat klik na tlačítko "Zahájit chat" (má vlastní handler)
             if (event.target.closest('.page-primary-btn')) {
+                return;
+            }
+            
+            // Ignorovat klik na modální okna nebo jejich obsah
+            if (event.target.closest('.modal') || event.target.closest('.modal-content')) {
                 return;
             }
             
