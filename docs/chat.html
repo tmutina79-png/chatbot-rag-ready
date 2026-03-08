@@ -1618,15 +1618,48 @@
 
         .page-hero {
             padding: 140px 48px 80px;
-            text-align: center;
             background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-hero-image {
+            flex: 0 0 30%;
+            max-width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-hero-image img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(91, 111, 232, 0.2), 0 8px 24px rgba(0,0,0,0.08);
+            object-fit: cover;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .page-hero-image img:hover {
+            transform: scale(1.03) translateY(-4px);
+            box-shadow: 0 24px 70px rgba(91, 111, 232, 0.28), 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        .page-hero-text {
+            flex: 0 0 70%;
+            max-width: 70%;
+            text-align: left;
         }
 
         .page-hero h1 {
-            font-size: 64px;
+            font-size: 56px;
             font-weight: 700;
             margin-bottom: 24px;
-            padding-top: 10px;
+            padding-top: 0;
             letter-spacing: -1.5px;
             line-height: 1.3;
             background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
@@ -1636,19 +1669,17 @@
         }
 
         .page-hero p {
-            font-size: 22px;
+            font-size: 20px;
             color: #494949;
-            margin-top: 48px;
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            max-width: 600px;
         }
 
         .page-hero-buttons {
             display: flex;
             gap: 16px;
-            justify-content: center;
+            justify-content: flex-start;
             flex-wrap: wrap;
         }
 
@@ -2161,10 +2192,28 @@
                 display: none;
             }
             .page-hero h1 {
-                font-size: 40px;
+                font-size: 36px;
             }
             .page-hero p {
-                font-size: 18px;
+                font-size: 16px;
+            }
+            .page-hero {
+                flex-direction: column;
+                padding: 120px 24px 60px;
+                text-align: center;
+                gap: 32px;
+            }
+            .page-hero-image {
+                flex: 0 0 100%;
+                max-width: 200px;
+            }
+            .page-hero-text {
+                flex: 0 0 100%;
+                max-width: 100%;
+                text-align: center;
+            }
+            .page-hero-buttons {
+                justify-content: center;
             }
             .page-features, .page-stats {
                 padding: 60px 24px;
@@ -2196,13 +2245,17 @@
     </nav>
 
     <section class="page-hero">
-        <h1>Jmenuji se MATY,<br>jsem tvůj pomocník</h1>
-        <p>MATY ti pomůže rychle najít informace ze školního webu – o rozvrhu, jídelně, učitelích a dalších školních záležitostech.</p>
-        <br>
-        <p style="color: #666; font-size: 14px; line-height: 1.6; max-width: 600px; margin: 0 auto 32px auto;">Tento chatbot je zatím v testovací verzi. Vyvíjejí ho studenti Matičního gymnázia, kteří ho průběžně ladí a zlepšují.<br><br>Když ti občas nedá úplně to, co jsi čekal, ber to prosím s nadhledem. Každá otázka i připomínka nám pomáhá posunout MATYHO zase o kus dál. Díky, že nám pomáháš udělat z něj lepšího&nbsp;asistenta 🙂</p>
-        <div class="page-hero-buttons">
-            <button class="page-primary-btn" onclick="toggleChat()">Zahájit chat 💬</button>
-            <a href="#funkce" class="page-secondary-btn">Zjistit více</a>
+        <div class="page-hero-image">
+            <img src="Obr%C3%A1zky/Maty.jpeg" alt="MATY - chatbot Matičního gymnázia">
+        </div>
+        <div class="page-hero-text">
+            <h1>Jmenuji se MATY,<br>jsem tvůj pomocník</h1>
+            <p>MATY ti pomůže rychle najít informace ze školního webu – o rozvrhu, jídelně, učitelích a dalších školních záležitostech.</p>
+            <p style="color: #666; font-size: 14px; line-height: 1.6; max-width: 600px; margin: 0 0 32px 0;">Tento chatbot je zatím v testovací verzi. Vyvíjejí ho studenti Matičního gymnázia, kteří ho průběžně ladí a zlepšují.<br><br>Když ti občas nedá úplně to, co jsi čekal, ber to prosím s nadhledem. Každá otázka i připomínka nám pomáhá posunout MATYHO zase o kus dál. Díky, že nám pomáháš udělat z něj lepšího&nbsp;asistenta 🙂</p>
+            <div class="page-hero-buttons">
+                <button class="page-primary-btn" onclick="toggleChat()">Zahájit chat 💬</button>
+                <a href="#funkce" class="page-secondary-btn">Zjistit více</a>
+            </div>
         </div>
     </section>
 
