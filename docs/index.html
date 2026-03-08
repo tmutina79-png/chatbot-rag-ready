@@ -4708,38 +4708,116 @@
         function detectRozvrhClass(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
             
-            // Mapa tříd s jejich funkcemi
+            // Mapa tříd: všechny zkratky a české názvy (bez diakritiky) → funkce zobrazení rozvrhu
             const classMap = {
+                // Prima A
                 'pa': () => showRozvrhPA(),
+                'prima a': () => showRozvrhPA(),
+                'prima': () => showRozvrhPA(),
+                'primy': () => showRozvrhPA(),
+                'primy a': () => showRozvrhPA(),
+                // Prima B
                 'pb': () => showRozvrhPB(),
+                'prima b': () => showRozvrhPB(),
+                'primy b': () => showRozvrhPB(),
+                // Sekunda A
                 'sa': () => showRozvrhSA(),
+                'sekunda a': () => showRozvrhSA(),
+                'sekunda': () => showRozvrhSA(),
+                'sekundy': () => showRozvrhSA(),
+                'sekundy a': () => showRozvrhSA(),
+                // Sekunda B
                 'sb': () => showRozvrhSB(),
+                'sekunda b': () => showRozvrhSB(),
+                'sekundy b': () => showRozvrhSB(),
+                // Tercie A
                 'ta': () => showRozvrhTA(),
+                'tercie a': () => showRozvrhTA(),
+                'tercie': () => showRozvrhTA(),
+                // Tercie B
                 'tb': () => showRozvrhTB(),
+                'tercie b': () => showRozvrhTB(),
+                // Kvarta A
                 'kva': () => showRozvrhKVA(),
+                'kvarta a': () => showRozvrhKVA(),
+                'kvarta': () => showRozvrhKVA(),
+                'kvarty': () => showRozvrhKVA(),
+                'kvarty a': () => showRozvrhKVA(),
+                // Kvarta B
                 'kvb': () => showRozvrhKVB(),
-                'kvinta': () => showRozvrhTridy('kvinta'),
-                'sexta': () => showRozvrhTridy('sexta'),
-                'septima': () => showRozvrhTridy('septima'),
-                'oktava': () => showRozvrhTridy('oktava')
+                'kvarta b': () => showRozvrhKVB(),
+                'kvarty b': () => showRozvrhKVB(),
+                // 1.A
+                '1a': () => showRozvrh1A(),
+                '1.a': () => showRozvrh1A(),
+                // Kvinta A
+                'kvia': () => showRozvrhKVIA(),
+                'kvinta a': () => showRozvrhKVIA(),
+                'kvinta': () => showRozvrhKVIA(),
+                'kvinty': () => showRozvrhKVIA(),
+                'kvinty a': () => showRozvrhKVIA(),
+                // Kvinta B
+                'kvib': () => showRozvrhKVIB(),
+                'kvinta b': () => showRozvrhKVIB(),
+                'kvinty b': () => showRozvrhKVIB(),
+                // 2.A
+                '2a': () => showRozvrh2A(),
+                '2.a': () => showRozvrh2A(),
+                // Sexta A
+                'sxa': () => showRozvrhSXA(),
+                'sexta a': () => showRozvrhSXA(),
+                'sexta': () => showRozvrhSXA(),
+                'sexty': () => showRozvrhSXA(),
+                'sexty a': () => showRozvrhSXA(),
+                // Sexta B
+                'sxb': () => showRozvrhSXB(),
+                'sexta b': () => showRozvrhSXB(),
+                'sexty b': () => showRozvrhSXB(),
+                // 3.A
+                '3a': () => showRozvrh3A(),
+                '3.a': () => showRozvrh3A(),
+                // Septima A
+                'spta': () => showRozvrhSPTA(),
+                'septima a': () => showRozvrhSPTA(),
+                'septima': () => showRozvrhSPTA(),
+                'septimy': () => showRozvrhSPTA(),
+                'septimy a': () => showRozvrhSPTA(),
+                // Septima B
+                'sptb': () => showRozvrhSPTB(),
+                'septima b': () => showRozvrhSPTB(),
+                'septimy b': () => showRozvrhSPTB(),
+                // 4.A
+                '4a': () => showRozvrh4A(),
+                '4.a': () => showRozvrh4A(),
+                // Oktáva A
+                'okta': () => showRozvrhOKTA(),
+                'oktava a': () => showRozvrhOKTA(),
+                'oktava': () => showRozvrhOKTA(),
+                'oktavy': () => showRozvrhOKTA(),
+                'oktavy a': () => showRozvrhOKTA(),
+                // Oktáva B
+                'oktb': () => showRozvrhOKTB(),
+                'oktava b': () => showRozvrhOKTB(),
+                'oktavy b': () => showRozvrhOKTB()
             };
             
             // Přesná shoda - nejprve zkontrolujeme celý text
             for (const [className, func] of Object.entries(classMap)) {
-                // Přesná shoda (case-insensitive)
                 if (lowerMessage === className) {
                     return { class: className, func: func };
                 }
             }
             
             // Pokud není přesná shoda, zkusíme pattern "rozvrh TŘÍDA" nebo "TŘÍDA rozvrh"
-            for (const [className, func] of Object.entries(classMap)) {
-                // Vytvoříme regex pro word boundary - třída musí být samostatné slovo
-                const regex = new RegExp(`\\b${className}\\b`, 'i');
+            // Seřadíme klíče od nejdelších po nejkratší, aby se "kvarta a" matchlo před "kvarta"
+            const sortedKeys = Object.keys(classMap).sort((a, b) => b.length - a.length);
+            for (const className of sortedKeys) {
+                const escapedName = className.replace('.', '\\.');
+                const regex = new RegExp(`(?:^|\\s)${escapedName}(?:\\s|$)`, 'i');
                 
-                // Kontrola pouze pokud zpráva obsahuje "rozvrh" NEBO je to krátká zpráva (2-6 znaků)
-                if ((lowerMessage.includes('rozvrh') || lowerMessage.length <= 6) && regex.test(lowerMessage)) {
-                    return { class: className, func: func };
+                // Kontrola pokud zpráva obsahuje "rozvrh" NEBO je to krátká zpráva (max 12 znaků)
+                if ((lowerMessage.includes('rozvrh') || lowerMessage.length <= 12) && regex.test(lowerMessage)) {
+                    return { class: className, func: classMap[className] };
                 }
             }
             
