@@ -1588,6 +1588,14 @@
             color: #5B6FE8;
         }
 
+        @keyframes bounceAttention {
+            0%, 100% { transform: translateY(0); }
+            15% { transform: translateY(-6px); }
+            30% { transform: translateY(0); }
+            45% { transform: translateY(-4px); }
+            60% { transform: translateY(0); }
+        }
+
         .page-cta-btn {
             background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
             color: white;
@@ -1599,11 +1607,13 @@
             box-shadow: 0 4px 12px rgba(91, 111, 232, 0.3);
             cursor: pointer;
             border: none;
+            animation: bounceAttention 3s ease-in-out infinite;
         }
 
         .page-cta-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(91, 111, 232, 0.4);
+            animation: none;
         }
 
         .page-hero {
