@@ -37,17 +37,27 @@ def get_working_days_until_friday() -> List[date]:
 
 def get_next_week_working_days() -> List[date]:
     """
-    Vrátí seznam pracovních dnů příštího týdne (pondělí–pátek)
+    Vrátí seznam pracovních dnů NÁSLEDUJÍCÍHO týdne po aktuálně zobrazeném.
+    Aktuálně zobrazený týden = get_working_days_until_friday().
+    
+    Příklad:
+      - Dnes je Po–Pá aktuálního týdne → vrátí pondělí–pátek příštího týdne
+      - Dnes je So/Ne → aktuální týden je už ten následující, vrátí tedy týden za ním
     
     Returns:
         List datumů pondělí až pátek příštího týdne
     """
-    today = date.today()
-    # Najdeme příští pondělí
-    days_until_monday = (7 - today.weekday()) % 7
-    if days_until_monday == 0:
-        days_until_monday = 7  # Pokud je dnes pondělí, chceme příští
-    next_monday = today + timedelta(days=days_until_monday)
+    current_week = get_working_days_until_friday()
+    if current_week:
+        # Pátek aktuálně zobrazeného týdne
+        friday = current_week[-1]
+        # Pondělí dalšího týdne = pátek + 3 dny
+        next_monday = friday + timedelta(days=3)
+    else:
+        # Fallback
+        today = date.today()
+        days_until_monday = (7 - today.weekday()) % 7 or 7
+        next_monday = today + timedelta(days=days_until_monday)
     
     return [next_monday + timedelta(days=i) for i in range(5)]
 
