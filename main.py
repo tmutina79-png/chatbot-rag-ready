@@ -18,7 +18,8 @@ from app.jidelna.scraper import (
     get_jidelna_info, 
     format_jidelnicek_info,
     scrape_dnesni_menu,
-    scrape_tydenni_menu
+    scrape_tydenni_menu,
+    scrape_pristi_tyden_menu
 )
 
 from app.rozvrh.scraper import (
@@ -624,6 +625,34 @@ def get_tydenni_menu():
         # Fallback na lokální databázi
         if not menu_data:
             menu_data = data_manager.get_tydenni_menu()
+        
+        return {
+            "success": True,
+            "data": menu_data,
+            "source": source
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "data": None
+        }
+
+
+@app.get("/jidelna/pristi-tyden-menu")
+def get_pristi_tyden_menu():
+    """
+    Získá menu příštího týdne
+    """
+    try:
+        menu_data = None
+        source = "database"
+        try:
+            menu_data = scrape_pristi_tyden_menu()
+            if menu_data:
+                source = "scraping"
+        except:
+            pass
         
         return {
             "success": True,

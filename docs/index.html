@@ -2905,6 +2905,7 @@
                     
                     htmlContent += '<div class="contact-links">';
                     htmlContent += '<a href="#" id="tydenniMenuLink" class="contact-link">📅 Týdenní menu</a>';
+                    htmlContent += '<a href="#" id="pristiTydenMenuLink" class="contact-link">📅 Jídelníček na další týden</a>';
                     htmlContent += '<a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link">🛒 Objednat oběd</a>';
                     htmlContent += '</div>';
                     
@@ -2926,6 +2927,18 @@
                             
                             tydenniLink.addEventListener('click', handleTydenniMenu);
                             tydenniLink.addEventListener('touchstart', handleTydenniMenu, { passive: false });
+                        }
+                        
+                        // Event listener pro menu na příští týden
+                        const pristiLink = document.getElementById('pristiTydenMenuLink');
+                        if (pristiLink) {
+                            const handlePristiMenu = function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                showNextWeekMenuInChat(e);
+                            };
+                            pristiLink.addEventListener('click', handlePristiMenu);
+                            pristiLink.addEventListener('touchstart', handlePristiMenu, { passive: false });
                         }
                     }, 100);
                     
@@ -3010,6 +3023,16 @@
                     
                     // Použijeme typing efekt pro celý obsah najednou
                     await typeHtmlMessage(contentDiv, htmlContent, 1);
+                    
+                    // Přidáme tlačítko pro další týden
+                    const btnDiv = document.createElement('div');
+                    btnDiv.className = 'message bot';
+                    const btnContent = document.createElement('div');
+                    btnContent.className = 'message-content';
+                    btnContent.innerHTML = '<a href="#" onclick="showNextWeekMenuInChat(event)" style="color: #667eea; text-decoration: none; font-size: 12px;">📅 Jídelníček na další týden</a>';
+                    btnDiv.appendChild(btnContent);
+                    chatContainer.appendChild(btnDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 } else {
                     addMessage('❌ Nepodařilo se načíst týdenní menu. Zkus to prosím později.', false);
                 }
@@ -3021,6 +3044,80 @@
                 
                 console.error('Chyba při načítání týdenního menu:', error);
                 addMessage('❌ Došlo k chybě při načítání týdenního menu. Zkus to prosím znovu.', false);
+            }
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // Funkce pro zobrazení menu na příští týden v chatu
+        async function showNextWeekMenuInChat(event) {
+            if (event) event.preventDefault();
+            
+            // Zavřeme modal pokud je otevřený
+            closeJidelnaModal();
+            
+            // Zobrazíme zprávu uživatele
+            addMessage('Jídelníček na další týden', true);
+            
+            // Zobrazíme loading zprávu v chatu
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message bot';
+            loadingDiv.id = 'pristiTydenMenuLoading';
+            
+            const loadingContent = document.createElement('div');
+            loadingContent.className = 'message-content';
+            loadingContent.textContent = '⏳ Načítám menu na příští týden...';
+            
+            loadingDiv.appendChild(loadingContent);
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/jidelna/pristi-tyden-menu`);
+                const result = await response.json();
+                
+                // Odstraníme loading zprávu
+                const loading = document.getElementById('pristiTydenMenuLoading');
+                if (loading) loading.remove();
+                
+                if (result.success && result.data) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message bot';
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.style.maxWidth = '80%';
+                    
+                    messageDiv.appendChild(contentDiv);
+                    chatContainer.appendChild(messageDiv);
+                    
+                    let htmlContent = '<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Jídelníček na příští týden</h3>';
+                    
+                    if (result.data.dny && result.data.dny.length > 0) {
+                        for (const den of result.data.dny) {
+                            htmlContent += `<h3 style="color: #667eea; font-size: 12px; margin: 10px 0 6px 0;">${den.den}</h3>`;
+                            
+                            for (const jidlo of den.menu) {
+                                htmlContent += `<p style="margin: 5px 0; font-size: 11px;"><strong>${jidlo.typ}:</strong><br>${jidlo.nazev}</p>`;
+                            }
+                        }
+                        
+                        htmlContent += '<p style="margin-top: 10px; font-style: italic; font-size: 10px;">💡 Pro objednání navštivte: <a href="http://obedy.zs-mat5.cz/login" target="_blank" style="color: #667eea; text-decoration: none;">obedy.zs-mat5.cz</a></p>';
+                    } else {
+                        htmlContent += '<p style="font-size: 11px;">Menu na příští týden zatím není k dispozici.</p>';
+                    }
+                    
+                    await typeHtmlMessage(contentDiv, htmlContent, 1);
+                } else {
+                    addMessage('❌ Nepodařilo se načíst menu na příští týden. Zkus to prosím později.', false);
+                }
+                
+            } catch (error) {
+                const loading = document.getElementById('pristiTydenMenuLoading');
+                if (loading) loading.remove();
+                
+                console.error('Chyba při načítání menu na příští týden:', error);
+                addMessage('❌ Došlo k chybě při načítání menu na příští týden. Zkus to prosím znovu.', false);
             }
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -4337,13 +4434,19 @@
             const canteenKeywords = [
                 'jidelna', 'jidelny', 'jidelne', 'jidelnou',
                 'obed', 'obeda', 'obedu', 'obedem', 'obedy',
-                'menu', 'jidelnicek', 'jidelni listek',
+                'menu', 'meny', 'jidelnicek', 'jidelni listek',
                 'jidlo', 'jidla', 'jidel',
                 'strava', 'stravy', 'strave',
                 'kantyna', 'kantyne',
+                'papani', 'papanicko', 'papat',
+                'hlad', 'hladovy', 'hladova', 'hladovej', 'hladovim',
+                'najist', 'najedim', 'naobedvat',
+                'svacina', 'svacinka', 'svacinku',
                 'co je na obed', 'co bude na obed', 'co maji na obed',
                 'co se vari', 'co se dnes vari', 'co se zitra vari',
-                'co si dam k jidlu', 'kde se najedim'
+                'co si dam k jidlu', 'kde se najedim',
+                'co bude k obedu', 'co je k obedu',
+                'co je k jidlu', 'mam hlad'
             ];
             
             for (const keyword of canteenKeywords) {
@@ -4360,7 +4463,7 @@
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
             
             // Kontrola, zda zpráva obsahuje něco o jídle
-            const foodMentioned = ['obed', 'jidlo', 'menu', 'jidelna', 'strava', 'vari'].some(word => 
+            const foodMentioned = ['obed', 'jidlo', 'menu', 'meny', 'jidelna', 'jidelnicek', 'strava', 'vari', 'papani', 'papat'].some(word => 
                 lowerMessage.includes(word)
             );
             
@@ -4383,6 +4486,22 @@
                     if (lowerMessage.includes(pattern)) {
                         return day;
                     }
+                }
+            }
+            
+            // Implicitně dnešní oběd — pokud je zmíněno jídlo, ale žádný konkrétní den
+            const todayImplicitPatterns = [
+                'jake je menu', 'jake je meny', 'jake je jidlo',
+                'co je k obedu', 'co je k jidlu', 'co je na obed',
+                'co bude k obedu', 'co bude na obed', 'co maji na obed',
+                'co se vari', 'co varite', 'co varej',
+                'jake maji menu', 'jake maji meny',
+                'co je za jidlo', 'co je za obed'
+            ];
+            
+            for (const pattern of todayImplicitPatterns) {
+                if (lowerMessage.includes(pattern)) {
+                    return 'dnes';
                 }
             }
             
@@ -4456,6 +4575,16 @@
                         });
                         
                         await addMessage(menuText, false);
+                        
+                        // Přidáme tlačítko pro další týden
+                        const btnDiv = document.createElement('div');
+                        btnDiv.className = 'message bot';
+                        const btnContent = document.createElement('div');
+                        btnContent.className = 'message-content';
+                        btnContent.innerHTML = '<a href="#" onclick="showNextWeekMenuInChat(event)" style="color: #667eea; text-decoration: none; font-size: 12px;">📅 Jídelníček na další týden</a>';
+                        btnDiv.appendChild(btnContent);
+                        chatContainer.appendChild(btnDiv);
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
                     } else {
                         await addMessage(`😕 Omlouváme se, ale menu ${dayName} není k dispozici.`, false);
                     }

@@ -35,6 +35,23 @@ def get_working_days_until_friday() -> List[date]:
     return days
 
 
+def get_next_week_working_days() -> List[date]:
+    """
+    Vrátí seznam pracovních dnů příštího týdne (pondělí–pátek)
+    
+    Returns:
+        List datumů pondělí až pátek příštího týdne
+    """
+    today = date.today()
+    # Najdeme příští pondělí
+    days_until_monday = (7 - today.weekday()) % 7
+    if days_until_monday == 0:
+        days_until_monday = 7  # Pokud je dnes pondělí, chceme příští
+    next_monday = today + timedelta(days=days_until_monday)
+    
+    return [next_monday + timedelta(days=i) for i in range(5)]
+
+
 def scrape_dnesni_menu() -> Dict:
     """
     Stáhne a parsuje dnešní jídelníček ze stránky obedy.zs-mat5.cz
@@ -405,3 +422,146 @@ def format_jidelnicek_info(jidelnicek: Dict) -> str:
     output += "\n💡 Pro více informací navštivte web školy."
     
     return output
+
+
+def scrape_pristi_tyden_menu() -> Dict:
+    """
+    Stáhne a parsuje jídelníček příštího týdne ze stránky obedy.zs-mat5.cz
+    
+    Returns:
+        Dict s informacemi o menu příštího týdne
+    """
+    try:
+        url = "http://obedy.zs-mat5.cz/login"
+        
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Získáme seznam dnů příštího týdne
+        next_week_days = get_next_week_working_days()
+        
+        tydenni_menu = []
+        den_nazvy = ["Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota", "Neděle"]
+        
+        all_date_divs = soup.find_all('div', class_='jidelnicekTop')
+        
+        print(f"📅 Načítám menu příštího týdne...")
+        
+        for den_datum in next_week_days:
+            den_nazev = den_nazvy[den_datum.weekday()]
+            date_pattern = f"{den_datum.day:02d}.{den_datum.month:02d}.{den_datum.year}"
+            
+            menu_pro_den = []
+            target_date_div = None
+            
+            for date_div in all_date_divs:
+                if date_pattern in date_div.get_text():
+                    target_date_div = date_div
+                    break
+            
+            if target_date_div:
+                article = None
+                for sibling in target_date_div.find_all_next():
+                    if sibling.name == 'div' and 'jidelnicekTop' in sibling.get('class', []):
+                        break
+                    if sibling.name == 'article':
+                        article = sibling
+                        break
+                
+                if article:
+                    containers = article.find_all('div', class_='container')
+                    
+                    processed_types = set()
+                    for container in containers:
+                        container_text = container.get_text()
+                        
+                        typ_obedu = None
+                        if 'Oběd 1d' in container_text:
+                            continue
+                        elif 'Oběd 1' in container_text and 'Oběd 1' not in processed_types:
+                            typ_obedu = "Oběd 1"
+                        elif 'Oběd 2d' in container_text:
+                            continue
+                        elif 'Oběd 2' in container_text and 'Oběd 2' not in processed_types:
+                            typ_obedu = "Oběd 2"
+                        elif 'Oběd BLd' in container_text:
+                            continue
+                        elif 'Oběd BL' in container_text and 'BL' not in processed_types:
+                            typ_obedu = "BL"
+                        
+                        je_maticni = 'Matiční' in container_text
+                        
+                        if typ_obedu and je_maticni and typ_obedu not in processed_types:
+                            column_divs = container.find_all('div', class_='column')
+                            
+                            jidla = []
+                            for col_div in column_divs:
+                                text = col_div.get_text()
+                                text_clean = re.sub(r'\s+', ' ', text).strip()
+                                items = [item.strip() for item in text_clean.split(',')]
+                                
+                                for item in items:
+                                    item_clean = re.sub(r'\s*\([0-9,]*\)?\s*$', '', item).strip()
+                                    
+                                    if (item_clean and 
+                                        len(item_clean) > 3 and
+                                        item_clean.lower() not in [j.lower() for j in jidla] and
+                                        item_clean not in ['Matiční', 'Maticni', 'Oběd 1', 'Oběd 2', 'Oběd BL']):
+                                        jidla.append(item_clean)
+                                        if len(jidla) >= 7:
+                                            break
+                                
+                                if len(jidla) >= 7:
+                                    break
+                            
+                            menu_text = ', '.join(jidla[:7]) if jidla else "Informace není dostupná"
+                            
+                            menu_pro_den.append({
+                                "typ": typ_obedu,
+                                "nazev": menu_text
+                            })
+                            
+                            processed_types.add(typ_obedu)
+            
+            den_formatted = den_datum.strftime("%d.%m.%Y")
+            if menu_pro_den:
+                tydenni_menu.append({
+                    "den": f"{den_nazev} {den_formatted}",
+                    "datum": den_formatted,
+                    "menu": menu_pro_den
+                })
+            else:
+                tydenni_menu.append({
+                    "den": f"{den_nazev} {den_formatted}",
+                    "datum": den_formatted,
+                    "menu": [{"typ": "Info", "nazev": "Menu není k dispozici"}]
+                })
+        
+        if not tydenni_menu:
+            tydenni_menu.append({
+                "den": "Informace",
+                "datum": next_week_days[0].strftime("%d.%m.%Y") if next_week_days else "",
+                "menu": [{"typ": "Info", "nazev": "Jídelníček na příští týden zatím není k dispozici."}]
+            })
+        
+        print(f"✅ Načteno menu příštího týdne pro {len(tydenni_menu)} dnů")
+        
+        return {
+            "tyden": f"Jídelníček příští týden od {next_week_days[0].strftime('%d.%m.')} do {next_week_days[-1].strftime('%d.%m.')}" if next_week_days else "Příští týden",
+            "dny": tydenni_menu
+        }
+        
+    except Exception as e:
+        print(f"❌ Chyba při scrapování menu příštího týdne: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "error": str(e),
+            "dny": []
+        }
