@@ -5367,7 +5367,8 @@
             }, 300);
         }
 
-        // Zobrazit welcome modal po načtení stránky (jen při první návštěvě)
+        // Zobrazit welcome modal po načtení stránky (DEAKTIVOVÁNO)
+        /*
         window.addEventListener('load', function() {
             const hasSeenWelcome = localStorage.getItem('matyWelcomeShown_v2');
             console.log('Welcome modal check:', hasSeenWelcome);
@@ -5375,11 +5376,12 @@
                 console.log('Zobrazuji welcome modal za 1 sekundu...');
                 setTimeout(() => {
                     showWelcomeModal();
-                }, 1000); // Po 1 sekundě od načtení
+                }, 1000);
             } else {
                 console.log('Welcome modal již byl zobrazen');
             }
         });
+        */
 
         function closeFeedbackModal() {
             const modal = document.getElementById('feedbackModal');
