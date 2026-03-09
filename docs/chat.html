@@ -2709,7 +2709,7 @@
                     </div>
 
                     <!-- Sekce 3: Kroužky a aktivity -->
-                    <div class="info-section">
+                    <div class="info-section" id="krouzkySection">
                         <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                             🎯 Kroužky a aktivity
                         </h3>
@@ -4678,6 +4678,23 @@
         }
 
         // Funkce pro detekci dotazu na vedení školy (zobrazí modal kontaktů)
+        function detectKrouzkyRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            const krouzkyKeywords = [
+                'krouzek', 'krouzky', 'krouzku', 'krouzkem', 'krouzkach',
+                'aktivit', 'aktivity', 'aktivita', 'aktivitach',
+                'mimoskolni', 'volnocasov',
+                'erasmus', 'dofe',
+                'zajmov', 'zajmove'
+            ];
+            for (const keyword of krouzkyKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         function detectLeadershipRequest(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
             
@@ -5180,6 +5197,21 @@
             const requestedDay = detectCanteenDayRequest(message);
             if (requestedDay) {
                 await showMenuForDay(requestedDay);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
+            // Zkontroluj dotaz na kroužky (otevře Ostatní modal a scrollne na Kroužky)
+            if (detectKrouzkyRequest(message)) {
+                await addMessage('🎯 Otevírám sekci Kroužky a aktivity...', false);
+                setTimeout(() => {
+                    showOstatni();
+                    setTimeout(() => {
+                        const section = document.getElementById('krouzkySection');
+                        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }, 500);
                 sendBtn.disabled = false;
                 userInput.focus();
                 return;
