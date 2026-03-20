@@ -4141,10 +4141,8 @@
             
             try {
                 // Zjistíme slug třídy z endpointu (např. /rozvrh/1a -> 1a)
-                const tridaSlug = endpoint.split('/').pop();
-                const apiUrl = `${CONFIG.apiUrl}/rozvrh/${tridaSlug}/dalsi-den`;
-                
-                const response = await fetch(apiUrl);
+                const tridaSlug = endpoint.replace('/rozvrh/', '');
+                const response = await fetch(`${CONFIG.API_BASE_URL}/rozvrh/${tridaSlug}/dalsi-den`);
                 const result = await response.json();
                 
                 if (result.success && result.data) {
