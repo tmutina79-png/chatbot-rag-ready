@@ -44,7 +44,7 @@
             box-shadow: none;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: visible; /* změněno z hidden na visible, aby modály mohly být vně */
             z-index: 1000;
             border: none;
         }
@@ -68,6 +68,15 @@
             transform: translateY(calc(100% + 24px));
             opacity: 0;
             pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* V standalone režimu viditelný chatbot */
+        html.standalone .container:not(.hidden) {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         /* V standalone režimu skrýt mascot, ale ponechat toggle button */
@@ -536,70 +545,93 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* Modal styly */
-        .modal {
-            display: none;
+        /* Modal styly - zobrazí se vedle chat widgetu v standalone režimu */
+        html.standalone .modal {
             position: fixed;
-            z-index: 999999 !important;
+            z-index: 16000 !important;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            animation: fadeIn 0.3s ease-in;
-            backdrop-filter: blur(4px);
+            display: none;
         }
 
-        .modal-content {
+        /* V obyčejném režimu (ne standalone) - modal uprostřed stránky */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 16000 !important;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Modal content - pro standalone režim vedle chatu */
+        html.standalone .modal-content {
             background-color: white;
-            margin: 5% auto;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             padding: 32px;
             border-radius: 24px;
-            width: 500px;
+            width: 550px;
             max-width: 90%;
             max-height: 80vh;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            z-index: 999999 !important;
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(60px) scale(0.95);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
+        /* Modal content - pro obyčejný režim uvnitř chatu */
+        .modal-content {
+            background-color: white;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 32px;
+            border-radius: 24px;
+            width: 550px;
+            max-width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #E8E8EA;
+            margin: -32px -32px 24px -32px;
+            padding: 20px 32px;
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px 24px 0 0;
         }
 
         .modal-header h2 {
-            color: #1D1D1F;
-            font-size: 24px;
+            color: white;
+            font-size: 22px;
             font-weight: 600;
             margin: 0;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
         }
 
         .close-btn {
-            background: #F5F5F7;
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             font-size: 20px;
-            color: #666;
+            color: white;
             cursor: pointer;
             padding: 0;
             width: 32px;
@@ -1504,29 +1536,1189 @@
                 border-radius: 4px;
             }
         }
+        /* Landing page styly */
+        .page-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .page-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #5B6FE8;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .page-nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .page-nav-links a {
+            color: #1D1D1F;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .page-nav-links a:hover {
+            color: #5B6FE8;
+        }
+
+        @keyframes bounceAttention {
+            0%, 100% { transform: translateY(0); }
+            15% { transform: translateY(-6px); }
+            30% { transform: translateY(0); }
+            45% { transform: translateY(-4px); }
+            60% { transform: translateY(0); }
+        }
+
+        .page-cta-btn {
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(91, 111, 232, 0.3);
+            cursor: pointer;
+            border: none;
+            animation: bounceAttention 3s ease-in-out infinite;
+        }
+
+        .page-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 111, 232, 0.4);
+            animation: none;
+        }
+
+        .page-hero {
+            padding: 140px 48px 80px;
+            min-height: 100vh;
+            box-sizing: border-box;
+            background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-hero-image {
+            flex: 0 0 30%;
+            max-width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-hero-image img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(91, 111, 232, 0.2), 0 8px 24px rgba(0,0,0,0.08);
+            object-fit: cover;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .page-hero-image img:hover {
+            transform: scale(1.03) translateY(-4px);
+            box-shadow: 0 24px 70px rgba(91, 111, 232, 0.28), 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        .page-hero-text {
+            flex: 0 0 70%;
+            max-width: 70%;
+            text-align: left;
+        }
+
+        .page-hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-top: 0;
+            letter-spacing: -1.5px;
+            line-height: 1.3;
+            text-align: center;
+            max-width: 600px;
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-hero p {
+            font-size: 20px;
+            color: #494949;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            max-width: 600px;
+            text-align: justify;
+        }
+
+        .page-hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .page-primary-btn {
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 28px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(91, 111, 232, 0.35);
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .page-primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(91, 111, 232, 0.45);
+        }
+
+        .page-secondary-btn {
+            background: white;
+            color: #5B6FE8;
+            padding: 16px 40px;
+            border-radius: 28px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid #5B6FE8;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .page-secondary-btn:hover {
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .page-features {
+            padding: 80px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-section-title {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+        }
+
+        .page-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .page-feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .page-feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .page-feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .page-feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #1D1D1F;
+        }
+
+        .page-feature-card p {
+            color: #494949;
+            line-height: 1.6;
+        }
+
+        .page-stats {
+            padding: 80px 48px;
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .page-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-stat-item h4 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-stat-item p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .page-footer {
+            padding: 60px 48px 30px;
+            background: #1D1D1F;
+            color: white;
+        }
+
+        .page-footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .page-footer-section h4 {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .page-footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .page-footer-section a:hover {
+            color: white;
+        }
+
+        .page-footer-section p {
+            color: rgba(255,255,255,0.7);
+            margin-top: 8px;
+        }
+
+        .page-footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Feedback Modal */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .feedback-modal.active {
+            display: flex;
+        }
+
+        .feedback-modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .feedback-modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feedback-modal-header h2 {
+            margin: 0;
+            color: #5B6FE8;
+            font-size: 24px;
+        }
+
+        .feedback-modal-close {
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+            line-height: 1;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback-modal-close:hover {
+            color: #333;
+        }
+
+        .feedback-modal-body {
+            padding: 24px;
+            text-align: center;
+            color: #494949;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .feedback-modal-iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+            min-height: 600px;
+            display: none; /* Skrytý dokud se nenačte */
+        }
+
+        .feedback-modal-iframe.loaded {
+            display: block;
+        }
+
+        .feedback-loading {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            color: #666;
+        }
+
+        .feedback-loading.hidden {
+            display: none;
+        }
+
+        .feedback-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #7B68EE;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .feedback-modal-content {
+                max-height: 95vh;
+            }
+            
+            .feedback-modal-iframe {
+                min-height: 500px;
+            }
+
+            /* Na mobilech zobraz modály přes celou obrazovku */
+            .modal {
+                position: fixed !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+            }
+
+            html.standalone .modal-content,
+            .modal-content {
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                transform: none !important;
+                border-radius: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .modal-header {
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 20px 24px !important;
+            }
+        }
+
+        /* Welcome Modal Styles */
+        .welcome-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 15000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .welcome-modal.active {
+            display: flex;
+        }
+
+        .welcome-modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 0;
+            max-width: 560px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .welcome-modal-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 32px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-modal-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-modal-header h2 {
+            color: white;
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .welcome-modal-header .beta-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .welcome-modal-body {
+            background: white;
+            padding: 32px;
+        }
+
+        .welcome-modal-body p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 0 0 20px 0;
+        }
+
+        .welcome-modal-body p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .welcome-modal-body strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .welcome-modal-footer {
+            background: white;
+            padding: 0 32px 32px 32px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .welcome-modal-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-modal-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .welcome-modal-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .welcome-modal-btn.secondary {
+            background: #f3f4f6;
+            color: #666;
+        }
+
+        .welcome-modal-btn.secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .welcome-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-modal-content {
+                max-width: 95%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .welcome-modal-header h2 {
+                font-size: 24px;
+            }
+
+            .welcome-modal-body {
+                padding: 24px;
+            }
+
+            .welcome-modal-footer {
+                flex-direction: column;
+                padding: 0 24px 24px 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-nav {
+                padding: 16px 24px;
+            }
+            .page-nav-links {
+                display: none;
+            }
+            .page-hero h1 {
+                font-size: 36px;
+            }
+            .page-hero p {
+                font-size: 16px;
+            }
+            .page-hero {
+                flex-direction: column;
+                padding: 120px 24px 60px;
+                text-align: center;
+                gap: 32px;
+            }
+            .page-hero-image {
+                flex: 0 0 100%;
+                max-width: 200px;
+            }
+            .page-hero-text {
+                flex: 0 0 100%;
+                max-width: 100%;
+                text-align: center;
+            }
+            .page-hero-buttons {
+                justify-content: center;
+            }
+            .page-features, .page-stats {
+                padding: 60px 24px;
+            }
+            .page-section-title {
+                font-size: 36px;
+            }
+        }
     </style>
 </head>
 <body>
     <script>
-        // index.html = hlavní stránka chatbota - vždy fullscreen
-        window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                if (typeof showWelcomeMessage === 'function' && !welcomeShown) {
-                    welcomeShown = true;
-                    showWelcomeMessage();
-                }
-            }, 500);
-        });
+        // Detekce, zda je stránka v iframe
+        if (window.self === window.top) {
+            // Nejsme v iframe - standalone režim
+            document.documentElement.classList.add('standalone');
+        }
     </script>
+
+    <!-- Landing Page Content -->
+    <nav class="page-nav">
+        <a href="#" class="page-logo">🤖 MATY</a>
+        <ul class="page-nav-links">
+            <li><a href="#">Kdo jsem</a></li>
+            <li><a href="#funkce">Co umím</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+        <button class="page-cta-btn" onclick="openFeedbackModal()">Ohodnoť mě</button>
+    </nav>
+
+    <!-- Modal okno pro kontakt -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Kontakt</h2>
+                <button class="close-btn" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Matiční gymnázium Ostrava</h3>
+                <p><strong>📧 E-mail:</strong> <a href="mailto:info@mgo.cz">info@mgo.cz</a></p>
+                
+                <h3>Sekretariát</h3>
+                <p><strong>👤 Škopková Yvona</strong></p>
+                <p><strong>📞 Telefon:</strong> <a href="tel:+420596116239">+420 596 11 62 39</a></p>
+                <p><strong>📝 Kontaktní formulář:</strong> <a href="https://mgo.cz/jj/kontakty/vedeni-a-sprava-skoly/6-zajacovvona.html" target="_blank">Otevřít formulář</a></p>
+                
+                <div class="contact-links">
+                    <a href="#" onclick="showVedeniInfo(event)" class="contact-link">
+                        👔 Vedení školy
+                    </a>
+                    <a href="#" onclick="showUciteleModalWindow(event)" class="contact-link">
+                        👨‍🏫 Učitelé
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro jídelnu -->
+    <div id="jidelnaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🍽️ Jídelna</h2>
+                <button class="close-btn" onclick="closeJidelnaModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="jidelnaModalBody">
+                <p>⏳ Načítám informace o jídelně...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro rozvrh -->
+    <div id="rozvrhModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📅 Rozvrh</h2>
+                <button class="close-btn" onclick="closeRozvrhModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="rozvrhModalBody">
+                <h3>Vyber třídu:</h3>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 První stupeň</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPA()">PA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPB()">PB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSA()">SA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSB()">SB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTA()">TA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTB()">TB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVA()">KVA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVB()">KVB</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎓 Druhý stupeň</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh1A()">1.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIA()">KVIA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIB()">KVIB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh2A()">2.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXA()">SXA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXB()">SXB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh3A()">3.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTA()">SPTA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTB()">SPTB</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh4A()">4.A</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTA()">OKTA</button>
+                    <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTB()">OKTB</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro učitele -->
+    <div id="uciteleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👨‍🏫 Učitelé</h2>
+                <button class="close-btn" onclick="closeUciteleModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="uciteleModalBody">
+                <h3>Vyber předmět:</h3>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 Jazyky</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Český jazyk" onclick="showUciteleByPredmetModal('Český jazyk', 'Čj')">Čj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Angličtina" onclick="showUciteleByPredmetModal('Angličtina', 'Aj')">Aj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Němčina" onclick="showUciteleByPredmetModal('Němčina', 'Nj')">Nj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Španělština" onclick="showUciteleByPredmetModal('Španělština', 'Šj')">Šj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Francouzština" onclick="showUciteleByPredmetModal('Francouzština', 'Fj')">Fj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ruština" onclick="showUciteleByPredmetModal('Ruština', 'Rj')">Rj</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Latina" onclick="showUciteleByPredmetModal('Latina', 'La')">La</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🔬 Přírodní vědy</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Matematika" onclick="showUciteleByPredmetModal('Matematika', 'M')">M</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Fyzika" onclick="showUciteleByPredmetModal('Fyzika', 'F')">F</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 40px; padding: 8px;" onclick="showUciteleByPredmetModal('Chemie', 'Ch')">Ch</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Biologie" onclick="showUciteleByPredmetModal('Biologie', 'Bi')">Bi</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Informatika" onclick="showUciteleByPredmetModal('Informatika', 'IVT')">IVT</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🌍 Společenské vědy</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Dějepis" onclick="showUciteleByPredmetModal('Dějepis', 'D')">D</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Zeměpis" onclick="showUciteleByPredmetModal('Zeměpis', 'Z')">Z</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Občanská výchova" onclick="showUciteleByPredmetModal('Občanská výchova', 'Ov')">Ov</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Základy společenských věd" onclick="showUciteleByPredmetModal('ZSV', 'ZSV')">ZSV</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ekonomie" onclick="showUciteleByPredmetModal('EKS', 'EKS')">EKS</button>
+                </div>
+                
+                <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎨 Umění a sport</h4>
+                <div class="tridy-grid" style="gap: 8px;">
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Tělesná výchova" onclick="showUciteleByPredmetModal('Tělesná výchova', 'Tv')">Tv</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Hudební výchova" onclick="showUciteleByPredmetModal('Hudební výchova', 'Hv')">Hv</button>
+                    <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Výtvarná výchova" onclick="showUciteleByPredmetModal('Výtvarná výchova', 'Vv')">Vv</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro NOVÉ - Aktuální novinky -->
+    <div id="novinkaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔔 Aktuální novinky</h2>
+                <button class="close-btn" onclick="closeNovinkaModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="novinkyModalBody">
+                <!-- Sekce: Novinky ze školy -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🏅 Úspěchy a aktuality
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
+                            🏅 Úspěchy žáků
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro ostatní -->
+    <div id="ostatniModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Ostatní informace</h2>
+                <button class="close-btn" onclick="closeOstatniModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="ostatniModalBody">
+                <!-- Sekce 1: Pro studenty -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        📚 Pro studenty
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.bakalari.cz/bakaweb/next/zmeny.aspx" target="_blank" class="info-link-btn">
+                            🔄 Suplování
+                        </a>
+                        <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" class="info-link-btn">
+                            📅 Org. školního roku
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 2: Služby školy -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        📖 Služby školy
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/studium/skolni-knihovna.html" target="_blank" class="info-link-btn">
+                            📚 Školní knihovna
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/skolni-poradenske-pracoviste.html" target="_blank" class="info-link-btn">
+                            💬 Poradenství
+                        </a>
+                        <a href="https://www.nntb.cz/" target="_blank" class="info-link-btn">
+                            📮 Schránka důvěry
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/studentske-tiskove-centrum.html" target="_blank" class="info-link-btn">
+                            🖨️ Tiskové centrum
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 3: Kroužky a aktivity -->
+                <div class="info-section" id="krouzkySection">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🎯 Kroužky a aktivity
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/zajmove-krouzky.html" target="_blank" class="info-link-btn">
+                            🎨 Zájmové kroužky
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/aktivity-studentu.html" target="_blank" class="info-link-btn">
+                            ⚡ Aktivity studentů
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/erasmus.html" target="_blank" class="info-link-btn">
+                            🌍 Erasmus+
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/spoluprace-a-projekty/dofe-na-mgo.html" target="_blank" class="info-link-btn">
+                            🏆 DofE program
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 4: O škole -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🏫 O škole
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://my.matterport.com/show/?m=WGv9Vtb5Nvf" target="_blank" class="info-link-btn">
+                            🎥 Virtuální prohlídka
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole.html" target="_blank" class="info-link-btn">
+                            📜 Historie školy
+                        </a>
+                        <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
+                            🏅 Úspěchy žáků
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sekce 5: Užitečné odkazy -->
+                <div class="info-section">
+                    <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🔗 Užitečné odkazy
+                    </h3>
+                    <div class="button-grid">
+                        <a href="https://mgo.cz/jj/studium/bakalari-navod.html" target="_blank" class="info-link-btn">
+                            📖 Bakaláři - návod
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/vysoke-skoly.html" target="_blank" class="info-link-btn">
+                            🎓 Vysoké školy
+                        </a>
+                        <a href="https://mgo.cz/jj/studium/cambridge-esol-exam-preparation-centre.html" target="_blank" class="info-link-btn">
+                            🇬🇧 Cambridge certifikáty
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal okno pro prázdniny -->
+    <div id="prazdninyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏖️ Prázdniny 2025/2026</h2>
+                <button class="close-btn" onclick="closePrazdninyModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #f39c12; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🍂 Podzimní prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">27.-29. října 2025</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #e74c3c; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🎄 Vánoční prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">22. prosince 2025 - 4. ledna 2026</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #3498db; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        📚 Pololetní prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">30. ledna 2026</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2ecc71; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🌸 Jarní prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">9.-15. února 2026</p>
+                    <p style="margin-left: 30px; color: #888; font-size: 13px;">Ples MGO</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #9b59b6; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        🐰 Velikonoční prázdniny
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">2. dubna 2026 (středa)</p>
+                    <p style="margin-left: 30px; color: #555;">3. dubna 2026 (Velký pátek)</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #f1c40f; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        ☀️ Hlavní prázdniny (letní)
+                    </h3>
+                    <p style="margin-left: 30px; color: #555;">1. července - 31. srpna 2026</p>
+                </div>
+
+                <div style="margin-top: 25px; padding-top: 20px; border-top: 2px solid #eee;">
+                    <h3 style="color: #667eea; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        📅 Další volné dny
+                    </h3>
+                    <ul style="margin-left: 30px; color: #555; line-height: 1.8;">
+                        <li>21.-24. června - Gaudeamus (volno pro maturitní ročníky)</li>
+                        <li>Ředitelské volno pro žáky - přijímací zkoušky</li>
+                        <li>od 27. června - Volno k přípravě na MZ (OKTA, OKTB, 4.A)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                        📄 Stáhnout celou organizaci školního roku
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="page-hero">
+        <div class="page-hero-image">
+            <img src="Obr%C3%A1zky/Maty.jpeg" alt="MATY - chatbot Matičního gymnázia">
+        </div>
+        <div class="page-hero-text">
+            <h1>Jmenuji se MATY,<br>jsem tvůj pomocník</h1>
+            <p>MATY ti pomůže rychle najít informace ze školního webu – o rozvrhu, jídelně, učitelích a dalších školních záležitostech.</p>
+            <p style="color: #666; font-size: 14px; line-height: 1.6; max-width: 600px; margin: 0 0 32px 0;">Tento chatbot je zatím v testovací verzi. Vyvíjejí ho studenti Matičního gymnázia, kteří ho průběžně ladí a zlepšují.<br><br>Když ti občas nedá úplně to, co jsi čekal, ber to prosím s nadhledem. Každá otázka i připomínka nám pomáhá posunout MATYHO zase o kus dál. Díky, že nám pomáháš udělat z něj lepšího&nbsp;asistenta 🙂</p>
+            <div class="page-hero-buttons">
+                <button class="page-primary-btn" onclick="toggleChat()">Zahájit chat 💬</button>
+                <a href="#funkce" class="page-secondary-btn">Zjistit více</a>
+                <button class="page-secondary-btn" onclick="openFeedbackModal()" style="background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%); color: white; border: none; animation: bounceAttention 3s ease-in-out infinite;">Ohodnoť mě</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-features" id="funkce">
+        <h2 class="page-section-title">Co umím?</h2>
+        <div class="page-features-grid">
+            <div class="page-feature-card">
+                <div class="page-feature-icon">📅</div>
+                <h3>Rozvrh hodin</h3>
+                <p>Zeptej se na rozvrh na dnešní nebo zítřejší den. Vždy aktuální informace přímo z Bakalářů.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">🍽️</div>
+                <h3>Školní jídelna</h3>
+                <p>Zjisti, co se dnes vaří ve školní jídelně. Menu aktualizované denně.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">👨‍🏫</div>
+                <h3>Informace o učitelích</h3>
+                <p>Najdi kontakty na učitele, jejich konzultační hodiny a další užitečné informace.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">📢</div>
+                <h3>Školní novinky</h3>
+                <p>Buď v obraze díky aktualitám ze školního webu přímo v chatu.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">🤖</div>
+                <h3>AI asistent</h3>
+                <p>Nejsem tady, abych si s tebou domlouval rande, ale pomohl ti najít důležité informace, které jsou na našich webových stránkách.</p>
+            </div>
+            <div class="page-feature-card">
+                <div class="page-feature-icon">⚡</div>
+                <h3>Rychlé odpovědi</h3>
+                <p>Okamžité odpovědi 24/7. Žádné čekání, žádné hledání po webu.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-stats">
+        <h2 class="page-section-title" style="color: white; margin-bottom: 48px;">MATY v číslech</h2>
+        <div class="page-stats-grid">
+            <div class="page-stat-item">
+                <h4>24/7</h4>
+                <p>Dostupnost</p>
+            </div>
+            <div class="page-stat-item">
+                <h4>&lt;1s</h4>
+                <p>Průměrná odezva</p>
+            </div>
+            <div class="page-stat-item">
+                <h4>100%</h4>
+                <p>Zdarma</p>
+            </div>
+            <div class="page-stat-item">
+                <h4>∞</h4>
+                <p>Počet dotazů</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="page-footer" id="kontakt">
+        <div class="page-footer-content">
+            <div class="page-footer-section">
+                <h4>MATY</h4>
+                <p>Tvůj AI pomocník pro Matiční gymnázium Ostrava</p>
+            </div>
+            <div class="page-footer-section">
+                <h4>Užitečné odkazy</h4>
+                <a href="https://mgo.cz/jj/" target="_blank">Školní web mgo</a>
+                <a href="https://mgo.bakalari.cz/bakaweb/login" target="_blank">Bakaláři</a>
+            </div>
+            <div class="page-footer-section">
+                <h4>Kontakt</h4>
+                <a href="mailto:mutina@mgo.cz">mutina@mgo.cz</a>
+            </div>
+        </div>
+        <div class="page-footer-bottom">
+            <p>&copy; 2026 Matiční gymnázium Ostrava. Všechna práva vyhrazena.</p>
+        </div>
+    </footer>
+
+    <!-- Welcome Modal -->
+    <div class="welcome-modal" id="welcomeModal">
+        <div class="welcome-modal-content">
+            <button class="welcome-modal-close" onclick="closeWelcomeModal()">&times;</button>
+            <div class="welcome-modal-header">
+                <div class="welcome-modal-icon">🤖</div>
+                <h2>Vítá tě MATY!</h2>
+                <span class="beta-badge">Beta Verze</span>
+            </div>
+            <div class="welcome-modal-body">
+                <p><strong>Tento chatbot je zatím v testovací verzi.</strong> Vyvíjejí ho studenti Matičního gymnázia, kteří ho průběžně ladí a zlepšují.</p>
+                <p>Funguje spolehlivě, ale někdy vám třeba nedá přesně ty informace, které jste čekali. A to je v pořádku 🙂</p>
+                <p>Právě <strong>vaše otázky a zpětná vazba</strong> mu pomáhají se zlepšovat.</p>
+                <p>Nebojte se ho zkoušet naplno – jste součástí jeho vývoje. Díky vám bude chytřejší.</p>
+            </div>
+            <div class="welcome-modal-footer">
+                <button class="welcome-modal-btn secondary" onclick="closeWelcomeModal()">Možná později</button>
+                <button class="welcome-modal-btn primary" onclick="closeWelcomeModalAndOpenChat()">Začít chatovat 🚀</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="feedback-modal" id="feedbackModal">
+        <div class="feedback-modal-content">
+            <div class="feedback-modal-header">
+                <h2>📝 Zpětná vazba</h2>
+                <button class="feedback-modal-close" onclick="closeFeedbackModal()">&times;</button>
+            </div>
+            <div class="feedback-modal-body">
+                <p>Zde je 6 otázek, které nám pomohou vylepšit Matyho. Zabere ti to 1-2 minuty :-)</p>
+            </div>
+            <div class="feedback-loading" id="feedbackLoading">
+                <div class="feedback-spinner"></div>
+                <p>Načítám formulář...</p>
+            </div>
+            <iframe 
+                class="feedback-modal-iframe" 
+                id="feedbackIframe"
+                data-src="https://forms.office.com/e/h6ELbz7dgD" 
+                frameborder="0" 
+                allowfullscreen 
+                allow="autoplay; encrypted-media; fullscreen"
+            ></iframe>
+        </div>
+    </div>
     
     <!-- Plovoucí tlačítko pro otevření/zavření chatbota -->
-    <button class="chat-toggle-btn pulse" id="chatToggleBtn" onclick="toggleChat()" style="display:none !important;">
+    <button class="chat-toggle-btn pulse" id="chatToggleBtn" onclick="toggleChat()">
         <span class="icon">💬</span>
         <span class="chat-badge" id="chatBadge">!</span>
     </button>
 
     <!-- MATY Mascot -->
-    <div class="maty-mascot" id="matyMascot" onclick="toggleChat()" style="display:none !important;">
+    <div class="maty-mascot" id="matyMascot" onclick="toggleChat()">
         <svg class="maty-character" width="160" height="180" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
             <!-- Stín -->
             <ellipse cx="80" cy="170" rx="35" ry="6" fill="#000" opacity="0.15"/>
@@ -1585,11 +2777,11 @@
         </svg>
     </div>
 
-    <div class="container" id="chatWidget">
+    <div class="container hidden" id="chatWidget">
         <div class="header">
             <h1>🤖 MATY</h1>
             <p>Matiční AI Pomocník</p>
-            <button class="header-close-btn" onclick="toggleChat()" title="Zavřít" style="display:none;">−</button>
+            <button class="header-close-btn" onclick="toggleChat()" title="Zavřít">−</button>
             <!-- Řečová bublina NOVINKY v hlavičce -->
             <div class="novinka-badge" id="novinkaBadge" onclick="trackEvent('Button', 'click', 'Novinky'); showAnnouncementModal()" title="Klikni pro více informací">
                 <span class="novinka-icon">📋</span>
@@ -1634,336 +2826,6 @@
             <div class="footer-content">
                 <img src="logo_mgo.jpeg" alt="MGO Logo" class="footer-logo">
                 <span>Vytvořili žáci Matičního gymnázia Ostrava</span>
-            </div>
-        </div>
-
-        <!-- Modal okno pro kontakt -->
-        <div id="contactModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>📧 Kontakt</h2>
-                    <button class="close-btn" onclick="closeContactModal()">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <h3>Matiční gymnázium Ostrava</h3>
-                    <p><strong>📧 E-mail:</strong> <a href="mailto:info@mgo.cz">info@mgo.cz</a></p>
-                    
-                    <h3>Sekretariát</h3>
-                    <p><strong>👤 Škopková Yvona</strong></p>
-                    <p><strong>📞 Telefon:</strong> <a href="tel:+420596116239">+420 596 11 62 39</a></p>
-                    <p><strong>📝 Kontaktní formulář:</strong> <a href="https://mgo.cz/jj/kontakty/vedeni-a-sprava-skoly/6-zajacovvona.html" target="_blank">Otevřít formulář</a></p>
-                    
-                    <div class="contact-links">
-                        <a href="#" onclick="showVedeniInfo(event)" class="contact-link">
-                            👔 Vedení školy
-                        </a>
-                        <a href="#" onclick="showUciteleModalWindow(event)" class="contact-link">
-                            👨‍🏫 Učitelé
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro jídelnu -->
-        <div id="jidelnaModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🍽️ Jídelna</h2>
-                    <button class="close-btn" onclick="closeJidelnaModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="jidelnaModalBody">
-                    <p>⏳ Načítám informace o jídelně...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro rozvrh -->
-        <div id="rozvrhModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>📅 Rozvrh</h2>
-                    <button class="close-btn" onclick="closeRozvrhModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="rozvrhModalBody">
-                    <h3>Vyber třídu:</h3>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 První stupeň</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPA()">PA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhPB()">PB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSA()">SA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSB()">SB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTA()">TA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhTB()">TB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVA()">KVA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVB()">KVB</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎓 Druhý stupeň</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh1A()">1.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIA()">KVIA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhKVIB()">KVIB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh2A()">2.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXA()">SXA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSXB()">SXB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh3A()">3.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTA()">SPTA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhSPTB()">SPTB</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrh4A()">4.A</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTA()">OKTA</button>
-                        <button class="trida-btn" style="font-size: 13px; min-width: 50px; height: 40px; padding: 8px;" onclick="showRozvrhOKTB()">OKTB</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro učitele -->
-        <div id="uciteleModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>👨‍🏫 Učitelé</h2>
-                    <button class="close-btn" onclick="closeUciteleModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="uciteleModalBody">
-                    <h3>Vyber předmět:</h3>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">📚 Jazyky</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Český jazyk" onclick="showUciteleByPredmetModal('Český jazyk', 'Čj')">Čj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Angličtina" onclick="showUciteleByPredmetModal('Angličtina', 'Aj')">Aj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Němčina" onclick="showUciteleByPredmetModal('Němčina', 'Nj')">Nj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Španělština" onclick="showUciteleByPredmetModal('Španělština', 'Šj')">Šj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Francouzština" onclick="showUciteleByPredmetModal('Francouzština', 'Fj')">Fj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ruština" onclick="showUciteleByPredmetModal('Ruština', 'Rj')">Rj</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Latina" onclick="showUciteleByPredmetModal('Latina', 'La')">La</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🔬 Přírodní vědy</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Matematika" onclick="showUciteleByPredmetModal('Matematika', 'M')">M</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Fyzika" onclick="showUciteleByPredmetModal('Fyzika', 'F')">F</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Chemie" onclick="showUciteleByPredmetModal('Chemie', 'Ch')">Ch</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Biologie" onclick="showUciteleByPredmetModal('Biologie', 'Bi')">Bi</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Informatika" onclick="showUciteleByPredmetModal('Informatika', 'IVT')">IVT</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🌍 Společenské vědy</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Dějepis" onclick="showUciteleByPredmetModal('Dějepis', 'D')">D</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Zeměpis" onclick="showUciteleByPredmetModal('Zeměpis', 'Z')">Z</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Občanská výchova" onclick="showUciteleByPredmetModal('Občanská výchova', 'Ov')">Ov</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Základy společenských věd" onclick="showUciteleByPredmetModal('ZSV', 'ZSV')">ZSV</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Ekonomie" onclick="showUciteleByPredmetModal('EKS', 'EKS')">EKS</button>
-                    </div>
-                    
-                    <h4 style="color: #764ba2; font-size: 14px; margin: 15px 0 8px 0;">🎨 Umění a sport</h4>
-                    <div class="tridy-grid" style="gap: 8px;">
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Tělesná výchova" onclick="showUciteleByPredmetModal('Tělesná výchova', 'Tv')">Tv</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Hudební výchova" onclick="showUciteleByPredmetModal('Hudební výchova', 'Hv')">Hv</button>
-                        <button class="trida-btn" style="font-size: 12px; min-width: 51px; height: 38px; padding: 7px;" title="Výtvarná výchova" onclick="showUciteleByPredmetModal('Výtvarná výchova', 'Vv')">Vv</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro NOVÉ - Aktuální novinky -->
-        <div id="novinkaModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🔔 Aktuální novinky</h2>
-                    <button class="close-btn" onclick="closeNovinkaModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="novinkyModalBody">
-                    <!-- Sekce: Novinky ze školy -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🏅 Úspěchy a aktuality
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
-                                🏅 Úspěchy žáků
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro ostatní -->
-        <div id="ostatniModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>📋 Ostatní informace</h2>
-                    <button class="close-btn" onclick="closeOstatniModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="ostatniModalBody">
-                    <!-- Sekce 1: Pro studenty -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            📚 Pro studenty
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.bakalari.cz/bakaweb/next/zmeny.aspx" target="_blank" class="info-link-btn">
-                                🔄 Suplování
-                            </a>
-                            <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" class="info-link-btn">
-                                📅 Org. školního roku
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 2: Služby školy -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            📖 Služby školy
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/studium/skolni-knihovna.html" target="_blank" class="info-link-btn">
-                                📚 Školní knihovna
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/skolni-poradenske-pracoviste.html" target="_blank" class="info-link-btn">
-                                💬 Poradenství
-                            </a>
-                            <a href="https://www.nntb.cz/" target="_blank" class="info-link-btn">
-                                📮 Schránka důvěry
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/studentske-tiskove-centrum.html" target="_blank" class="info-link-btn">
-                                🖨️ Tiskové centrum
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 3: Kroužky a aktivity -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🎯 Kroužky a aktivity
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/zajmove-krouzky.html" target="_blank" class="info-link-btn">
-                                🎨 Zájmové kroužky
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/aktivity-studentu.html" target="_blank" class="info-link-btn">
-                                ⚡ Aktivity studentů
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/erasmus.html" target="_blank" class="info-link-btn">
-                                🌍 Erasmus+
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/spoluprace-a-projekty/dofe-na-mgo.html" target="_blank" class="info-link-btn">
-                                🏆 DofE program
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 4: O škole -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🏫 O škole
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://my.matterport.com/show/?m=WGv9Vtb5Nvf" target="_blank" class="info-link-btn">
-                                🎥 Virtuální prohlídka
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole.html" target="_blank" class="info-link-btn">
-                                📜 Historie školy
-                            </a>
-                            <a href="https://mgo.cz/jj/o-skole/uspechy.html" target="_blank" class="info-link-btn">
-                                🏅 Úspěchy žáků
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sekce 5: Užitečné odkazy -->
-                    <div class="info-section">
-                        <h3 style="color: #667eea; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            🔗 Užitečné odkazy
-                        </h3>
-                        <div class="button-grid">
-                            <a href="https://mgo.cz/jj/studium/bakalari-navod.html" target="_blank" class="info-link-btn">
-                                📖 Bakaláři - návod
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/vysoke-skoly.html" target="_blank" class="info-link-btn">
-                                🎓 Vysoké školy
-                            </a>
-                            <a href="https://mgo.cz/jj/studium/cambridge-esol-exam-preparation-centre.html" target="_blank" class="info-link-btn">
-                                🇬🇧 Cambridge certifikáty
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal okno pro prázdniny -->
-        <div id="prazdninyModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🏖️ Prázdniny 2025/2026</h2>
-                    <button class="close-btn" onclick="closePrazdninyModal()">&times;</button>
-                </div>
-                <div class="modal-body" style="padding: 20px;">
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #f39c12; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🍂 Podzimní prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">27.-29. října 2025</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #e74c3c; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🎄 Vánoční prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">22. prosince 2025 - 4. ledna 2026</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #3498db; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            📚 Pololetní prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">30. ledna 2026</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #2ecc71; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🌸 Jarní prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">9.-15. února 2026</p>
-                        <p style="margin-left: 30px; color: #888; font-size: 13px;">Ples MGO</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #9b59b6; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            🐰 Velikonoční prázdniny
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">2. dubna 2026 (středa)</p>
-                        <p style="margin-left: 30px; color: #555;">3. dubna 2026 (Velký pátek)</p>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #f1c40f; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            ☀️ Hlavní prázdniny (letní)
-                        </h3>
-                        <p style="margin-left: 30px; color: #555;">1. července - 31. srpna 2026</p>
-                    </div>
-
-                    <div style="margin-top: 25px; padding-top: 20px; border-top: 2px solid #eee;">
-                        <h3 style="color: #667eea; font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            📅 Další volné dny
-                        </h3>
-                        <ul style="margin-left: 30px; color: #555; line-height: 1.8;">
-                            <li>21.-24. června - Gaudeamus (volno pro maturitní ročníky)</li>
-                            <li>Ředitelské volno pro žáky - přijímací zkoušky</li>
-                            <li>od 27. června - Volno k přípravě na MZ (OKTA, OKTB, 4.A)</li>
-                        </ul>
-                    </div>
-
-                    <div style="margin-top: 20px; text-align: center;">
-                        <a href="https://mgo.cz/data/Organizace_skolniho_roku%20_2025_26.pdf" target="_blank" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-                            📄 Stáhnout celou organizaci školního roku
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -2365,7 +3227,17 @@
         function closePrazdninyModal() {
             document.getElementById('prazdninyModal').style.display = 'none';
         }
-        
+
+        // Zavření modálního okna kliknutím mimo něj
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(function(modal) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
         // ===== FUNKCE PRO SEKCE V OSTATNÍ MODALU =====
         
         // Funkce pro zobrazení událostí
@@ -2623,43 +3495,21 @@
         
 
         // Zavření modalu při kliknutí mimo něj
-        window.onclick = function(event) {
-            const contactModal = document.getElementById('contactModal');
-            const jidelnaModal = document.getElementById('jidelnaModal');
-            const rozvrhModal = document.getElementById('rozvrhModal');
-            const uciteleModal = document.getElementById('uciteleModal');
-            const ostatniModal = document.getElementById('ostatniModal');
-            const novinkaModal = document.getElementById('novinkaModal');
-            const prazdninyModal = document.getElementById('prazdninyModal');
-            
-            if (event.target === contactModal) {
-                contactModal.style.display = 'none';
-            }
-            if (event.target === jidelnaModal) {
-                jidelnaModal.style.display = 'none';
-            }
-            if (event.target === rozvrhModal) {
-                rozvrhModal.style.display = 'none';
-            }
-            if (event.target === uciteleModal) {
-                uciteleModal.style.display = 'none';
-            }
-            if (event.target === ostatniModal) {
-                ostatniModal.style.display = 'none';
-            }
-            if (event.target === novinkaModal) {
-                novinkaModal.style.display = 'none';
-            }
-            if (event.target === prazdninyModal) {
-                prazdninyModal.style.display = 'none';
-            }
-        }
-        
         // Zavření chatbota při kliknutí mimo něj (zachová historii chatu)
         document.addEventListener('click', function(event) {
             const chatWidget = document.getElementById('chatWidget');
             const chatToggleBtn = document.getElementById('chatToggleBtn');
             const chatBadge = document.getElementById('chatBadge');
+            
+            // Ignorovat klik na tlačítko "Zahájit chat" (má vlastní handler)
+            if (event.target.closest('.page-primary-btn')) {
+                return;
+            }
+            
+            // Ignorovat klik na modální okna nebo jejich obsah
+            if (event.target.closest('.modal') || event.target.closest('.modal-content')) {
+                return;
+            }
             
             // Pokud je chatbot otevřený a kliknutí není uvnitř chatbota ani na toggle tlačítku
             if (!chatWidget.classList.contains('hidden') && 
@@ -2668,11 +3518,14 @@
                 
                 // Zavřeme chatbot (historie zůstane zachována, ikona tlačítka zůstává stejná)
                 chatWidget.classList.add('hidden');
+                // Odstranit inline styles, aby CSS mělo přednost
+                chatWidget.style.display = '';
+                chatWidget.style.visibility = '';
+                chatWidget.style.opacity = '';
+                chatWidget.style.transform = '';
+                chatWidget.style.pointerEvents = '';
                 
-                // Zobrazíme badge upozornění
-                if (chatBadge) {
-                    chatBadge.classList.add('show');
-                }
+                // BADGE se nezobrazuje při zavření - jen při nových zprávách
             }
         });
         
@@ -3197,6 +4050,30 @@
                 if (loading) loading.remove();
                 
                 if (result.success && result.data) {
+                    // Funkce pro zjištění, zda je po poslední hodině
+                    const isAfterLastLesson = (hodiny) => {
+                        if (!hodiny || hodiny.length === 0) return false;
+                        
+                        // Najdi poslední hodinu
+                        const posledniHodina = hodiny[hodiny.length - 1];
+                        if (!posledniHodina.cas) return false;
+                        
+                        // Extrahuj čas konce (např. "8:15-9:00" -> "9:00")
+                        const casMatch = posledniHodina.cas.match(/(\d+):(\d+)$/);
+                        if (!casMatch) return false;
+                        
+                        const konecHodiny = parseInt(casMatch[1]) * 60 + parseInt(casMatch[2]);
+                        
+                        // Aktuální čas
+                        const now = new Date();
+                        const aktualniCas = now.getHours() * 60 + now.getMinutes();
+                        
+                        return aktualniCas > konecHodiny;
+                    };
+                    
+                    // Zjistíme, jestli je po poslední hodině
+                    const jePoPoslednHodine = isAfterLastLesson(result.data.hodiny);
+                    
                     // Vytvoříme zprávu s rozvrhem
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'message bot';
@@ -3209,15 +4086,30 @@
                     chatContainer.appendChild(messageDiv);
                     
                     let denZobrazeni = result.data.den;
+                    if (jePoPoslednHodine) {
+                        // Mapování dnů pro zjištění následujícího dne
+                        const dnyTydne = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
+                        const now = new Date();
+                        let denIndex = now.getDay();
+                        
+                        // Přeskok na další pracovní den
+                        denIndex++;
+                        if (denIndex === 6) denIndex = 1; // Sobota -> Pondělí
+                        if (denIndex === 0) denIndex = 1; // Neděle -> Pondělí
+                        
+                        denZobrazeni = `${dnyTydne[denIndex]} (zítřejší rozvrh)`;
+                    }
                     
                     // Zkontroluj, jestli jsou k dispozici hodiny
                     const maHodiny = result.data.hodiny && result.data.hodiny.length > 0;
                     const dataNedostupna = result.data.data_nedostupna === true;
+                    const jeZitra = result.data.je_zitra === true;
                     
                     let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni}</h3>`;
                     
-                    if (dataNedostupna) {
-                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Pro tento den nejsou k dispozici žádné hodiny.</strong><br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
+                    if (dataNedostupna && jeZitra) {
+                        // Data pro zítřek ještě nejsou na webu k dispozici
+                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">⚠️ <strong>Dnešní rozvrh již skončil.</strong> Data pro zítřejší rozvrh ještě nejsou na webu Bakalářů k dispozici.<br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
                     } else if (maHodiny) {
                         // Zobraz rozvrh pouze když jsou dostupné hodiny
                         result.data.hodiny.forEach(hodina => {
@@ -3231,41 +4123,14 @@
                             htmlContent += '</p>';
                         });
                         
-                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
+                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">💡 Pokud chceš zobrazit ostatní dny, klikni na níže uvedený odkaz<br>📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
                     } else {
-                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Dnes nejsou k dispozici žádné hodiny.</strong><br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
+                        // Když nejsou žádné hodiny, nezobrazuj nic (jen nadpis zůstane)
+                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Dnes nejsou k dispozici žádné hodiny.</strong><br><br>� Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
                     }
                     
                     // Použijeme typing efekt pro HTML obsah
                     await typeHtmlMessage(contentDiv, htmlContent, 1);
-                    
-                    // Přidáme tlačítko "Další den" jako novou zprávu bota
-                    const btnMsgDiv = document.createElement('div');
-                    btnMsgDiv.className = 'message bot';
-                    
-                    const btnContent = document.createElement('div');
-                    btnContent.className = 'message-content';
-                    btnContent.style.cssText = 'display: flex; justify-content: center; padding: 8px 12px;';
-                    
-                    const dalsiDenBtn = document.createElement('button');
-                    dalsiDenBtn.textContent = '📅 Rozvrh na další den';
-                    dalsiDenBtn.style.cssText = 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 20px; padding: 8px 18px; font-size: 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(102,126,234,0.3); transition: transform 0.2s, box-shadow 0.2s;';
-                    dalsiDenBtn.addEventListener('mouseover', function() {
-                        this.style.transform = 'scale(1.05)';
-                        this.style.boxShadow = '0 4px 12px rgba(102,126,234,0.5)';
-                    });
-                    dalsiDenBtn.addEventListener('mouseout', function() {
-                        this.style.transform = 'scale(1)';
-                        this.style.boxShadow = '0 2px 8px rgba(102,126,234,0.3)';
-                    });
-                    dalsiDenBtn.addEventListener('click', function() {
-                        loadRozvrhDalsiDen(nazevTridy, endpoint, bakalariUrl);
-                    });
-                    
-                    btnContent.appendChild(dalsiDenBtn);
-                    btnMsgDiv.appendChild(btnContent);
-                    chatContainer.appendChild(btnMsgDiv);
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 } else {
                     addMessage(`❌ Nepodařilo se načíst rozvrh třídy ${nazevTridy}. Zkus to prosím později.`, false);
                 }
@@ -3279,75 +4144,6 @@
                 addMessage('❌ Došlo k chybě při načítání rozvrhu. Zkus to prosím znovu.', false);
             }
             
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-        
-        // Funkce pro načtení rozvrhu na další den
-        async function loadRozvrhDalsiDen(nazevTridy, endpoint, bakalariUrl) {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'message bot';
-            loadingDiv.id = 'rozvrhDalsiDenLoading';
-            
-            const loadingContent = document.createElement('div');
-            loadingContent.className = 'message-content';
-            loadingContent.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;"></div>
-                    <span>Načítám rozvrh na další den pro třídu ${nazevTridy}...</span>
-                </div>
-            `;
-            
-            loadingDiv.appendChild(loadingContent);
-            chatContainer.appendChild(loadingDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            
-            try {
-                const tridaSlug = endpoint.replace('/rozvrh/', '');
-                const response = await fetch(`${CONFIG.API_BASE_URL}/rozvrh/${tridaSlug}/dalsi-den`);
-                const result = await response.json();
-                
-                const loading = document.getElementById('rozvrhDalsiDenLoading');
-                if (loading) loading.remove();
-                
-                if (result.success && result.data) {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = 'message bot';
-                    
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = 'message-content';
-                    contentDiv.style.maxWidth = '80%';
-                    
-                    messageDiv.appendChild(contentDiv);
-                    chatContainer.appendChild(messageDiv);
-                    
-                    const denZobrazeni = result.data.den;
-                    const maHodiny = result.data.hodiny && result.data.hodiny.length > 0;
-                    const dataNedostupna = result.data.data_nedostupna === true;
-                    
-                    let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni} (${result.data.datum})</h3>`;
-                    
-                    if (dataNedostupna || !maHodiny) {
-                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Data pro tento den ještě nejsou na webu Bakalářů k dispozici.</strong><br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
-                    } else {
-                        result.data.hodiny.forEach(hodina => {
-                            htmlContent += `<p style="margin: 5px 0; font-size: 11px;"><strong>${hodina.cislo}. hodina (${hodina.cas}):</strong> ${hodina.predmet}`;
-                            if (hodina.ucitel) htmlContent += ` - ${hodina.ucitel}`;
-                            if (hodina.mistnost) htmlContent += ` (${hodina.mistnost})`;
-                            htmlContent += '</p>';
-                        });
-                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
-                    }
-                    
-                    await typeHtmlMessage(contentDiv, htmlContent, 1);
-                } else {
-                    addMessage(`❌ Nepodařilo se načíst rozvrh na další den pro třídu ${nazevTridy}.`, false);
-                }
-            } catch (error) {
-                const loading = document.getElementById('rozvrhDalsiDenLoading');
-                if (loading) loading.remove();
-                console.error(`Chyba při načítání rozvrhu na další den ${nazevTridy}:`, error);
-                addMessage('❌ Došlo k chybě při načítání rozvrhu. Zkus to prosím znovu.', false);
-            }
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         
@@ -3505,8 +4301,8 @@
             messageDiv.appendChild(contentDiv);
             chatContainer.appendChild(messageDiv);
 
-            // Typing efekt pro uvítací zprávu
-            await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATY, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
+            // Úvodní zpráva se zobrazí ihned (bez typing efektu)
+            contentDiv.innerHTML = 'Ahoj! 👋 Jsem MATY, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?<br><br>Pro rychlý přístup použij tlačítka nahoře! ⬆️<br><br>Nebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬';
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -3881,6 +4677,23 @@
         }
 
         // Funkce pro detekci dotazu na vedení školy (zobrazí modal kontaktů)
+        function detectKrouzkyRequest(message) {
+            const lowerMessage = removeDiacritics(message.toLowerCase().trim());
+            const krouzkyKeywords = [
+                'krouzek', 'krouzky', 'krouzku', 'krouzkem', 'krouzkach',
+                'aktivit', 'aktivity', 'aktivita', 'aktivitach',
+                'mimoskolni', 'volnocasov',
+                'erasmus', 'dofe',
+                'zajmov', 'zajmove'
+            ];
+            for (const keyword of krouzkyKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         function detectLeadershipRequest(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
             
@@ -4006,11 +4819,18 @@
             // Rozdělíme zprávu na slova
             const words = lowerMessage.split(/\s+/);
             
+            // Seznam běžných konverzačních slov, která nejsou jména učitelů
+            const commonWords = ['jak', 'mas', 'máš', 'jsi', 'ses', 'jsem', 'mam', 'mám', 'ale', 
+                                'ano', 'nie', 'ted', 'teď', 'kdy', 'kde', 'proc', 'proč', 'jak',
+                                'cos', 'děláš', 'delas', 'vede', 'muzete', 'můžete', 'pomoci',
+                                'pomoc', 'diky', 'díky', 'dekuji', 'děkuji'];
+            
             // Hledáme slova, která vypadají jako příjmení (alespoň 3 znaky)
             for (const word of words) {
-                // Přeskočíme krátká slova a klíčová slova
+                // Přeskočíme krátká slova, klíčová slova a běžné konverzační výrazy
                 if (word.length < 3 || teacherKeywords.includes(word) || 
-                    ['kontakt', 'ucitele', 'rozvrh', 'jidelna', 'menu'].includes(word)) {
+                    ['kontakt', 'ucitele', 'rozvrh', 'jidelna', 'menu'].includes(word) ||
+                    commonWords.includes(word)) {
                     continue;
                 }
                 
@@ -4381,6 +5201,21 @@
                 return;
             }
 
+            // Zkontroluj dotaz na kroužky (otevře Ostatní modal a scrollne na Kroužky)
+            if (detectKrouzkyRequest(message)) {
+                await addMessage('🎯 Otevírám sekci Kroužky a aktivity...', false);
+                setTimeout(() => {
+                    showOstatni();
+                    setTimeout(() => {
+                        const section = document.getElementById('krouzkySection');
+                        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }, 500);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
             // Zkontroluj dotaz na jídelnu (zobrazí modal jídelny)
             if (detectCanteenRequest(message)) {
                 await addMessage('🍽️ Otevírám jídelní lístek...', false);
@@ -4528,11 +5363,96 @@
             }
         }
         
+        // Feedback Modal Functions
+        function openFeedbackModal() {
+            const modal = document.getElementById('feedbackModal');
+            const iframe = document.getElementById('feedbackIframe');
+            const loading = document.getElementById('feedbackLoading');
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Lazy loading - načíst iframe jen při prvním otevření
+            if (!iframe.src) {
+                const src = iframe.getAttribute('data-src');
+                iframe.src = src;
+                
+                // Skrýt loading a zobrazit iframe po načtení
+                iframe.onload = function() {
+                    loading.classList.add('hidden');
+                    iframe.classList.add('loaded');
+                };
+                
+                // Fallback pokud se iframe nenačte do 10 sekund
+                setTimeout(() => {
+                    if (!iframe.classList.contains('loaded')) {
+                        loading.innerHTML = '<p style="color: #e74c3c;">⚠️ Nepodařilo se načíst formulář.<br><a href="' + src + '" target="_blank" style="color: #7B68EE; text-decoration: underline;">Otevřít v novém okně</a></p>';
+                    }
+                }, 10000);
+            }
+        }
+
+        // Welcome Modal Functions
+        function showWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Uložit do localStorage, že uživatel viděl modal
+            localStorage.setItem('matyWelcomeShown_v2', 'true');
+            console.log('Welcome modal zobrazen');
+        }
+
+        function closeWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeWelcomeModalAndOpenChat() {
+            closeWelcomeModal();
+            setTimeout(() => {
+                toggleChat();
+            }, 300);
+        }
+
+        // Zobrazit welcome modal po načtení stránky (DEAKTIVOVÁNO)
+        /*
+        window.addEventListener('load', function() {
+            const hasSeenWelcome = localStorage.getItem('matyWelcomeShown_v2');
+            console.log('Welcome modal check:', hasSeenWelcome);
+            if (!hasSeenWelcome) {
+                console.log('Zobrazuji welcome modal za 1 sekundu...');
+                setTimeout(() => {
+                    showWelcomeModal();
+                }, 1000);
+            } else {
+                console.log('Welcome modal již byl zobrazen');
+            }
+        });
+        */
+
+        function closeFeedbackModal() {
+            const modal = document.getElementById('feedbackModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('feedbackModal');
+            if (event.target === modal) {
+                closeFeedbackModal();
+            }
+        });
+
         function toggleChat() {
             const chatWidget = document.getElementById('chatWidget');
             const toggleBtn = document.getElementById('chatToggleBtn');
             const icon = toggleBtn.querySelector('.icon');
             const chatBadge = document.getElementById('chatBadge');
+            
+            console.log('toggleChat called, chatWidget exists:', !!chatWidget);
+            console.log('chatWidget has hidden class:', chatWidget?.classList.contains('hidden'));
             
             // Při otevření chatu zavřeme uvítací bublinu
             closeWelcomeBubble();
@@ -4540,6 +5460,13 @@
             if (chatWidget.classList.contains('hidden')) {
                 // Otevřít chat
                 chatWidget.classList.remove('hidden');
+                // Force zobrazení pomocí inline styles
+                chatWidget.style.display = 'flex';
+                chatWidget.style.visibility = 'visible';
+                chatWidget.style.opacity = '1';
+                chatWidget.style.transform = 'translateY(0)';
+                chatWidget.style.pointerEvents = 'all';
+                console.log('Removed hidden class, chatWidget classes:', chatWidget.className);
                 toggleBtn.classList.add('active');
                 toggleBtn.classList.remove('pulse');
                 icon.textContent = '✕';
@@ -4562,9 +5489,20 @@
             } else {
                 // Zavřít chat
                 chatWidget.classList.add('hidden');
+                // Odstranit inline styles, aby CSS mělo přednost
+                chatWidget.style.display = '';
+                chatWidget.style.visibility = '';
+                chatWidget.style.opacity = '';
+                chatWidget.style.transform = '';
+                chatWidget.style.pointerEvents = '';
                 toggleBtn.classList.remove('active');
                 toggleBtn.classList.add('pulse');
                 icon.textContent = '💬';
+                
+                // Skrýt badge při zavření
+                if (chatBadge) {
+                    chatBadge.classList.remove('show');
+                }
             }
         }
 
