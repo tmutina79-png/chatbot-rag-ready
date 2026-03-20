@@ -3193,30 +3193,6 @@
                 if (loading) loading.remove();
                 
                 if (result.success && result.data) {
-                    // Funkce pro zjištění, zda je po poslední hodině
-                    const isAfterLastLesson = (hodiny) => {
-                        if (!hodiny || hodiny.length === 0) return false;
-                        
-                        // Najdi poslední hodinu
-                        const posledniHodina = hodiny[hodiny.length - 1];
-                        if (!posledniHodina.cas) return false;
-                        
-                        // Extrahuj čas konce (např. "8:15-9:00" -> "9:00")
-                        const casMatch = posledniHodina.cas.match(/(\d+):(\d+)$/);
-                        if (!casMatch) return false;
-                        
-                        const konecHodiny = parseInt(casMatch[1]) * 60 + parseInt(casMatch[2]);
-                        
-                        // Aktuální čas
-                        const now = new Date();
-                        const aktualniCas = now.getHours() * 60 + now.getMinutes();
-                        
-                        return aktualniCas > konecHodiny;
-                    };
-                    
-                    // Zjistíme, jestli je po poslední hodině
-                    const jePoPoslednHodine = isAfterLastLesson(result.data.hodiny);
-                    
                     // Vytvoříme zprávu s rozvrhem
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'message bot';
@@ -3229,30 +3205,15 @@
                     chatContainer.appendChild(messageDiv);
                     
                     let denZobrazeni = result.data.den;
-                    if (jePoPoslednHodine) {
-                        // Mapování dnů pro zjištění následujícího dne
-                        const dnyTydne = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
-                        const now = new Date();
-                        let denIndex = now.getDay();
-                        
-                        // Přeskok na další pracovní den
-                        denIndex++;
-                        if (denIndex === 6) denIndex = 1; // Sobota -> Pondělí
-                        if (denIndex === 0) denIndex = 1; // Neděle -> Pondělí
-                        
-                        denZobrazeni = `${dnyTydne[denIndex]} (zítřejší rozvrh)`;
-                    }
                     
                     // Zkontroluj, jestli jsou k dispozici hodiny
                     const maHodiny = result.data.hodiny && result.data.hodiny.length > 0;
                     const dataNedostupna = result.data.data_nedostupna === true;
-                    const jeZitra = result.data.je_zitra === true;
                     
                     let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni}</h3>`;
                     
-                    if (dataNedostupna && jeZitra) {
-                        // Data pro zítřek ještě nejsou na webu k dispozici
-                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">⚠️ <strong>Dnešní rozvrh již skončil.</strong> Data pro zítřejší rozvrh ještě nejsou na webu Bakalářů k dispozici.<br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
+                    if (dataNedostupna) {
+                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Pro tento den nejsou k dispozici žádné hodiny.</strong><br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
                     } else if (maHodiny) {
                         // Zobraz rozvrh pouze když jsou dostupné hodiny
                         result.data.hodiny.forEach(hodina => {
@@ -3266,14 +3227,41 @@
                             htmlContent += '</p>';
                         });
                         
-                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">💡 Pokud chceš zobrazit ostatní dny, klikni na níže uvedený odkaz<br>📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
+                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
                     } else {
-                        // Když nejsou žádné hodiny, nezobrazuj nic (jen nadpis zůstane)
-                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Dnes nejsou k dispozici žádné hodiny.</strong><br><br>� Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
+                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Dnes nejsou k dispozici žádné hodiny.</strong><br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
                     }
                     
                     // Použijeme typing efekt pro HTML obsah
                     await typeHtmlMessage(contentDiv, htmlContent, 1);
+                    
+                    // Přidáme tlačítko "Další den" jako novou zprávu bota
+                    const btnMsgDiv = document.createElement('div');
+                    btnMsgDiv.className = 'message bot';
+                    
+                    const btnContent = document.createElement('div');
+                    btnContent.className = 'message-content';
+                    btnContent.style.cssText = 'display: flex; justify-content: center; padding: 8px 12px;';
+                    
+                    const dalsiDenBtn = document.createElement('button');
+                    dalsiDenBtn.textContent = '📅 Rozvrh na další den';
+                    dalsiDenBtn.style.cssText = 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 20px; padding: 8px 18px; font-size: 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(102,126,234,0.3); transition: transform 0.2s, box-shadow 0.2s;';
+                    dalsiDenBtn.addEventListener('mouseover', function() {
+                        this.style.transform = 'scale(1.05)';
+                        this.style.boxShadow = '0 4px 12px rgba(102,126,234,0.5)';
+                    });
+                    dalsiDenBtn.addEventListener('mouseout', function() {
+                        this.style.transform = 'scale(1)';
+                        this.style.boxShadow = '0 2px 8px rgba(102,126,234,0.3)';
+                    });
+                    dalsiDenBtn.addEventListener('click', function() {
+                        loadRozvrhDalsiDen(nazevTridy, endpoint, bakalariUrl);
+                    });
+                    
+                    btnContent.appendChild(dalsiDenBtn);
+                    btnMsgDiv.appendChild(btnContent);
+                    chatContainer.appendChild(btnMsgDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 } else {
                     addMessage(`❌ Nepodařilo se načíst rozvrh třídy ${nazevTridy}. Zkus to prosím později.`, false);
                 }
@@ -3287,6 +3275,75 @@
                 addMessage('❌ Došlo k chybě při načítání rozvrhu. Zkus to prosím znovu.', false);
             }
             
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // Funkce pro načtení rozvrhu na další den
+        async function loadRozvrhDalsiDen(nazevTridy, endpoint, bakalariUrl) {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message bot';
+            loadingDiv.id = 'rozvrhDalsiDenLoading';
+            
+            const loadingContent = document.createElement('div');
+            loadingContent.className = 'message-content';
+            loadingContent.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;"></div>
+                    <span>Načítám rozvrh na další den pro třídu ${nazevTridy}...</span>
+                </div>
+            `;
+            
+            loadingDiv.appendChild(loadingContent);
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            try {
+                const tridaSlug = endpoint.replace('/rozvrh/', '');
+                const response = await fetch(`${CONFIG.API_BASE_URL}/rozvrh/${tridaSlug}/dalsi-den`);
+                const result = await response.json();
+                
+                const loading = document.getElementById('rozvrhDalsiDenLoading');
+                if (loading) loading.remove();
+                
+                if (result.success && result.data) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message bot';
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.style.maxWidth = '80%';
+                    
+                    messageDiv.appendChild(contentDiv);
+                    chatContainer.appendChild(messageDiv);
+                    
+                    const denZobrazeni = result.data.den;
+                    const maHodiny = result.data.hodiny && result.data.hodiny.length > 0;
+                    const dataNedostupna = result.data.data_nedostupna === true;
+                    
+                    let htmlContent = `<h3 style="color: #667eea; font-size: 13px; margin: 0 0 10px 0;">📅 Rozvrh třídy ${nazevTridy} - ${denZobrazeni} (${result.data.datum})</h3>`;
+                    
+                    if (dataNedostupna || !maHodiny) {
+                        htmlContent += `<p style="margin: 10px 0; font-size: 11px; line-height: 1.6; color: #555;">📭 <strong>Data pro tento den ještě nejsou na webu Bakalářů k dispozici.</strong><br><br>📅 Kompletní rozvrh najdeš na <a href="${bakalariUrl}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">rozvrhu třídy ${nazevTridy}</a></p>`;
+                    } else {
+                        result.data.hodiny.forEach(hodina => {
+                            htmlContent += `<p style="margin: 5px 0; font-size: 11px;"><strong>${hodina.cislo}. hodina (${hodina.cas}):</strong> ${hodina.predmet}`;
+                            if (hodina.ucitel) htmlContent += ` - ${hodina.ucitel}`;
+                            if (hodina.mistnost) htmlContent += ` (${hodina.mistnost})`;
+                            htmlContent += '</p>';
+                        });
+                        htmlContent += `<p style="margin-top: 10px; font-style: italic; font-size: 10px;">📌 Zdroj: <a href="${bakalariUrl}" target="_blank" style="color: #667eea; text-decoration: none;">Bakaláři MGO</a></p>`;
+                    }
+                    
+                    await typeHtmlMessage(contentDiv, htmlContent, 1);
+                } else {
+                    addMessage(`❌ Nepodařilo se načíst rozvrh na další den pro třídu ${nazevTridy}.`, false);
+                }
+            } catch (error) {
+                const loading = document.getElementById('rozvrhDalsiDenLoading');
+                if (loading) loading.remove();
+                console.error(`Chyba při načítání rozvrhu na další den ${nazevTridy}:`, error);
+                addMessage('❌ Došlo k chybě při načítání rozvrhu. Zkus to prosím znovu.', false);
+            }
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         

@@ -242,34 +242,6 @@ def _scrape_rozvrh_generic(url):
                 hodiny_list = den_k_zobrazeni['hodiny']
                 datum_zobrazit = dnes
                 den_nazev = dny_nazvy[den_v_tydnu]
-                
-                # Zjistíme, jestli už poslední hodina skončila
-                if hodiny_list:
-                    posledni_hodina = max(hodiny_list, key=lambda x: x['cas'])
-                    cas_match = re.search(r'-(\d+):(\d+)$', posledni_hodina['cas'])
-                    if cas_match:
-                        konec_hodiny = int(cas_match.group(1)) * 60 + int(cas_match.group(2))
-                        if aktualny_cas > konec_hodiny:
-                            # Hledáme zítřejší den
-                            zitra = dnes + timedelta(days=1)
-                            if zitra.weekday() == 5:  # Sobota -> pondělí
-                                zitra = dnes + timedelta(days=3)
-                            
-                            zitra_str = zitra.strftime('%Y-%m-%d')
-                            if zitra_str in vsechny_dny:
-                                den_k_zobrazeni = vsechny_dny[zitra_str]
-                                hodiny_list = den_k_zobrazeni['hodiny']
-                                datum_zobrazit = zitra
-                                den_nazev = f"{dny_nazvy[zitra.weekday()]} (zítřejší rozvrh)"
-                            else:
-                                # Data pro zítřek ještě nejsou dostupná
-                                return {
-                                    'den': f"{dny_nazvy[zitra.weekday()]} (zítřejší rozvrh)",
-                                    'datum': zitra.strftime('%d.%m.%Y'),
-                                    'hodiny': [],
-                                    'data_nedostupna': True,
-                                    'je_zitra': True
-                                }
             else:
                 # Dnešní den nemá data, hledáme nejbližší budoucí den
                 for datum_str in sorted(vsechny_dny.keys()):
@@ -313,4 +285,115 @@ def _scrape_rozvrh_generic(url):
             'hodiny': [],
             'data_nedostupna': True,
             'je_zitra': False
+        }
+
+
+def _scrape_rozvrh_next_day(url):
+    """Scrape rozvrh na další pracovní den pro danou třídu."""
+    try:
+        response = requests.get(url, timeout=10)
+        response.encoding = 'utf-8'
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        dnes = datetime.now()
+        den_v_tydnu = dnes.weekday()
+
+        dny_nazvy = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle']
+        den_zkratky = ['po', 'út', 'st', 'čt', 'pá', 'so', 'ne']
+
+        # Vypočítáme další pracovní den
+        if den_v_tydnu == 4:  # Pátek -> Pondělí
+            dalsi_den = dnes + timedelta(days=3)
+        elif den_v_tydnu == 5:  # Sobota -> Pondělí
+            dalsi_den = dnes + timedelta(days=2)
+        elif den_v_tydnu == 6:  # Neděle -> Pondělí
+            dalsi_den = dnes + timedelta(days=1)
+        else:
+            dalsi_den = dnes + timedelta(days=1)
+
+        dalsi_den_str = dalsi_den.strftime('%Y-%m-%d')
+
+        # Parsujeme hodiny
+        hodiny_items = soup.find_all('div', class_='day-item-hover')
+        vsechny_dny = {}
+
+        for hodina_div in hodiny_items:
+            try:
+                detail_json = hodina_div.get('data-detail', '{}')
+                detail_json = html.unescape(detail_json)
+                detail_data = json.loads(detail_json)
+                subjecttext = detail_data.get('subjecttext', '')
+                if not subjecttext:
+                    continue
+
+                teacher = detail_data.get('teacher', '')
+                room = detail_data.get('room', '')
+                theme = detail_data.get('theme', '')
+                group = detail_data.get('group', '')
+
+                parts = subjecttext.split('|')
+                predmet = parts[0].strip() if len(parts) > 0 else ''
+
+                if len(parts) > 2:
+                    time_part = parts[2].strip()
+                    match = re.search(r'(\d+[AB]?)\s*\((\d+:\d+)\s*-\s*(\d+:\d+)\)', time_part)
+                    if match:
+                        cislo_hodiny = match.group(1)
+                        cas = f"{match.group(2)}-{match.group(3)}"
+
+                        datum_match = re.search(r'(po|út|st|čt|pá)\s+(\d+)\.(\d+)\.', subjecttext)
+                        if datum_match:
+                            den_cislo = int(datum_match.group(2))
+                            mesic_cislo = int(datum_match.group(3))
+                            try:
+                                datum_hodiny = datetime(dnes.year, mesic_cislo, den_cislo)
+                                datum_str = datum_hodiny.strftime('%Y-%m-%d')
+                                if datum_str not in vsechny_dny:
+                                    den_zkratka = datum_match.group(1)
+                                    den_index = den_zkratky.index(den_zkratka)
+                                    vsechny_dny[datum_str] = {
+                                        'den': dny_nazvy[den_index],
+                                        'datum': datum_hodiny,
+                                        'hodiny': []
+                                    }
+                                vsechny_dny[datum_str]['hodiny'].append({
+                                    'cislo': cislo_hodiny,
+                                    'cas': cas,
+                                    'predmet': predmet,
+                                    'ucitel': teacher,
+                                    'mistnost': room,
+                                    'tema': theme,
+                                    'skupina': group
+                                })
+                            except ValueError:
+                                continue
+            except (json.JSONDecodeError, KeyError, AttributeError):
+                continue
+
+        if dalsi_den_str in vsechny_dny:
+            den_data = vsechny_dny[dalsi_den_str]
+            hodiny = sorted(den_data['hodiny'], key=lambda x: x['cislo'])
+            return {
+                'den': den_data['den'],
+                'datum': dalsi_den.strftime('%d.%m.%Y'),
+                'hodiny': hodiny,
+                'data_nedostupna': False
+            }
+        else:
+            return {
+                'den': dny_nazvy[dalsi_den.weekday()],
+                'datum': dalsi_den.strftime('%d.%m.%Y'),
+                'hodiny': [],
+                'data_nedostupna': True
+            }
+
+    except Exception as e:
+        print(f"Chyba při scrapování rozvrhu na další den: {e}")
+        dalsi_den = datetime.now() + timedelta(days=1)
+        dny_nazvy = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle']
+        return {
+            'den': dny_nazvy[dalsi_den.weekday()],
+            'datum': dalsi_den.strftime('%d.%m.%Y'),
+            'hodiny': [],
+            'data_nedostupna': True
         }

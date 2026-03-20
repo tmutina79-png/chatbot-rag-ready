@@ -28,7 +28,8 @@ from app.rozvrh.scraper import (
     scrape_rozvrh_1w, scrape_rozvrh_sxa,
     scrape_rozvrh_1a, scrape_rozvrh_kvia, scrape_rozvrh_kvib, scrape_rozvrh_2a,
     scrape_rozvrh_sxb, scrape_rozvrh_3a, scrape_rozvrh_spta, scrape_rozvrh_sptb,
-    scrape_rozvrh_4a, scrape_rozvrh_okta, scrape_rozvrh_oktb
+    scrape_rozvrh_4a, scrape_rozvrh_okta, scrape_rozvrh_oktb,
+    _scrape_rozvrh_next_day
 )
 
 import os
@@ -762,3 +763,41 @@ def get_rozvrh_tb():
             "error": str(e),
             "data": None
         }
+
+# Mapování tříd na jejich Bakaláři URL
+ROZVRH_TRIDY_URLS = {
+    "pa": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2B",
+    "pb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2C",
+    "sa": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/28",
+    "sb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/29",
+    "ta": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/25",
+    "tb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/26",
+    "kva": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/22",
+    "kvb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/23",
+    "1w": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1W",
+    "sxa": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SXA",
+    "sxb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1X",
+    "1a": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2A",
+    "kvia": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1Z",
+    "kvib": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/20",
+    "2a": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/27",
+    "3a": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/24",
+    "spta": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1T",
+    "sptb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1U",
+    "4a": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/21",
+    "okta": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1Q",
+    "oktb": "https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1R",
+}
+
+@app.get("/rozvrh/{trida}/dalsi-den")
+def get_rozvrh_dalsi_den(trida: str):
+    """Získá rozvrh na další pracovní den pro danou třídu."""
+    trida_lower = trida.lower()
+    if trida_lower not in ROZVRH_TRIDY_URLS:
+        return {"success": False, "error": f"Neznámá třída: {trida}", "data": None}
+    try:
+        url = ROZVRH_TRIDY_URLS[trida_lower]
+        rozvrh_data = _scrape_rozvrh_next_day(url)
+        return {"success": True, "data": rozvrh_data, "source": "scraping"}
+    except Exception as e:
+        return {"success": False, "error": str(e), "data": None}
