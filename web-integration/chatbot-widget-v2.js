@@ -122,7 +122,7 @@
                 }\
                 #maticak-modal-wrapper * { box-sizing: border-box; }\
                 #maticak-modal-wrapper .modal-content {\
-                    padding: 32px;\
+                    padding: 24px;\
                     display: flex;\
                     flex-direction: column;\
                 }\
@@ -131,11 +131,11 @@
                     justify-content: space-between;\
                     align-items: center;\
                     margin-bottom: 0;\
-                    padding: 20px 32px;\
+                    padding: 16px 24px;\
                     border-bottom: none;\
                     background: linear-gradient(135deg, #006aac 0%, #0a78b0 100%);\
                     border-radius: 24px 24px 0 0;\
-                    margin: -32px -32px 24px -32px;\
+                    margin: -24px -24px 20px -24px;\
                 }\
                 #maticak-modal-wrapper .modal-header h2 {\
                     color: #ffffff;\

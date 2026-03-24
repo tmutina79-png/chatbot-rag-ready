@@ -583,11 +583,11 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0;
-            padding: 20px 32px;
+            padding: 16px 24px;
             border-bottom: none;
             background: linear-gradient(135deg, #006aac 0%, #0a78b0 100%);
             border-radius: 24px 24px 0 0;
-            margin: -32px -32px 24px -32px;
+            margin: -24px -24px 20px -24px;
         }
 
         .modal-header h2 {
@@ -2160,7 +2160,7 @@
             
             // Nastavíme loading text
             if (modalBody) {
-                modalBody.innerHTML = '<p style="text-align: center; padding: 20px;">⏳ Načítám dnešní menu...</p>';
+                modalBody.innerHTML = '<p style="text-align: center; padding: 10px;">⏳ Načítám dnešní menu...</p>';
                 console.log('Loading text set');
             }
             
@@ -2186,20 +2186,22 @@
                 if (result.success && result.data) {
                     console.log('Building HTML content...');
                     
-                    let htmlContent = `<h3 style="color: #0080cc; font-size: 16px;">🍽️ Dnešní menu - ${result.data.den} ${result.data.datum}</h3>`;
+                    let htmlContent = `<p style="color: #0080cc; font-size: 14px; font-weight: 600; margin: 0 0 10px 0;">${result.data.den} ${result.data.datum}</p>`;
                     
                     if (result.data.menu && result.data.menu.length > 0) {
+                        htmlContent += '<div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">';
                         for (const jidlo of result.data.menu) {
-                            htmlContent += `<p style="font-size: 14px;"><strong>${jidlo.typ}:</strong><br>${jidlo.nazev}</p>`;
+                            htmlContent += `<p style="font-size: 13px; margin: 0; line-height: 1.4;"><strong>${jidlo.typ}:</strong> ${jidlo.nazev}</p>`;
                         }
+                        htmlContent += '</div>';
                     } else {
-                        htmlContent += '<p style="font-size: 14px;">Dnes není k dispozici žádné menu.</p>';
+                        htmlContent += '<p style="font-size: 13px; margin: 0 0 14px 0;">Dnes není k dispozici žádné menu.</p>';
                     }
                     
-                    htmlContent += '<div class="contact-links">';
-                    htmlContent += '<a href="#" id="tydenniMenuLink" class="contact-link">📅 Týdenní menu</a>';
-                    htmlContent += '<a href="#" id="pristiTydenMenuLink" class="contact-link">📅 Jídelníček na další týden</a>';
-                    htmlContent += '<a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link">🛒 Objednat oběd</a>';
+                    htmlContent += '<div class="contact-links" style="gap: 6px;">';
+                    htmlContent += '<a href="#" id="tydenniMenuLink" class="contact-link" style="padding: 8px 12px;">📅 Týdenní menu</a>';
+                    htmlContent += '<a href="#" id="pristiTydenMenuLink" class="contact-link" style="padding: 8px 12px;">📅 Jídelníček na další týden</a>';
+                    htmlContent += '<a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link" style="padding: 8px 12px;">🛒 Objednat oběd</a>';
                     htmlContent += '</div>';
                     
                     console.log('Setting modalBody.innerHTML...');
