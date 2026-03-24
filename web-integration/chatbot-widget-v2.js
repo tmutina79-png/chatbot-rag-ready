@@ -130,22 +130,25 @@
                     display: flex;\
                     justify-content: space-between;\
                     align-items: center;\
-                    margin-bottom: 24px;\
-                    padding-bottom: 20px;\
-                    border-bottom: 1px solid #E8E8EA;\
+                    margin-bottom: 0;\
+                    padding: 20px 32px;\
+                    border-bottom: none;\
+                    background: linear-gradient(135deg, #006aac 0%, #0a78b0 100%);\
+                    border-radius: 24px 24px 0 0;\
+                    margin: -32px -32px 24px -32px;\
                 }\
                 #maticak-modal-wrapper .modal-header h2 {\
-                    color: #1D1D1F;\
+                    color: #ffffff;\
                     font-size: 24px;\
                     font-weight: 600;\
                     margin: 0;\
                     letter-spacing: -0.5px;\
                 }\
                 #maticak-modal-wrapper .close-btn {\
-                    background: #F5F5F7;\
+                    background: rgba(255, 255, 255, 0.2);\
                     border: none;\
                     font-size: 20px;\
-                    color: #666;\
+                    color: #ffffff;\
                     cursor: pointer;\
                     padding: 0;\
                     width: 32px;\
@@ -157,8 +160,8 @@
                     border-radius: 50%;\
                 }\
                 #maticak-modal-wrapper .close-btn:hover {\
-                    background: #E8E8EA;\
-                    color: #333;\
+                    background: rgba(255, 255, 255, 0.35);\
+                    color: #ffffff;\
                     transform: scale(1.05);\
                 }\
                 #maticak-modal-wrapper .modal-body {\
