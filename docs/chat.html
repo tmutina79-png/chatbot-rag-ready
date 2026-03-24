@@ -900,6 +900,19 @@
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
+        /* V iframe režimu: chat je vždy viditelný, toggle a mascot skryté */
+        html.in-iframe .container.hidden {
+            transform: none !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        html.in-iframe .chat-toggle-btn,
+        html.in-iframe .maty-mascot,
+        html.in-iframe .welcome-bubble-container {
+            display: none !important;
+        }
+
         /* Rotace ikony tlačítka */
         .chat-toggle-btn .icon {
             transition: transform 0.3s ease;
@@ -1512,6 +1525,9 @@
         if (window.self === window.top) {
             // Nejsme v iframe - standalone režim
             document.documentElement.classList.add('standalone');
+        } else {
+            // Jsme v iframe - přidáme třídu pro iframe režim
+            document.documentElement.classList.add('in-iframe');
         }
     </script>
     
@@ -2652,7 +2668,10 @@
         }
         
         // Zavření chatbota při kliknutí mimo něj (zachová historii chatu)
+        // V iframe režimu se nezavírá - o zavření se stará vnější widget
         document.addEventListener('click', function(event) {
+            if (window.self !== window.top) return; // V iframe nezavírat
+            
             const chatWidget = document.getElementById('chatWidget');
             const chatToggleBtn = document.getElementById('chatToggleBtn');
             const chatBadge = document.getElementById('chatBadge');
@@ -4580,8 +4599,20 @@
         
         // Inicializace při načtení stránky
         window.addEventListener('load', function() {
-            // Zobrazíme uvítací bublinu po načtení
-            showWelcomeBubble();
+            // V iframe režimu: automaticky zobrazit chat a uvítací zprávu
+            if (window.self !== window.top) {
+                const chatWidget = document.getElementById('chatWidget');
+                if (chatWidget) {
+                    chatWidget.classList.remove('hidden');
+                }
+                if (!welcomeShown) {
+                    welcomeShown = true;
+                    setTimeout(showWelcomeMessage, 500);
+                }
+            } else {
+                // Standalone režim: zobrazíme uvítací bublinu
+                showWelcomeBubble();
+            }
             
             // Keep-alive mechanismus - pingnout backend každých 10 minut
             // Zabrání uspání serveru na Render.com free tier
