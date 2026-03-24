@@ -71,13 +71,13 @@
                     right: ${this.config.position.right};
                     width: 64px;
                     height: 64px;
-                    background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+                    background: linear-gradient(135deg, #006aac 0%, #0a78b0 100%);
                     color: white;
                     border: none;
                     border-radius: 50%;
                     font-size: 30px;
                     cursor: pointer;
-                    box-shadow: 0 8px 24px rgba(91, 111, 232, 0.35);
+                    box-shadow: 0 8px 24px rgba(0, 106, 172, 0.35);
                     z-index: 999998;
                     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
                     border: 2px solid rgba(255, 255, 255, 0.2);
@@ -88,7 +88,7 @@
                 
                 #maticak-chat-toggle:hover {
                     transform: scale(1.08) translateY(-2px);
-                    box-shadow: 0 12px 32px rgba(91, 111, 232, 0.45);
+                    box-shadow: 0 12px 32px rgba(0, 106, 172, 0.45);
                 }
                 
                 #maticak-chat-toggle:active {
