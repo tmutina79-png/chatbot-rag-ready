@@ -4071,6 +4071,33 @@
             // Klíčová slova, která indikují hledání učitele
             const teacherKeywords = ['ucitel', 'ucitelka', 'pan', 'pani', 'mgr', 'paeddr', 'dr'];
             
+            // Běžná česká slova, která NEJSOU jména učitelů
+            const stopWords = [
+                'ahoj', 'cau', 'nazdar', 'zdravim', 'dobry', 'den', 'dobrou', 'noc',
+                'jak', 'mas', 'mam', 'mate', 'jsi', 'jste', 'jsem', 'jsou', 'byt', 'byl', 'byla', 'bylo',
+                'kde', 'kdy', 'kdo', 'proc', 'jak', 'jaky', 'jaka', 'jake', 'kolik',
+                'ano', 'nie', 'neni', 'nemas', 'nemam', 'nevis', 'nevim',
+                'diky', 'dekuji', 'dekuju', 'prosim', 'prosime',
+                'chci', 'chces', 'chceme', 'chcete', 'chtela', 'chtel',
+                'muj', 'moje', 'tvuj', 'tvoje', 'svuj', 'svoje', 'nas', 'vas',
+                'ten', 'tato', 'tohle', 'tamten', 'tamta',
+                'ale', 'proto', 'protoze', 'aby', 'kdyz', 'nebo', 'ani', 'tak', 'taky', 'take',
+                'hej', 'hoj', 'hey', 'cop', 'coz', 'cos', 'ses', 'sis',
+                'dnes', 'zitra', 'vcera', 'rano', 'vecer', 'ted', 'tehy', 'hned',
+                'vse', 'nic', 'neco', 'nekdo', 'nikdo', 'nekam', 'nikam',
+                'sem', 'tam', 'tady', 'tudy', 'odtud', 'kam',
+                'moc', 'hodne', 'malo', 'vic', 'min', 'dost', 'skvele', 'dobre', 'spatne',
+                'skola', 'trida', 'predmet', 'rozvrh', 'jidelna', 'menu', 'obed', 'kontakt',
+                'ucitele', 'vedeni', 'ostatni', 'novinky', 'info', 'pomoc', 'pomoct',
+                'vede', 'delas', 'dela', 'delam', 'deji', 'davas', 'davam',
+                'umi', 'umis', 'umim', 'umite', 'muze', 'muzes', 'muzem', 'muzete',
+                'chtel', 'chtela', 'bych', 'bys', 'mohla', 'mohl', 'rekni', 'reknes',
+                'vim', 'vis', 'vite', 'vedi', 'vedet', 'znat', 'znam', 'znas',
+                'rek', 'rika', 'rikas', 'rikam', 'rikat',
+                'novy', 'nova', 'nove', 'stary', 'stara', 'stare',
+                'velky', 'velka', 'velke', 'maly', 'mala', 'male'
+            ];
+            
             // Kontrola, zda zpráva obsahuje nějaké klíčové slovo
             let hasTeacherKeyword = false;
             for (const keyword of teacherKeywords) {
@@ -4086,8 +4113,9 @@
             
             // Hledáme slova, která vypadají jako příjmení (alespoň 3 znaky)
             for (const word of words) {
-                // Přeskočíme krátká slova a klíčová slova
+                // Přeskočíme krátká slova, klíčová slova a stopwords
                 if (word.length < 3 || teacherKeywords.includes(word) || 
+                    stopWords.includes(word) ||
                     ['kontakt', 'ucitele', 'rozvrh', 'jidelna', 'menu'].includes(word)) {
                     continue;
                 }
