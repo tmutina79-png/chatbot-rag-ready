@@ -66,14 +66,16 @@
                 }
                 
                 #maticak-chatbot-iframe.maticak-fullscreen {
-                    top: 0 !important;
-                    left: 0 !important;
-                    right: 0 !important;
-                    bottom: 0 !important;
-                    width: 100% !important;
-                    height: 100% !important;
-                    border-radius: 0 !important;
-                    max-height: none !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    right: auto !important;
+                    bottom: auto !important;
+                    transform: translate(-50%, -50%) !important;
+                    width: 550px !important;
+                    height: 85vh !important;
+                    max-height: 750px !important;
+                    border-radius: 20px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
                 }
                 
                 #maticak-chat-toggle {
@@ -122,6 +124,18 @@
                         border-radius: 20px 20px 0 0;
                     }
                     
+                    #maticak-chatbot-iframe.maticak-fullscreen {
+                        width: 94% !important;
+                        height: 80vh !important;
+                        max-height: none !important;
+                        top: 50% !important;
+                        left: 50% !important;
+                        right: auto !important;
+                        bottom: auto !important;
+                        transform: translate(-50%, -50%) !important;
+                        border-radius: 16px !important;
+                    }
+                    
                     #maticak-chat-toggle {
                         width: 60px;
                         height: 60px;
@@ -136,6 +150,11 @@
                         width: 90%;
                         height: 75vh;
                         border-radius: 15px 15px 0 0;
+                    }
+                    
+                    #maticak-chatbot-iframe.maticak-fullscreen {
+                        width: 96% !important;
+                        height: 85vh !important;
                     }
                 }
             `;
