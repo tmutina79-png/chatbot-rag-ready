@@ -2199,8 +2199,8 @@
                     }
                     
                     htmlContent += '<div class="contact-links" style="gap: 6px;">';
-                    htmlContent += '<a href="#" onclick="showTydenniMenuInChat(event)" class="contact-link" style="padding: 8px 12px;">📅 Týdenní menu</a>';
-                    htmlContent += '<a href="#" onclick="showNextWeekMenuInChat(event)" class="contact-link" style="padding: 8px 12px;">📅 Jídelníček na další týden</a>';
+                    htmlContent += '<a href="#" onclick="showTydenniMenuInChat()" class="contact-link" style="padding: 8px 12px;">📅 Týdenní menu</a>';
+                    htmlContent += '<a href="#" onclick="showNextWeekMenuInChat()" class="contact-link" style="padding: 8px 12px;">📅 Jídelníček na další týden</a>';
                     htmlContent += '<a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link" style="padding: 8px 12px;">🛒 Objednat oběd</a>';
                     htmlContent += '</div>';
                     
@@ -2234,7 +2234,7 @@
         
         // Funkce pro zobrazení týdenního menu v chatu
         async function showTydenniMenuInChat(event) {
-            if (event) event.preventDefault();
+            if (event && event.preventDefault) event.preventDefault();
             
             // Zavřeme modal
             closeJidelnaModal();
@@ -2322,7 +2322,7 @@
         
         // Funkce pro zobrazení menu na příští týden v chatu
         async function showNextWeekMenuInChat(event) {
-            if (event) event.preventDefault();
+            if (event && event.preventDefault) event.preventDefault();
             
             // Zavřeme modal pokud je otevřený
             closeJidelnaModal();
