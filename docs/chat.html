@@ -928,29 +928,6 @@
             display: none !important;
         }
 
-        /* V iframe režimu při otevřeném modálu: skrýt chatbot, průhledné pozadí */
-        html.in-iframe.modal-active body {
-            background: transparent !important;
-        }
-
-        html.in-iframe.modal-active .container {
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-
-        html.in-iframe.modal-active .container > *:not(.modal) {
-            visibility: hidden !important;
-        }
-
-        html.in-iframe.modal-active .modal {
-            background-color: transparent !important;
-            backdrop-filter: none !important;
-        }
-
-        html.in-iframe.modal-active .modal-content {
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25) !important;
-        }
-
         /* Rotace ikony tlačítka */
         .chat-toggle-btn .icon {
             transition: transform 0.3s ease;
@@ -2088,19 +2065,55 @@
             }
         }
         
-        // Pomocné funkce pro iframe - rozšíření/zmenšení iframe při otevření/zavření modálu
+        // Pomocné funkce pro iframe - modální okno se zobrazí na rodičovské stránce
         function notifyModalOpen() {
             if (window.self !== window.top) {
-                document.documentElement.classList.add('modal-active');
-                window.parent.postMessage({ type: 'maticak-modal-open' }, '*');
+                // Najít otevřený modal a poslat jeho obsah do rodičovské stránky
+                var modals = document.querySelectorAll('.modal');
+                for (var i = 0; i < modals.length; i++) {
+                    if (modals[i].style.display === 'block') {
+                        var content = modals[i].querySelector('.modal-content');
+                        if (content) {
+                            window.parent.postMessage({
+                                type: 'maticak-modal-open',
+                                html: content.outerHTML
+                            }, '*');
+                        }
+                        // Skrýt modal v iframe (zůstane v DOM pro JS aktualizace)
+                        modals[i].style.display = 'none';
+                        break;
+                    }
+                }
             }
         }
         function notifyModalClose() {
             if (window.self !== window.top) {
-                document.documentElement.classList.remove('modal-active');
                 window.parent.postMessage({ type: 'maticak-modal-close' }, '*');
             }
         }
+        // Poslat aktualizovaný obsah modálu (pro dynamický obsah jako jídelna)
+        function notifyModalUpdate(modalElement) {
+            if (window.self !== window.top && modalElement) {
+                var content = modalElement.querySelector('.modal-content');
+                if (content) {
+                    window.parent.postMessage({
+                        type: 'maticak-modal-update',
+                        html: content.outerHTML
+                    }, '*');
+                }
+            }
+        }
+        // Příjem akcí z rodičovské stránky (kliknutí na tlačítka v modálu)
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'maticak-action') {
+                try {
+                    var fn = new Function(event.data.action);
+                    fn();
+                } catch(e) {
+                    console.error('Chyba při provádění akce:', e);
+                }
+            }
+        });
 
         // Funkce pro zobrazení kontaktu
         function showContact() {
@@ -2139,7 +2152,6 @@
             // Zobrazíme modal
             if (modal) {
                 modal.style.display = 'block';
-                notifyModalOpen();
                 console.log('Modal display set to block');
             }
             
@@ -2148,6 +2160,9 @@
                 modalBody.innerHTML = '<p style="text-align: center; padding: 20px;">⏳ Načítám dnešní menu...</p>';
                 console.log('Loading text set');
             }
+            
+            // V iframe pošleme loading stav na rodičovskou stránku
+            notifyModalOpen();
             
             const url = `${CONFIG.API_BASE_URL}/jidelna/dnesni-menu`;
             console.log('Fetching from:', url);
@@ -2217,9 +2232,13 @@
                         }
                     }, 100);
                     
+                    // Aktualizovat obsah modálu na rodičovské stránce
+                    notifyModalUpdate(modal);
+                    
                 } else {
                     console.log('No data in result');
                     modalBody.innerHTML = '<p style="color: red;">❌ Nepodařilo se načíst dnešní menu.</p>';
+                    notifyModalUpdate(modal);
                 }
                 
             } catch (error) {
@@ -2230,6 +2249,7 @@
                         <p style="font-size: 10px;">${error.message}</p>
                         <p style="font-size: 10px;">URL: ${url}</p>
                     `;
+                    notifyModalUpdate(modal);
                 }
             }
             
@@ -2430,8 +2450,10 @@
         
         // Funkce pro zobrazení modalu prázdnin
         function showPrazdninyModal() {
-            closeOstatniModal(); // Zavřeme ostatní modal - neposíláme close, jen open
+            // V iframe: zavřeme ostatní modal bez notifikace, pošleme jen nový
+            document.getElementById('ostatniModal').style.display = 'none';
             document.getElementById('prazdninyModal').style.display = 'block';
+            notifyModalOpen();
         }
         
         // Funkce pro zavření modalu prázdnin
