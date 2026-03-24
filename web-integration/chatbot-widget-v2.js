@@ -105,10 +105,13 @@
                     font-weight: 500;\
                     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);\
                     z-index: 999997;\
-                    animation: maticakBubbleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);\
+                    animation: maticakBubbleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), maticakPulseGlow 1.5s ease-in-out 0.5s infinite;\
                     cursor: pointer;\
                     max-width: 220px;\
                     line-height: 1.4;\
+                }\
+                #maticak-chat-toggle.maticak-pulse {\
+                    animation: maticakTogglePulse 1.2s ease-in-out infinite;\
                 }\
                 #maticak-greeting-bubble.maticak-bubble-out {\
                     animation: maticakBubbleOut 0.3s ease forwards;\
@@ -120,6 +123,14 @@
                 @keyframes maticakBubbleOut {\
                     from { opacity: 1; transform: translateY(0) scale(1); }\
                     to { opacity: 0; transform: translateY(10px) scale(0.9); }\
+                }\
+                @keyframes maticakPulseGlow {\
+                    0%, 100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); transform: scale(1); }\
+                    50% { box-shadow: 0 8px 30px rgba(0, 106, 172, 0.4); transform: scale(1.03); }\
+                }\
+                @keyframes maticakTogglePulse {\
+                    0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 106, 172, 0.35); }\
+                    50% { transform: scale(1.12); box-shadow: 0 8px 32px rgba(0, 106, 172, 0.6); }\
                 }\
                 #maticak-modal-overlay {\
                     position: fixed;\
@@ -580,11 +591,14 @@
             var self = this;
             setTimeout(function() {
                 if (self.isOpen) return;
+                var toggleBtn = document.getElementById('maticak-chat-toggle');
                 var bubble = document.createElement('div');
                 bubble.id = 'maticak-greeting-bubble';
                 bubble.textContent = 'Ahoj! \uD83D\uDC4B Jmenuji se MATY!';
+                if (toggleBtn) toggleBtn.classList.add('maticak-pulse');
                 bubble.addEventListener('click', function() {
                     bubble.remove();
+                    if (toggleBtn) toggleBtn.classList.remove('maticak-pulse');
                     self.open();
                 });
                 document.body.appendChild(bubble);
@@ -593,6 +607,7 @@
                         bubble.classList.add('maticak-bubble-out');
                         setTimeout(function() { bubble.remove(); }, 300);
                     }
+                    if (toggleBtn) toggleBtn.classList.remove('maticak-pulse');
                 }, 8000);
             }, 1500);
         },
