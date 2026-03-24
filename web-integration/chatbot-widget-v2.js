@@ -250,8 +250,8 @@
                     font-size: 13px;\
                 }\
                 #maticak-modal-wrapper .contact-link:hover {\
-                    background: #0080cc;\
-                    color: white;\
+                    background: #0080cc !important;\
+                    color: white !important;\
                     transform: translateY(-1px);\
                 }\
                 #maticak-modal-wrapper .tridy-grid {\
@@ -503,7 +503,6 @@
             if (wrapper) {
                 var processedHtml = html.replace(/onclick="([^"]*)"/g, 'data-iframe-action="$1"');
                 wrapper.innerHTML = processedHtml;
-                this.addModalClickHandlers(wrapper);
             }
         },
         

@@ -503,7 +503,6 @@
             if (wrapper) {
                 var processedHtml = html.replace(/onclick="([^"]*)"/g, 'data-iframe-action="$1"');
                 wrapper.innerHTML = processedHtml;
-                this.addModalClickHandlers(wrapper);
             }
         },
         
