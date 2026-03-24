@@ -2189,7 +2189,7 @@
                     let htmlContent = `<p style="color: #0080cc; font-size: 14px; font-weight: 600; margin: 0 0 10px 0;">${result.data.den} ${result.data.datum}</p>`;
                     
                     if (result.data.menu && result.data.menu.length > 0) {
-                        htmlContent += '<div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px;">';
+                        htmlContent += '<div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">';
                         for (const jidlo of result.data.menu) {
                             htmlContent += `<p style="font-size: 13px; margin: 0; line-height: 1.4;"><strong>${jidlo.typ}:</strong> ${jidlo.nazev}</p>`;
                         }
