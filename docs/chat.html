@@ -2199,43 +2199,14 @@
                     }
                     
                     htmlContent += '<div class="contact-links" style="gap: 6px;">';
-                    htmlContent += '<a href="#" id="tydenniMenuLink" class="contact-link" style="padding: 8px 12px;">📅 Týdenní menu</a>';
-                    htmlContent += '<a href="#" id="pristiTydenMenuLink" class="contact-link" style="padding: 8px 12px;">📅 Jídelníček na další týden</a>';
+                    htmlContent += '<a href="#" onclick="showTydenniMenuInChat(event)" class="contact-link" style="padding: 8px 12px;">📅 Týdenní menu</a>';
+                    htmlContent += '<a href="#" onclick="showNextWeekMenuInChat(event)" class="contact-link" style="padding: 8px 12px;">📅 Jídelníček na další týden</a>';
                     htmlContent += '<a href="http://obedy.zs-mat5.cz/login" target="_blank" class="contact-link" style="padding: 8px 12px;">🛒 Objednat oběd</a>';
                     htmlContent += '</div>';
                     
                     console.log('Setting modalBody.innerHTML...');
                     modalBody.innerHTML = htmlContent;
                     console.log('HTML content set successfully');
-                    
-                    // Event listener pro týdenní menu
-                    setTimeout(() => {
-                        const tydenniLink = document.getElementById('tydenniMenuLink');
-                        if (tydenniLink) {
-                            console.log('Adding event listener to tydenniMenuLink');
-                            const handleTydenniMenu = function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                console.log('Týdenní menu clicked');
-                                showTydenniMenuInChat(e);
-                            };
-                            
-                            tydenniLink.addEventListener('click', handleTydenniMenu);
-                            tydenniLink.addEventListener('touchstart', handleTydenniMenu, { passive: false });
-                        }
-                        
-                        // Event listener pro menu na příští týden
-                        const pristiLink = document.getElementById('pristiTydenMenuLink');
-                        if (pristiLink) {
-                            const handlePristiMenu = function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                showNextWeekMenuInChat(e);
-                            };
-                            pristiLink.addEventListener('click', handlePristiMenu);
-                            pristiLink.addEventListener('touchstart', handlePristiMenu, { passive: false });
-                        }
-                    }, 100);
                     
                     // Aktualizovat obsah modálu na rodičovské stránce
                     notifyModalUpdate(modal);
