@@ -593,7 +593,7 @@
                         bubble.classList.add('maticak-bubble-out');
                         setTimeout(function() { bubble.remove(); }, 300);
                     }
-                }, 4000);
+                }, 8000);
             }, 1500);
         },
 
