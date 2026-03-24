@@ -35,6 +35,7 @@
             this.injectStyles();
             this.injectHTML();
             this.initEventListeners();
+            this.showGreeting();
             console.log('✅ MATIČÁK Chatbot v3.0 načten');
         },
         
@@ -90,6 +91,35 @@
                 }\
                 #maticak-chat-toggle.maticak-hidden {\
                     display: none;\
+                }\
+                #maticak-greeting-bubble {\
+                    position: fixed;\
+                    bottom: 96px;\
+                    right: 24px;\
+                    background: white;\
+                    color: #1D1D1F;\
+                    padding: 12px 18px;\
+                    border-radius: 16px 16px 4px 16px;\
+                    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;\
+                    font-size: 14px;\
+                    font-weight: 500;\
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);\
+                    z-index: 999997;\
+                    animation: maticakBubbleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);\
+                    cursor: pointer;\
+                    max-width: 220px;\
+                    line-height: 1.4;\
+                }\
+                #maticak-greeting-bubble.maticak-bubble-out {\
+                    animation: maticakBubbleOut 0.3s ease forwards;\
+                }\
+                @keyframes maticakBubbleIn {\
+                    from { opacity: 0; transform: translateY(10px) scale(0.9); }\
+                    to { opacity: 1; transform: translateY(0) scale(1); }\
+                }\
+                @keyframes maticakBubbleOut {\
+                    from { opacity: 1; transform: translateY(0) scale(1); }\
+                    to { opacity: 0; transform: translateY(10px) scale(0.9); }\
                 }\
                 #maticak-modal-overlay {\
                     position: fixed;\
@@ -546,6 +576,27 @@
             if (overlay) overlay.remove();
         },
         
+        showGreeting: function() {
+            var self = this;
+            setTimeout(function() {
+                if (self.isOpen) return;
+                var bubble = document.createElement('div');
+                bubble.id = 'maticak-greeting-bubble';
+                bubble.textContent = 'Ahoj! \uD83D\uDC4B Jmenuji se MATY!';
+                bubble.addEventListener('click', function() {
+                    bubble.remove();
+                    self.open();
+                });
+                document.body.appendChild(bubble);
+                setTimeout(function() {
+                    if (bubble.parentNode) {
+                        bubble.classList.add('maticak-bubble-out');
+                        setTimeout(function() { bubble.remove(); }, 300);
+                    }
+                }, 4000);
+            }, 1500);
+        },
+
         toggle: function() {
             var iframe = document.getElementById('maticak-chatbot-iframe');
             var btn = document.getElementById('maticak-chat-toggle');
