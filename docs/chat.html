@@ -907,6 +907,21 @@
             pointer-events: auto !important;
         }
 
+        /* V iframe režimu: kontejner VŽDY zabere celý iframe */
+        html.in-iframe .container {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-height: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            transform: none !important;
+        }
+
         html.in-iframe .chat-toggle-btn,
         html.in-iframe .maty-mascot,
         html.in-iframe .welcome-bubble-container {
