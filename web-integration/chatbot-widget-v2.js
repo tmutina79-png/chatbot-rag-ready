@@ -71,11 +71,29 @@
                     right: auto !important;
                     bottom: auto !important;
                     transform: translate(-50%, -50%) !important;
-                    width: 550px !important;
-                    height: 85vh !important;
-                    max-height: 750px !important;
-                    border-radius: 20px !important;
-                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+                    width: 600px !important;
+                    height: 90vh !important;
+                    max-height: none !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    background: transparent !important;
+                }
+                
+                #maticak-modal-backdrop {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    backdrop-filter: blur(4px);
+                    z-index: 999998;
+                    animation: maticakFadeIn 0.3s ease;
+                }
+                
+                @keyframes maticakFadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
                 }
                 
                 #maticak-chat-toggle {
@@ -125,15 +143,17 @@
                     }
                     
                     #maticak-chatbot-iframe.maticak-fullscreen {
-                        width: 94% !important;
-                        height: 80vh !important;
+                        width: 96% !important;
+                        height: 85vh !important;
                         max-height: none !important;
                         top: 50% !important;
                         left: 50% !important;
                         right: auto !important;
                         bottom: auto !important;
                         transform: translate(-50%, -50%) !important;
-                        border-radius: 16px !important;
+                        border-radius: 0 !important;
+                        box-shadow: none !important;
+                        background: transparent !important;
                     }
                     
                     #maticak-chat-toggle {
@@ -153,8 +173,9 @@
                     }
                     
                     #maticak-chatbot-iframe.maticak-fullscreen {
-                        width: 96% !important;
-                        height: 85vh !important;
+                        width: 98% !important;
+                        height: 90vh !important;
+                        background: transparent !important;
                     }
                 }
             `;
@@ -165,7 +186,7 @@
             const container = document.createElement('div');
             container.id = 'maticak-chatbot-container';
             container.innerHTML = `
-                <iframe id="maticak-chatbot-iframe" src="${this.config.chatbotUrl}" allow="clipboard-write"></iframe>
+                <iframe id="maticak-chatbot-iframe" src="${this.config.chatbotUrl}" allow="clipboard-write" allowtransparency="true"></iframe>
                 <button id="maticak-chat-toggle">💬</button>
             `;
             document.body.appendChild(container);
@@ -195,10 +216,19 @@
                 if (event.data && event.data.type === 'maticak-modal-open') {
                     var iframe = document.getElementById('maticak-chatbot-iframe');
                     iframe.classList.add('maticak-fullscreen');
+                    // Vytvořit backdrop na rodičovské stránce
+                    if (!document.getElementById('maticak-modal-backdrop')) {
+                        var backdrop = document.createElement('div');
+                        backdrop.id = 'maticak-modal-backdrop';
+                        document.body.appendChild(backdrop);
+                    }
                 }
                 if (event.data && event.data.type === 'maticak-modal-close') {
                     var iframe = document.getElementById('maticak-chatbot-iframe');
                     iframe.classList.remove('maticak-fullscreen');
+                    // Odstranit backdrop
+                    var backdrop = document.getElementById('maticak-modal-backdrop');
+                    if (backdrop) backdrop.remove();
                 }
             });
         },

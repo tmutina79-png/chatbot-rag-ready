@@ -928,6 +928,29 @@
             display: none !important;
         }
 
+        /* V iframe režimu při otevřeném modálu: skrýt chatbot, průhledné pozadí */
+        html.in-iframe.modal-active body {
+            background: transparent !important;
+        }
+
+        html.in-iframe.modal-active .container {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        html.in-iframe.modal-active .container > *:not(.modal) {
+            visibility: hidden !important;
+        }
+
+        html.in-iframe.modal-active .modal {
+            background-color: transparent !important;
+            backdrop-filter: none !important;
+        }
+
+        html.in-iframe.modal-active .modal-content {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25) !important;
+        }
+
         /* Rotace ikony tlačítka */
         .chat-toggle-btn .icon {
             transition: transform 0.3s ease;
@@ -2068,11 +2091,13 @@
         // Pomocné funkce pro iframe - rozšíření/zmenšení iframe při otevření/zavření modálu
         function notifyModalOpen() {
             if (window.self !== window.top) {
+                document.documentElement.classList.add('modal-active');
                 window.parent.postMessage({ type: 'maticak-modal-open' }, '*');
             }
         }
         function notifyModalClose() {
             if (window.self !== window.top) {
+                document.documentElement.classList.remove('modal-active');
                 window.parent.postMessage({ type: 'maticak-modal-close' }, '*');
             }
         }
