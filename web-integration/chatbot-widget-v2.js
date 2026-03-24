@@ -118,6 +118,256 @@
                     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);\
                     animation: maticakSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);\
                     position: relative;\
+                    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;\
+                }\
+                #maticak-modal-wrapper * { box-sizing: border-box; }\
+                #maticak-modal-wrapper .modal-content {\
+                    padding: 32px;\
+                    display: flex;\
+                    flex-direction: column;\
+                }\
+                #maticak-modal-wrapper .modal-header {\
+                    display: flex;\
+                    justify-content: space-between;\
+                    align-items: center;\
+                    margin-bottom: 24px;\
+                    padding-bottom: 20px;\
+                    border-bottom: 1px solid #E8E8EA;\
+                }\
+                #maticak-modal-wrapper .modal-header h2 {\
+                    color: #1D1D1F;\
+                    font-size: 24px;\
+                    font-weight: 600;\
+                    margin: 0;\
+                    letter-spacing: -0.5px;\
+                }\
+                #maticak-modal-wrapper .close-btn {\
+                    background: #F5F5F7;\
+                    border: none;\
+                    font-size: 20px;\
+                    color: #666;\
+                    cursor: pointer;\
+                    padding: 0;\
+                    width: 32px;\
+                    height: 32px;\
+                    display: flex;\
+                    align-items: center;\
+                    justify-content: center;\
+                    transition: all 0.2s ease;\
+                    border-radius: 50%;\
+                }\
+                #maticak-modal-wrapper .close-btn:hover {\
+                    background: #E8E8EA;\
+                    color: #333;\
+                    transform: scale(1.05);\
+                }\
+                #maticak-modal-wrapper .modal-body {\
+                    color: #1D1D1F;\
+                    font-size: 15px;\
+                    line-height: 1.6;\
+                }\
+                #maticak-modal-wrapper .modal-body h3 {\
+                    color: #1D1D1F;\
+                    font-size: 18px;\
+                    font-weight: 600;\
+                    margin: 20px 0 12px 0;\
+                    letter-spacing: -0.3px;\
+                }\
+                #maticak-modal-wrapper .modal-body h4 {\
+                    margin: 15px 0 8px 0;\
+                    font-size: 14px;\
+                }\
+                #maticak-modal-wrapper .modal-body p {\
+                    margin: 12px 0;\
+                    color: #494949;\
+                }\
+                #maticak-modal-wrapper .modal-body a {\
+                    color: #006aac;\
+                    text-decoration: none;\
+                    transition: all 0.2s ease;\
+                    font-weight: 500;\
+                }\
+                #maticak-modal-wrapper .modal-body a:hover {\
+                    color: #0a78b0;\
+                }\
+                #maticak-modal-wrapper .info-section {\
+                    margin-bottom: 24px;\
+                    padding-bottom: 20px;\
+                    border-bottom: 1px solid #E8E8EA;\
+                }\
+                #maticak-modal-wrapper .info-section:last-child {\
+                    border-bottom: none;\
+                    margin-bottom: 0;\
+                }\
+                #maticak-modal-wrapper .button-grid {\
+                    display: grid;\
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\
+                    gap: 12px;\
+                    margin-top: 16px;\
+                }\
+                #maticak-modal-wrapper .info-link-btn {\
+                    display: flex;\
+                    align-items: center;\
+                    justify-content: center;\
+                    padding: 14px 20px;\
+                    background: linear-gradient(135deg, #006aac 0%, #0a78b0 100%);\
+                    color: white !important;\
+                    border: none;\
+                    border-radius: 16px;\
+                    font-size: 14px;\
+                    font-weight: 600;\
+                    text-decoration: none !important;\
+                    text-align: center;\
+                    cursor: pointer;\
+                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);\
+                    box-shadow: 0 4px 12px rgba(0, 106, 172, 0.3);\
+                    min-height: 52px;\
+                }\
+                #maticak-modal-wrapper .info-link-btn:hover {\
+                    transform: translateY(-3px);\
+                    box-shadow: 0 6px 20px rgba(0, 106, 172, 0.4);\
+                    background: linear-gradient(135deg, #005284 0%, #0080cc 100%);\
+                }\
+                #maticak-modal-wrapper .contact-links {\
+                    display: flex;\
+                    flex-direction: column;\
+                    gap: 8px;\
+                    margin-top: 12px;\
+                }\
+                #maticak-modal-wrapper .contact-link {\
+                    display: block;\
+                    padding: 10px 14px;\
+                    background: transparent;\
+                    color: #0080cc;\
+                    text-decoration: none;\
+                    border: 1.5px solid #0080cc;\
+                    border-radius: 6px;\
+                    text-align: center;\
+                    transition: all 0.3s;\
+                    font-size: 13px;\
+                }\
+                #maticak-modal-wrapper .contact-link:hover {\
+                    background: #0080cc;\
+                    color: white;\
+                    transform: translateY(-1px);\
+                }\
+                #maticak-modal-wrapper .tridy-grid {\
+                    display: flex;\
+                    flex-wrap: wrap;\
+                    gap: 8px;\
+                    margin-top: 5px;\
+                    align-items: center;\
+                }\
+                #maticak-modal-wrapper .trida-btn {\
+                    padding: 8px;\
+                    background: transparent;\
+                    color: #0080cc;\
+                    border: 1px solid #0080cc;\
+                    border-radius: 6px;\
+                    font-size: 13px;\
+                    font-weight: 600;\
+                    cursor: pointer;\
+                    transition: all 0.3s;\
+                    text-align: center;\
+                    min-width: 50px;\
+                    height: 40px;\
+                    display: inline-flex;\
+                    align-items: center;\
+                    justify-content: center;\
+                }\
+                #maticak-modal-wrapper .trida-btn:hover {\
+                    background: #0080cc;\
+                    color: white;\
+                    transform: translateY(-2px);\
+                    box-shadow: 0 4px 15px rgba(0, 106, 172, 0.4);\
+                }\
+                #maticak-modal-wrapper .trida-btn[title] {\
+                    position: relative;\
+                }\
+                #maticak-modal-wrapper .trida-btn[title]:hover::after {\
+                    content: attr(title);\
+                    position: absolute;\
+                    bottom: 100%;\
+                    left: 50%;\
+                    transform: translateX(-50%);\
+                    margin-bottom: 5px;\
+                    padding: 6px 10px;\
+                    background: #333;\
+                    color: white;\
+                    font-size: 11px;\
+                    white-space: nowrap;\
+                    border-radius: 4px;\
+                    z-index: 1000;\
+                    pointer-events: none;\
+                }\
+                #maticak-modal-wrapper .predmet-btn {\
+                    display: inline-block;\
+                    margin: 5px;\
+                    padding: 8px 16px;\
+                    background: transparent;\
+                    color: #0080cc;\
+                    text-decoration: none;\
+                    border: 2px solid #0080cc;\
+                    border-radius: 20px;\
+                    font-size: 11px;\
+                    cursor: pointer;\
+                    transition: all 0.3s;\
+                }\
+                #maticak-modal-wrapper .predmet-btn:hover {\
+                    background: #0080cc;\
+                    color: white;\
+                    transform: translateY(-2px);\
+                }\
+                #maticak-modal-wrapper .predmety-container {\
+                    display: flex;\
+                    flex-wrap: wrap;\
+                    gap: 5px;\
+                    margin-top: 10px;\
+                }\
+                #maticak-modal-wrapper .modal-body strong {\
+                    color: #1D1D1F;\
+                }\
+                #maticak-modal-wrapper table {\
+                    width: 100%;\
+                    border-collapse: collapse;\
+                    font-size: 13px;\
+                    margin-top: 10px;\
+                }\
+                #maticak-modal-wrapper table th,\
+                #maticak-modal-wrapper table td {\
+                    border: 1px solid #ddd;\
+                    padding: 6px 8px;\
+                    text-align: left;\
+                }\
+                #maticak-modal-wrapper table th {\
+                    background: #006aac;\
+                    color: white;\
+                    font-weight: 600;\
+                }\
+                #maticak-modal-wrapper table tr:nth-child(even) {\
+                    background: #f5f7fa;\
+                }\
+                #maticak-modal-wrapper .spinner {\
+                    border: 3px solid #f3f3f3;\
+                    border-top: 3px solid #0080cc;\
+                    border-radius: 50%;\
+                    width: 20px;\
+                    height: 20px;\
+                    animation: maticakSpin 1s linear infinite;\
+                }\
+                @keyframes maticakSpin {\
+                    from { transform: rotate(0deg); }\
+                    to { transform: rotate(360deg); }\
+                }\
+                #maticak-modal-wrapper::-webkit-scrollbar {\
+                    width: 6px;\
+                }\
+                #maticak-modal-wrapper::-webkit-scrollbar-thumb {\
+                    background: rgba(0, 0, 0, 0.2);\
+                    border-radius: 3px;\
+                }\
+                #maticak-modal-wrapper::-webkit-scrollbar-track {\
+                    background: transparent;\
                 }\
                 @keyframes maticakSlideUp {\
                     from { transform: translateY(60px) scale(0.95); opacity: 0; }\
@@ -154,6 +404,20 @@
                     #maticak-modal-wrapper {\
                         width: 96%;\
                         max-height: 80vh;\
+                    }\
+                    #maticak-modal-wrapper .modal-content {\
+                        padding: 20px;\
+                    }\
+                    #maticak-modal-wrapper .modal-header h2 {\
+                        font-size: 20px;\
+                    }\
+                    #maticak-modal-wrapper .button-grid {\
+                        grid-template-columns: 1fr;\
+                    }\
+                    #maticak-modal-wrapper .info-link-btn {\
+                        padding: 12px 16px;\
+                        font-size: 13px;\
+                        min-height: 48px;\
                     }\
                 }\
             ';
