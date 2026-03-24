@@ -1601,7 +1601,7 @@
         <div class="header">
             <h1>🤖 MATY</h1>
             <p>Matiční AI Pomocník</p>
-            <button class="header-close-btn" onclick="toggleChat()" title="Zavřít">−</button>
+            <button class="header-close-btn" onclick="closeChatbot()" title="Zavřít">−</button>
             <!-- Řečová bublina NOVINKY v hlavičce -->
             <div class="novinka-badge" id="novinkaBadge" onclick="trackEvent('Button', 'click', 'Novinky'); showAnnouncementModal()" title="Klikni pro více informací">
                 <span class="novinka-icon">📋</span>
@@ -4543,6 +4543,17 @@
             }
         }
         
+        // Funkce pro zavření chatbota (volána z header close tlačítka)
+        function closeChatbot() {
+            if (window.self !== window.top) {
+                // V iframe - pošleme zprávu vnějšímu widgetu
+                window.parent.postMessage({ type: 'maticak-close' }, '*');
+            } else {
+                // Standalone - normální toggle
+                toggleChat();
+            }
+        }
+
         function toggleChat() {
             const chatWidget = document.getElementById('chatWidget');
             const toggleBtn = document.getElementById('chatToggleBtn');

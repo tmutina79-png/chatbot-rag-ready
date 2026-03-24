@@ -1,6 +1,6 @@
 /**
  * MATIČÁK Chatbot Widget - Iframe verze pro integraci na webové stránky
- * Verze: 2.0
+ * Verze: 2.1
  * Autor: Žáci Matičního gymnázia Ostrava
  * 
  * POUŽITÍ:
@@ -25,6 +25,7 @@
         },
         
         isOpen: false,
+        iframeLoaded: false,
         
         init: function(options) {
             // Přepis konfigurace
@@ -36,7 +37,7 @@
             this.injectHTML();
             this.initEventListeners();
             
-            console.log('✅ MATIČÁK Chatbot načten');
+            console.log('✅ MATIČÁK Chatbot v2.1 načten');
         },
         
         injectStyles: function() {
@@ -52,8 +53,16 @@
                     border-radius: 24px;
                     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
                     z-index: 999999;
-                    display: none;
-                    transition: all 0.3s ease;
+                    visibility: hidden;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.3s ease, visibility 0.3s ease;
+                }
+                
+                #maticak-chatbot-iframe.maticak-visible {
+                    visibility: visible;
+                    opacity: 1;
+                    pointer-events: auto;
                 }
                 
                 #maticak-chat-toggle {
@@ -84,6 +93,10 @@
                 
                 #maticak-chat-toggle:active {
                     transform: scale(0.96);
+                }
+                
+                #maticak-chat-toggle.maticak-hidden {
+                    display: none;
                 }
                 
                 /* Responzivní design pro mobily */
@@ -122,33 +135,48 @@
             const container = document.createElement('div');
             container.id = 'maticak-chatbot-container';
             container.innerHTML = `
-                <iframe id="maticak-chatbot-iframe" src="${this.config.chatbotUrl}"></iframe>
+                <iframe id="maticak-chatbot-iframe" src="${this.config.chatbotUrl}" allow="clipboard-write"></iframe>
                 <button id="maticak-chat-toggle">💬</button>
             `;
             document.body.appendChild(container);
         },
         
         initEventListeners: function() {
+            const self = this;
             const toggleBtn = document.getElementById('maticak-chat-toggle');
             const iframe = document.getElementById('maticak-chatbot-iframe');
             
-            toggleBtn.addEventListener('click', () => {
-                this.toggle();
+            // Klik na toggle tlačítko
+            toggleBtn.addEventListener('click', function() {
+                self.toggle();
+            });
+            
+            // Detekce načtení iframe obsahu
+            iframe.addEventListener('load', function() {
+                self.iframeLoaded = true;
+                console.log('✅ MATIČÁK iframe načten');
+            });
+            
+            // Poslouchání zpráv z iframe (zavření chatbotu)
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'maticak-close') {
+                    self.close();
+                }
             });
         },
         
         toggle: function() {
-            const iframe = document.getElementById('maticak-chatbot-iframe');
-            const btn = document.getElementById('maticak-chat-toggle');
+            var iframe = document.getElementById('maticak-chatbot-iframe');
+            var btn = document.getElementById('maticak-chat-toggle');
             
             this.isOpen = !this.isOpen;
             
             if (this.isOpen) {
-                iframe.style.display = 'block';
-                btn.style.display = 'none';
+                iframe.classList.add('maticak-visible');
+                btn.classList.add('maticak-hidden');
             } else {
-                iframe.style.display = 'none';
-                btn.style.display = 'flex';
+                iframe.classList.remove('maticak-visible');
+                btn.classList.remove('maticak-hidden');
             }
         },
         
