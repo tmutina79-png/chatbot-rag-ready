@@ -928,22 +928,6 @@
             display: none !important;
         }
 
-        /* V iframe režimu: modální okna správně uvnitř chatbotu */
-        html.in-iframe .modal {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        html.in-iframe .modal-content {
-            max-height: 85% !important;
-            margin: 3% auto !important;
-            width: 92% !important;
-            max-width: none !important;
-        }
-
         /* Rotace ikony tlačítka */
         .chat-toggle-btn .icon {
             transition: transform 0.3s ease;
@@ -2081,10 +2065,23 @@
             }
         }
         
+        // Pomocné funkce pro iframe - rozšíření/zmenšení iframe při otevření/zavření modálu
+        function notifyModalOpen() {
+            if (window.self !== window.top) {
+                window.parent.postMessage({ type: 'maticak-modal-open' }, '*');
+            }
+        }
+        function notifyModalClose() {
+            if (window.self !== window.top) {
+                window.parent.postMessage({ type: 'maticak-modal-close' }, '*');
+            }
+        }
+
         // Funkce pro zobrazení kontaktu
         function showContact() {
             console.log('showContact called');
             document.getElementById('contactModal').style.display = 'block';
+            notifyModalOpen();
         }
         
         // Funkce pro zobrazení rozvrhu
@@ -2092,12 +2089,14 @@
             console.log('showRozvrh called');
             // Otevřeme modal s rozvrhem
             document.getElementById('rozvrhModal').style.display = 'block';
+            notifyModalOpen();
         }
         
         // Funkce pro zobrazení ostatní
         function showOstatni() {
             console.log('showOstatni called');
             document.getElementById('ostatniModal').style.display = 'block';
+            notifyModalOpen();
         }
         
         // Funkce pro zobrazení jídelny - dnešní menu
@@ -2115,6 +2114,7 @@
             // Zobrazíme modal
             if (modal) {
                 modal.style.display = 'block';
+                notifyModalOpen();
                 console.log('Modal display set to block');
             }
             
@@ -2376,37 +2376,43 @@
         // Funkce pro zavření modalu
         function closeContactModal() {
             document.getElementById('contactModal').style.display = 'none';
+            notifyModalClose();
         }
         
         // Funkce pro zavření jídelna modalu
         function closeJidelnaModal() {
             document.getElementById('jidelnaModal').style.display = 'none';
+            notifyModalClose();
         }
         
         // Funkce pro zavření rozvrh modalu
         function closeRozvrhModal() {
             document.getElementById('rozvrhModal').style.display = 'none';
+            notifyModalClose();
         }
         
         // Funkce pro zavření učitele modalu
         function closeUciteleModal() {
             document.getElementById('uciteleModal').style.display = 'none';
+            notifyModalClose();
         }
         
         // Funkce pro zavření ostatní modalu
         function closeOstatniModal() {
             document.getElementById('ostatniModal').style.display = 'none';
+            notifyModalClose();
         }
         
         // Funkce pro zobrazení modalu prázdnin
         function showPrazdninyModal() {
-            closeOstatniModal(); // Zavřeme ostatní modal
+            closeOstatniModal(); // Zavřeme ostatní modal - neposíláme close, jen open
             document.getElementById('prazdninyModal').style.display = 'block';
         }
         
         // Funkce pro zavření modalu prázdnin
         function closePrazdninyModal() {
             document.getElementById('prazdninyModal').style.display = 'none';
+            notifyModalClose();
         }
         
         // ===== FUNKCE PRO SEKCE V OSTATNÍ MODALU =====
@@ -2806,6 +2812,7 @@
             if (event) event.preventDefault();
             closeContactModal();
             document.getElementById('uciteleModal').style.display = 'block';
+            notifyModalOpen();
         }
         
         // Funkce pro zobrazení učitelů z modalu (zavře modal a zobrazí v chatu)
@@ -3581,6 +3588,7 @@
         function showAnnouncementModal() {
             const modal = document.getElementById('novinkaModal');
             modal.style.display = 'block';
+            notifyModalOpen();
             
             // Zastavit blikání badge po otevření
             const badge = document.getElementById('novinkaBadge');
@@ -3703,6 +3711,7 @@
         
         function closeNovinkaModal() {
             document.getElementById('novinkaModal').style.display = 'none';
+            notifyModalClose();
         }
 
         // Zabráníme opakovanému spuštění

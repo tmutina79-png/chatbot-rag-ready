@@ -65,6 +65,17 @@
                     pointer-events: auto;
                 }
                 
+                #maticak-chatbot-iframe.maticak-fullscreen {
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    bottom: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    border-radius: 0 !important;
+                    max-height: none !important;
+                }
+                
                 #maticak-chat-toggle {
                     position: fixed;
                     bottom: ${this.config.position.bottom};
@@ -157,10 +168,18 @@
                 console.log('✅ MATIČÁK iframe načten');
             });
             
-            // Poslouchání zpráv z iframe (zavření chatbotu)
+            // Poslouchání zpráv z iframe (zavření chatbotu, modální okna)
             window.addEventListener('message', function(event) {
                 if (event.data && event.data.type === 'maticak-close') {
                     self.close();
+                }
+                if (event.data && event.data.type === 'maticak-modal-open') {
+                    var iframe = document.getElementById('maticak-chatbot-iframe');
+                    iframe.classList.add('maticak-fullscreen');
+                }
+                if (event.data && event.data.type === 'maticak-modal-close') {
+                    var iframe = document.getElementById('maticak-chatbot-iframe');
+                    iframe.classList.remove('maticak-fullscreen');
                 }
             });
         },
