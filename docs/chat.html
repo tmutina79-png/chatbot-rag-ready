@@ -4538,6 +4538,18 @@
                 return;
             }
 
+            // Detekuj rychlé odpovědi (kontakt, jídelna, rozvrh, novinky, o škole)
+            // MUSÍ být PŘED detekcí předmětů, protože "historie" by jinak matchlo Dějepis
+            const quickReplyType = detectQuickReply(message);
+            
+            if (quickReplyType) {
+                // Zpracuj rychlou odpověď
+                await handleQuickReply(quickReplyType);
+                sendBtn.disabled = false;
+                userInput.focus();
+                return;
+            }
+
             // Zkontroluj dotaz na konkrétní předmět
             const subjectId = detectSubjectRequest(message);
             const hasTeacherKeyword = detectTeacherRequest(message);
@@ -4582,17 +4594,6 @@
             const teacherResult = await detectTeacherName(message);
             if (teacherResult && teacherResult.found) {
                 await showTeacherInfo(teacherResult);
-                sendBtn.disabled = false;
-                userInput.focus();
-                return;
-            }
-
-            // Detekuj rychlé odpovědi
-            const quickReplyType = detectQuickReply(message);
-            
-            if (quickReplyType) {
-                // Zpracuj rychlou odpověď
-                await handleQuickReply(quickReplyType);
                 sendBtn.disabled = false;
                 userInput.focus();
                 return;
