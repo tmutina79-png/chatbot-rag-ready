@@ -4087,6 +4087,7 @@
                 'vse', 'nic', 'neco', 'nekdo', 'nikdo', 'nekam', 'nikam',
                 'sem', 'tam', 'tady', 'tudy', 'odtud', 'kam',
                 'moc', 'hodne', 'malo', 'vic', 'min', 'dost', 'skvele', 'dobre', 'spatne',
+                'hodinu', 'hodina', 'hodiny', 'pristi', 'dalsi', 'bude', 'predmet', 'predmety',
                 'skola', 'trida', 'predmet', 'rozvrh', 'jidelna', 'menu', 'obed', 'kontakt',
                 'ucitele', 'vedeni', 'ostatni', 'novinky', 'info', 'pomoc', 'pomoct',
                 'vede', 'delas', 'dela', 'delam', 'deji', 'davas', 'davam',
@@ -4320,16 +4321,27 @@
             }
             
             // Pokud není přesná shoda, zkusíme pattern "rozvrh TŘÍDA" nebo "TŘÍDA rozvrh"
+            // Klíčová slova, která indikují dotaz na rozvrh/hodinu
+            const scheduleKeywords = ['rozvrh', 'hodinu', 'hodina', 'hodiny', 'pristi hodinu', 'pristi hodina',
+                'dalsi hodinu', 'dalsi hodina', 'co mam', 'co mame', 'co je', 'jaky predmet',
+                'jake predmety', 'jake hodiny', 'jake mam', 'jake mame', 'co bude'];
+            const hasScheduleKeyword = scheduleKeywords.some(kw => lowerMessage.includes(kw));
+            
             // Seřadíme klíče od nejdelších po nejkratší, aby se "kvarta a" matchlo před "kvarta"
             const sortedKeys = Object.keys(classMap).sort((a, b) => b.length - a.length);
             for (const className of sortedKeys) {
                 const escapedName = className.replace('.', '\\.');
                 const regex = new RegExp(`(?:^|\\s)${escapedName}(?:\\s|$)`, 'i');
                 
-                // Kontrola pokud zpráva obsahuje "rozvrh" NEBO je to krátká zpráva (max 12 znaků)
-                if ((lowerMessage.includes('rozvrh') || lowerMessage.length <= 12) && regex.test(lowerMessage)) {
+                // Kontrola pokud zpráva obsahuje klíčové slovo pro rozvrh/hodinu NEBO je to krátká zpráva (max 12 znaků)
+                if ((hasScheduleKeyword || lowerMessage.length <= 12) && regex.test(lowerMessage)) {
                     return { class: className, func: classMap[className] };
                 }
+            }
+            
+            // Pokud je klíčové slovo pro hodinu/rozvrh ale BEZ třídy → vrátíme speciální příznak pro modal
+            if (hasScheduleKeyword) {
+                return { class: null, func: () => showRozvrh() };
             }
             
             return null;
