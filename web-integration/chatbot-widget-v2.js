@@ -498,7 +498,7 @@
                 
                 if (event.data.type === 'maticak-modal-open' && event.data.html) {
                     clearTimeout(self.modalCloseTimeout);
-                    self.showModal(event.data.html);
+                    self.showModal(event.data.html, event.data.scrollToId);
                 }
                 
                 if (event.data.type === 'maticak-modal-update' && event.data.html) {
@@ -514,7 +514,7 @@
             });
         },
         
-        showModal: function(html) {
+        showModal: function(html, scrollToId) {
             this.removeModal();
             
             var processedHtml = html.replace(/onclick="([^"]*)"/g, 'data-iframe-action="$1"');
@@ -528,6 +528,19 @@
             
             overlay.appendChild(wrapper);
             document.body.appendChild(overlay);
+            
+            // Scroll na konkrétní sekci, pokud je zadaná
+            if (scrollToId) {
+                setTimeout(function() {
+                    var target = wrapper.querySelector('#' + scrollToId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        target.style.transition = 'background-color 0.3s';
+                        target.style.backgroundColor = '#e6f3ff';
+                        setTimeout(function() { target.style.backgroundColor = ''; }, 1500);
+                    }
+                }, 150);
+            }
             
             var self = this;
             overlay.addEventListener('click', function(e) {

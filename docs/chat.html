@@ -1887,7 +1887,7 @@
                     </div>
 
                     <!-- Sekce 4: O škole -->
-                    <div class="info-section">
+                    <div class="info-section" id="sekce-o-skole">
                         <h3 style="color: #0080cc; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                             🏫 O škole
                         </h3>
@@ -2069,7 +2069,7 @@
         }
         
         // Pomocné funkce pro iframe - modální okno se zobrazí na rodičovské stránce
-        function notifyModalOpen() {
+        function notifyModalOpen(scrollToId) {
             if (window.self !== window.top) {
                 // Najít otevřený modal a poslat jeho obsah do rodičovské stránky
                 var modals = document.querySelectorAll('.modal');
@@ -2077,10 +2077,12 @@
                     if (modals[i].style.display === 'block') {
                         var content = modals[i].querySelector('.modal-content');
                         if (content) {
-                            window.parent.postMessage({
+                            var msg = {
                                 type: 'maticak-modal-open',
                                 html: content.outerHTML
-                            }, '*');
+                            };
+                            if (scrollToId) msg.scrollToId = scrollToId;
+                            window.parent.postMessage(msg, '*');
                         }
                         // Skrýt modal v iframe (zůstane v DOM pro JS aktualizace)
                         modals[i].style.display = 'none';
@@ -2134,10 +2136,24 @@
         }
         
         // Funkce pro zobrazení ostatní
-        function showOstatni() {
-            console.log('showOstatni called');
-            document.getElementById('ostatniModal').style.display = 'block';
-            notifyModalOpen();
+        function showOstatni(scrollToId) {
+            console.log('showOstatni called, scrollTo:', scrollToId);
+            const modal = document.getElementById('ostatniModal');
+            modal.style.display = 'block';
+            notifyModalOpen(scrollToId);
+            
+            // Scroll na konkrétní sekci (pro přímý režim, ne iframe)
+            if (scrollToId && window.self === window.top) {
+                setTimeout(() => {
+                    const target = document.getElementById(scrollToId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        target.style.transition = 'background-color 0.3s';
+                        target.style.backgroundColor = '#e6f3ff';
+                        setTimeout(() => { target.style.backgroundColor = ''; }, 1500);
+                    }
+                }, 100);
+            }
         }
         
         // Funkce pro zobrazení jídelny - dnešní menu
@@ -4472,9 +4488,9 @@
                     break;
                     
                 case 'oskole':
-                    // Otevřeme Ostatní modal
+                    // Otevřeme Ostatní modal a scrollneme na sekci O škole
                     await addMessage('🏫 Otevírám informace o škole...', false);
-                    setTimeout(() => showOstatni(), 500);
+                    setTimeout(() => showOstatni('sekce-o-skole'), 500);
                     break;
             }
             
