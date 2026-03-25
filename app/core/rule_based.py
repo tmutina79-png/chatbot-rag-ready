@@ -39,8 +39,8 @@ class RuleBasedResponder:
         # Jak se máš
         if any(keyword in message_lower for keyword in self.how_are_you_keywords):
             return random.choice([
-                "Mám se skvěle! 😊 Jsem robot, takže neopotřebovávám a mám energie na rozdávání! Co potřebuješ?",
-                "Výborně! 🤖 Jsem připravený ti pomoct. Jak se máš ty?",
+                "Mám se skvěle! 😊 Jsem robot, takže se neopotřebovávám a mám energie na rozdávání! Co potřebuješ?",
+                "Výborně! 🤖 Jsem připravený ti pomoct.",
                 "Super! 💪 Děkuji za optání. Jak můžu pomoct tobě?"
             ])
         
