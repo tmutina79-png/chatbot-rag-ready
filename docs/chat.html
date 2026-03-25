@@ -4238,6 +4238,58 @@
         function detectRozvrhClass(message) {
             const lowerMessage = removeDiacritics(message.toLowerCase().trim());
             
+            // Detekce "další den" / "zítra" klíčových slov
+            const nextDayKeywords = ['dalsi den', 'zitra', 'zitrejsi', 'na zitra', 'na dalsi den', 'zitrek'];
+            const isNextDay = nextDayKeywords.some(kw => lowerMessage.includes(kw));
+            
+            // Mapa tříd → info pro loadRozvrhDalsiDen
+            const classInfoMap = {
+                'pa': { nazev: 'PA', endpoint: '/rozvrh/pa', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2B' },
+                'pb': { nazev: 'PB', endpoint: '/rozvrh/pb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2C' },
+                'sa': { nazev: 'SA', endpoint: '/rozvrh/sa', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/28' },
+                'sb': { nazev: 'SB', endpoint: '/rozvrh/sb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/29' },
+                'ta': { nazev: 'TA', endpoint: '/rozvrh/ta', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/25' },
+                'tb': { nazev: 'TB', endpoint: '/rozvrh/tb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/26' },
+                'kva': { nazev: 'KVA', endpoint: '/rozvrh/kva', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/22' },
+                'kvb': { nazev: 'KVB', endpoint: '/rozvrh/kvb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/23' },
+                '1a': { nazev: '1.A', endpoint: '/rozvrh/1a', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/2A' },
+                'kvia': { nazev: 'KVIA', endpoint: '/rozvrh/kvia', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1Z' },
+                'kvib': { nazev: 'KVIB', endpoint: '/rozvrh/kvib', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/20' },
+                '2a': { nazev: '2.A', endpoint: '/rozvrh/2a', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/27' },
+                'sxa': { nazev: 'SXA', endpoint: '/rozvrh/sxa', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/SXA' },
+                'sxb': { nazev: 'SXB', endpoint: '/rozvrh/sxb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1X' },
+                '3a': { nazev: '3.A', endpoint: '/rozvrh/3a', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/24' },
+                'spta': { nazev: 'SPTA', endpoint: '/rozvrh/spta', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1T' },
+                'sptb': { nazev: 'SPTB', endpoint: '/rozvrh/sptb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1U' },
+                '4a': { nazev: '4.A', endpoint: '/rozvrh/4a', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/21' },
+                'okta': { nazev: 'OKTA', endpoint: '/rozvrh/okta', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1Q' },
+                'oktb': { nazev: 'OKTB', endpoint: '/rozvrh/oktb', url: 'https://mgo.bakalari.cz/bakaweb/Timetable/Public/Actual/Class/1R' }
+            };
+            
+            // Mapa všech variant názvů → klíč v classInfoMap
+            const classNameToKey = {
+                'pa': 'pa', 'prima a': 'pa', 'prima': 'pa', 'primy': 'pa', 'primy a': 'pa',
+                'pb': 'pb', 'prima b': 'pb', 'primy b': 'pb',
+                'sa': 'sa', 'sekunda a': 'sa', 'sekunda': 'sa', 'sekundy': 'sa', 'sekundy a': 'sa',
+                'sb': 'sb', 'sekunda b': 'sb', 'sekundy b': 'sb',
+                'ta': 'ta', 'tercie a': 'ta', 'tercie': 'ta',
+                'tb': 'tb', 'tercie b': 'tb',
+                'kva': 'kva', 'kvarta a': 'kva', 'kvarta': 'kva', 'kvarty': 'kva', 'kvarty a': 'kva',
+                'kvb': 'kvb', 'kvarta b': 'kvb', 'kvarty b': 'kvb',
+                '1a': '1a', '1.a': '1a',
+                'kvia': 'kvia', 'kvinta a': 'kvia', 'kvinta': 'kvia', 'kvinty': 'kvia', 'kvinty a': 'kvia',
+                'kvib': 'kvib', 'kvinta b': 'kvib', 'kvinty b': 'kvib',
+                '2a': '2a', '2.a': '2a',
+                'sxa': 'sxa', 'sexta a': 'sxa', 'sexta': 'sxa', 'sexty': 'sxa', 'sexty a': 'sxa',
+                'sxb': 'sxb', 'sexta b': 'sxb', 'sexty b': 'sxb',
+                '3a': '3a', '3.a': '3a',
+                'spta': 'spta', 'septima a': 'spta', 'septima': 'spta', 'septimy': 'spta', 'septimy a': 'spta',
+                'sptb': 'sptb', 'septima b': 'sptb', 'septimy b': 'sptb',
+                '4a': '4a', '4.a': '4a',
+                'okta': 'okta', 'oktava a': 'okta', 'oktava': 'okta', 'oktavy': 'okta', 'oktavy a': 'okta',
+                'oktb': 'oktb', 'oktava b': 'oktb', 'oktavy b': 'oktb'
+            };
+            
             // Mapa tříd: všechny zkratky a české názvy (bez diakritiky) → funkce zobrazení rozvrhu
             const classMap = {
                 // Prima A
@@ -4334,6 +4386,14 @@
             // Přesná shoda - nejprve zkontrolujeme celý text
             for (const [className, func] of Object.entries(classMap)) {
                 if (lowerMessage === className) {
+                    // Pokud chce "další den", použijeme loadRozvrhDalsiDen
+                    if (isNextDay) {
+                        const key = classNameToKey[className];
+                        if (key && classInfoMap[key]) {
+                            const info = classInfoMap[key];
+                            return { class: className, func: () => loadRozvrhDalsiDen(info.nazev, info.endpoint, info.url) };
+                        }
+                    }
                     return { class: className, func: func };
                 }
             }
@@ -4352,7 +4412,15 @@
                 const regex = new RegExp(`(?:^|\\s)${escapedName}(?:\\s|$)`, 'i');
                 
                 // Kontrola pokud zpráva obsahuje klíčové slovo pro rozvrh/hodinu NEBO je to krátká zpráva (max 12 znaků)
-                if ((hasScheduleKeyword || lowerMessage.length <= 12) && regex.test(lowerMessage)) {
+                if ((hasScheduleKeyword || isNextDay || lowerMessage.length <= 12) && regex.test(lowerMessage)) {
+                    // Pokud chce "další den"
+                    if (isNextDay) {
+                        const key = classNameToKey[className];
+                        if (key && classInfoMap[key]) {
+                            const info = classInfoMap[key];
+                            return { class: className, func: () => loadRozvrhDalsiDen(info.nazev, info.endpoint, info.url) };
+                        }
+                    }
                     return { class: className, func: classMap[className] };
                 }
             }
