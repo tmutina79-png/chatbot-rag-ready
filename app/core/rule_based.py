@@ -127,30 +127,13 @@ Společně to dáme! 💙"""
     
     def _default_response(self) -> str:
         return random.choice([
-            """Hmm, úplně nerozumím, co tím myslíš. 🤔
+            """Jejda, tohle mi zatím nejde! 😅 Pořád se ještě učím, abych byl lepším pomocníkem, tak se mnou měj prosím trochu trpělivost.
 
-Zkus zadat konkrétní klíčové slovo:
-• Rozvrh, Jídelna, Kontakty
-• Předmět (matematika, fyzika...)
-• Učitel + předmět
-• Klikni nahoře na tlačítka rychlé volby
+Zkus mi zadat některé z klíčových slov, jako je rozvrh, jídelna, aktuality nebo učitelé, a určitě se pohneme dál!""",
+            """Jejda, tohle mi zatím nejde! 😅 Pořád se ještě učím, abych byl lepším pomocníkem, tak se mnou měj prosím trochu trpělivost.
 
-Jsem tu pro tebe!""",
-            """Nejsem napojený na AI, tak některým delším textům nerozumím, neumím si s tebou povídat o všem, ale jsem tady, abych ti pomohl s informacemi spojené se školou :-)
+Zkus mi zadat některé z klíčových slov, jako je rozvrh, jídelna, aktuality nebo učitelé, a určitě se pohneme dál!""",
+            """Jejda, tohle mi zatím nejde! 😅 Pořád se ještě učím, abych byl lepším pomocníkem, tak se mnou měj prosím trochu trpělivost.
 
-Ale zkus:
-• Zadat heslovitý dotaz
-• Zeptat se na konkrétní věc
-• Uvést klíčové slovo (rozvrh, učitel, menu...)
-• Klikni nahoře na tlačítka rychlé volby
-
-Rád ti pomůžu! 🎯""",
-            """Ups, nevím, co tím máš na mysli! 😊
-
-Můžeš zkusit:
-• Napsat klíčové slovo?
-• Uvést konkrétní dotaz?
-• Kliknout nahoře na tlačítka rychlé volby
-
-Jsem tady pro tebe! 💫"""
+Zkus mi zadat některé z klíčových slov, jako je rozvrh, jídelna, aktuality nebo učitelé, a určitě se pohneme dál!"""
         ])
