@@ -5,7 +5,15 @@ import random
 
 class RuleBasedResponder:
     def __init__(self):
-        self.greetings = ["ahoj", "čau", "dobrý den", "dobré odpoledne", "nazdar", "zdravím", "čus", "zdar"]
+        self.greetings = [
+            "ahoj", "čau", "cau", "caau", "čauko", "cauko", "čago", "cago", "čauky", "cauky", "čaues", "caues",
+            "dobrý den", "dobry den", "dobré ráno", "dobre rano", "dobré odpoledne", "dobre odpoledne", "dobrý večer", "dobry vecer",
+            "nazdar", "nazdárek", "nazdarek", "zdar", "zdárek", "zdarek", "zdare",
+            "zdravím", "zdravim", "zdravíčko", "zdravicko",
+            "čus", "cus", "čůs", "čusík", "cusik",
+            "hej", "hoj", "hey", "hejky", "hejhou",
+            "servus", "kuk", "kukuč", "kukuc", "haló", "halou", "halo"
+        ]
         self.identity_keywords = ["kdo jsi", "co jsi", "kdo seš", "představ se", "kdo ses", "co ses"]
         self.help_keywords = ["pomoc", "pomoct", "pomůžeš", "nevím", "nerozumím", "poraď", "poradíš"]
         self.thanks_keywords = ["děkuji", "díky", "děkuju", "dekuji", "dík", "diky", "dekuju"]

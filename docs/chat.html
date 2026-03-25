@@ -4089,7 +4089,10 @@
             
             // Běžná česká slova, která NEJSOU jména učitelů
             const stopWords = [
-                'ahoj', 'cau', 'nazdar', 'zdravim', 'dobry', 'den', 'dobrou', 'noc',
+                'ahoj', 'cau', 'caau', 'cauko', 'cago', 'caus', 'cauky', 'caues', 'nazdar', 'nazdarek',
+                'zdar', 'zdarek', 'zdare', 'zdarecek', 'cus', 'cuus', 'cusik', 'cusiky', 'cusec',
+                'zdravim', 'zdravicko', 'servus', 'teau', 'teauk', 'hejky', 'hejhou',
+                'kuk', 'kukuc', 'halou', 'halo', 'dobry', 'den', 'dobrou', 'noc',
                 'jak', 'mas', 'mam', 'mate', 'jsi', 'jste', 'jsem', 'jsou', 'byt', 'byl', 'byla', 'bylo',
                 'kde', 'kdy', 'kdo', 'proc', 'jak', 'jaky', 'jaka', 'jake', 'kolik',
                 'ano', 'nie', 'neni', 'nemas', 'nemam', 'nevis', 'nevim',
@@ -4503,6 +4506,25 @@
                 }
             }
             
+            // Pozdravy (na konci, aby "ahoj, kontakty" matchlo kontakt a ne pozdrav)
+            const pozdravKeywords = [
+                'ahoj', 'cau', 'caau', 'caaau', 'cauko', 'cago', 'caus', 'cauky', 'caues',
+                'nazdar', 'nazdarek', 'zdar', 'zdarek', 'zdare', 'zdarecek',
+                'cus', 'cuus', 'cusik', 'cusiky', 'cusec',
+                'hej', 'hoj', 'hey', 'yo', 'heey', 'hejky', 'hejhou',
+                'servus', 'teau', 'teauk',
+                'dobry den', 'dobre rano', 'dobre odpoledne', 'dobry vecer',
+                'zdravim', 'zdravicko',
+                'maty ahoj', 'ahoj maty', 'cau maty', 'maty cau',
+                'diky maty', 'kuk', 'kukuc', 'coze', 'halou', 'halo'
+            ];
+            
+            for (const keyword of pozdravKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return 'pozdrav';
+                }
+            }
+            
             return null;
         }
         
@@ -4580,6 +4602,21 @@
                 case 'prazdniny':
                     // Zatím odpovíme vtipnou zprávou
                     await addMessage('Vidím, že tě zajímá to nejdůležitější – volno! 🏖️ Tuhle detektivní práci už mám na seznamu úkolů. Slibuju, že než vyběhneš na Velikonoční prázdniny, budu přesně vědět, kdy se zase hodí hodit nohy na stůl. Zatím se se mnou uč dál!', false);
+                    break;
+                    
+                case 'pozdrav':
+                    const pozdravOdpovedi = [
+                        'Ahoj! 👋 Jsem MATY, tvůj školní AI pomocník. Jak ti můžu pomoci?',
+                        'Nazdar! 😊 Jsem MATY a jsem tu pro tebe! Co potřebuješ?',
+                        'Čau! 👋 MATY tady. S čím můžu pomoct?',
+                        'Hej! 🤖 Zdravím tě! Jsem MATY – zeptej se mě na cokoliv o škole!',
+                        'Zdar! ✌️ Co pro tebe můžu udělat?',
+                        'Ahoj ahoj! 😄 Rád tě vidím! Na co se chceš zeptat?',
+                        'Čus! 🙌 MATY k vašim službám. Co tě zajímá?',
+                        'Zdravím! 👋 Jsem tady, abych ti pomohl. Ptej se!'
+                    ];
+                    const nahodnyPozdrav = pozdravOdpovedi[Math.floor(Math.random() * pozdravOdpovedi.length)];
+                    await addMessage(nahodnyPozdrav, false);
                     break;
             }
             
