@@ -4105,6 +4105,7 @@
                 'moc', 'hodne', 'malo', 'vic', 'min', 'dost', 'skvele', 'dobre', 'spatne',
                 'hodinu', 'hodina', 'hodiny', 'pristi', 'dalsi', 'bude', 'predmet', 'predmety',
                 'historie', 'histori', 'historii', 'prohlidka', 'prohlidku', 'virtualni', 'krouzky', 'knihovna', 'projekty', 'erasmus',
+                'prazdniny', 'prazdnin', 'prazdninach', 'volno', 'volna', 'svatky', 'svatek', 'velikonoce', 'vanoce',
                 'skola', 'skoly', 'skolni', 'trida', 'tridy', 'predmet', 'rozvrh', 'jidelna', 'menu', 'obed', 'kontakt',
                 'ucitele', 'vedeni', 'ostatni', 'novinky', 'info', 'pomoc', 'pomoct',
                 'vede', 'delas', 'dela', 'delam', 'deji', 'davas', 'davam',
@@ -4388,6 +4389,15 @@
                 'suplovani', 'organizace skolniho roku', 'bakalari navod', 'vysoke skoly', 'cambridge',
                 'certifikaty', 'projekty', 'skolni projekty'];
             
+            // Prázdniny / volno klíčová slova (bez diakritiky)
+            const prazdninyKeywords = ['prazdniny', 'prazdnin', 'prazdninach', 'prazdninami',
+                'kdy mame volno', 'kdy je volno', 'volno', 'volna', 'volnej den',
+                'svatky', 'svatek', 'velikonoce', 'velikonocni', 'vanoce', 'vanocni',
+                'jarni prazdniny', 'letni prazdniny', 'pololetni prazdniny', 'jesenne prazdniny',
+                'velikonocni prazdniny', 'vanocni prazdniny', 'hlavni prazdniny',
+                'skolni prazdniny', 'kdy jsou prazdniny', 'kdy budou prazdniny',
+                'reditelske volno', 'reditelsky den'];
+            
             // Kontrola klíčových slov
             for (const keyword of kontaktKeywords) {
                 if (lowerMessage.includes(keyword)) {
@@ -4416,6 +4426,12 @@
             for (const keyword of oSkoleKeywords) {
                 if (lowerMessage.includes(keyword)) {
                     return 'oskole';
+                }
+            }
+            
+            for (const keyword of prazdninyKeywords) {
+                if (lowerMessage.includes(keyword)) {
+                    return 'prazdniny';
                 }
             }
             
@@ -4491,6 +4507,11 @@
                     // Otevřeme Ostatní modal a scrollneme na sekci O škole
                     await addMessage('🏫 Otevírám informace o škole...', false);
                     setTimeout(() => showOstatni('sekce-o-skole'), 500);
+                    break;
+                    
+                case 'prazdniny':
+                    // Zatím odpovíme vtipnou zprávou
+                    await addMessage('Vidím, že tě zajímá to nejdůležitější – volno! 🏖️ Tuhle detektivní práci už mám na seznamu úkolů. Slibuju, že než vyběhneš na Velikonoční prázdniny, budu přesně vědět, kdy se zase hodí hodit nohy na stůl. Zatím se se mnou uč dál!', false);
                     break;
             }
             
