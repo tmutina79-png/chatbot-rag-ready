@@ -65,7 +65,7 @@
                 #maticak-chat-toggle {\
                     position: fixed;\
                     top: 160px;\
-                    right: 10px;\
+                    right: -15px;\
                     width: auto;\
                     height: auto;\
                     background: transparent;\
