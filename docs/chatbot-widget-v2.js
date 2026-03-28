@@ -106,7 +106,7 @@
                 #maticak-greeting-bubble {\
                     position: fixed;\
                     top: 110px;\
-                    right: 150px;\
+                    right: 125px;\
                     background: white;\
                     color: #1D1D1F;\
                     padding: 14px 20px;\
@@ -461,6 +461,16 @@
                     #maticak-chat-toggle img {\
                         width: 100px;\
                     }\
+                    #maticak-greeting-bubble {\
+                        top: 30px;\
+                        right: 95px;\
+                        max-width: 200px;\
+                        font-size: 12px;\
+                        padding: 10px 14px;\
+                    }\
+                    #maticak-greeting-bubble::after {\
+                        top: 14px;\
+                    }\
                     #maticak-modal-wrapper {\
                         width: 95%;\
                         max-height: 75vh;\
@@ -489,6 +499,16 @@
                         padding: 12px 16px;\
                         font-size: 13px;\
                         min-height: 48px;\
+                    }\
+                    #maticak-greeting-bubble {\
+                        top: 25px;\
+                        right: 90px;\
+                        max-width: 170px;\
+                        font-size: 11px;\
+                        padding: 8px 12px;\
+                    }\
+                    #maticak-greeting-bubble::after {\
+                        top: 12px;\
                     }\
                 }\
             ';
