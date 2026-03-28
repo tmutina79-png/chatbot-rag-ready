@@ -75,12 +75,14 @@
                     font-size: 30px;\
                     cursor: pointer;\
                     box-shadow: none;\
-                    z-index: 999998;\
+                    z-index: 9999999;\
                     transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;\
                     display: block;\
                     padding: 0;\
                     animation: maticakFloat 3s ease-in-out infinite;\
                     filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));\
+                    pointer-events: auto;\
+                    -webkit-tap-highlight-color: transparent;\
                 }\
                 #maticak-chat-toggle img {\
                     width: 140px;\
@@ -493,7 +495,10 @@
             const toggleBtn = document.getElementById('maticak-chat-toggle');
             const iframe = document.getElementById('maticak-chatbot-iframe');
             
-            toggleBtn.addEventListener('click', function() {
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🖱️ MATY kliknut, isOpen:', self.isOpen);
                 self.toggle();
             });
             
