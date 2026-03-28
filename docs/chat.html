@@ -1618,7 +1618,7 @@
     <div class="container hidden" id="chatWidget">
         <div class="header">
             <h1>🤖 MATY</h1>
-            <p>Matiční AI Pomocník</p>
+            <p>Tvůj průvodce školou</p>
             <button class="header-close-btn" onclick="closeChatbot()" title="Zavřít">−</button>
             <!-- Řečová bublina NOVINKY v hlavičce -->
             <div class="novinka-badge" id="novinkaBadge" onclick="trackEvent('Button', 'click', 'Novinky'); showAnnouncementModal()" title="Klikni pro více informací">
@@ -3598,7 +3598,7 @@
             chatContainer.appendChild(messageDiv);
 
             // Typing efekt pro uvítací zprávu
-            await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATY, tvůj školní AI pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
+            await typeMessage(contentDiv, 'Ahoj! 👋 Jsem MATY, tvůj školní pomocník. Jak ti můžu dnes pomoci?\n\nPro rychlý přístup použij tlačítka nahoře! ⬆️\n\nNebo napiš klíčová slova do chatu (např. "rozvrh", "jídelna", "učitelé"). 💬', 50);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -4606,7 +4606,7 @@
                     
                 case 'pozdrav':
                     const pozdravOdpovedi = [
-                        'Ahoj! 👋 Jsem MATY, tvůj školní AI pomocník. Jak ti můžu pomoci?',
+                        'Ahoj! 👋 Jsem MATY, tvůj školní pomocník. Jak ti můžu pomoci?',
                         'Nazdar! 😊 Jsem MATY a jsem tu pro tebe! Co potřebuješ?',
                         'Čau! 👋 MATY tady. S čím můžu pomoct?',
                         'Hej! 🤖 Zdravím tě! Jsem MATY – zeptej se mě na cokoliv o škole!',
