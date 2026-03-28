@@ -64,7 +64,7 @@
                 }\
                 #maticak-chat-toggle {\
                     position: fixed;\
-                    top: 80px;\
+                    top: 160px;\
                     right: 10px;\
                     width: auto;\
                     height: auto;\
@@ -105,7 +105,7 @@
                 }\
                 #maticak-greeting-bubble {\
                     position: fixed;\
-                    top: 230px;\
+                    top: 310px;\
                     right: 24px;\
                     background: white;\
                     color: #1D1D1F;\
