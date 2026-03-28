@@ -64,37 +64,46 @@
                 }\
                 #maticak-chat-toggle {\
                     position: fixed;\
-                    bottom: ' + this.config.position.bottom + ';\
-                    right: ' + this.config.position.right + ';\
-                    width: 64px;\
-                    height: 64px;\
-                    background: linear-gradient(135deg, #006aac 0%, #0a78b0 100%);\
+                    top: 10px;\
+                    right: 10px;\
+                    width: auto;\
+                    height: auto;\
+                    background: transparent;\
                     color: white;\
                     border: none;\
-                    border-radius: 50%;\
+                    border-radius: 0;\
                     font-size: 30px;\
                     cursor: pointer;\
-                    box-shadow: 0 8px 24px rgba(0, 106, 172, 0.35);\
+                    box-shadow: none;\
                     z-index: 999998;\
-                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);\
-                    border: 2px solid rgba(255, 255, 255, 0.2);\
-                    display: flex;\
-                    align-items: center;\
-                    justify-content: center;\
+                    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;\
+                    display: block;\
+                    padding: 0;\
+                    animation: maticakFloat 3s ease-in-out infinite;\
+                    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));\
+                }\
+                #maticak-chat-toggle img {\
+                    width: 140px;\
+                    height: auto;\
+                    display: block;\
+                    object-fit: contain;\
+                    background: transparent;\
+                    pointer-events: none;\
                 }\
                 #maticak-chat-toggle:hover {\
-                    transform: scale(1.08) translateY(-2px);\
-                    box-shadow: 0 12px 32px rgba(0, 106, 172, 0.45);\
+                    transform: scale(1.08);\
+                    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));\
+                    animation-play-state: paused;\
                 }\
                 #maticak-chat-toggle:active {\
-                    transform: scale(0.96);\
+                    transform: scale(0.95);\
                 }\
                 #maticak-chat-toggle.maticak-hidden {\
                     display: none;\
                 }\
                 #maticak-greeting-bubble {\
                     position: fixed;\
-                    bottom: 96px;\
+                    top: 160px;\
                     right: 24px;\
                     background: white;\
                     color: #1D1D1F;\
@@ -129,8 +138,12 @@
                     50% { box-shadow: 0 8px 30px rgba(0, 106, 172, 0.4); transform: scale(1.03); }\
                 }\
                 @keyframes maticakTogglePulse {\
-                    0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 106, 172, 0.35); }\
-                    50% { transform: scale(1.12); box-shadow: 0 8px 32px rgba(0, 106, 172, 0.6); }\
+                    0%, 100% { transform: scale(1); }\
+                    50% { transform: scale(1.08); }\
+                }\
+                @keyframes maticakFloat {\
+                    0%, 100% { transform: translateY(0px); }\
+                    50% { transform: translateY(-10px); }\
                 }\
                 #maticak-modal-overlay {\
                     position: fixed;\
@@ -428,11 +441,11 @@
                         border-radius: 20px 20px 0 0;\
                     }\
                     #maticak-chat-toggle {\
-                        width: 60px;\
-                        height: 60px;\
-                        font-size: 28px;\
-                        bottom: 15px;\
-                        right: 15px;\
+                        top: 5px;\
+                        right: 5px;\
+                    }\
+                    #maticak-chat-toggle img {\
+                        width: 100px;\
                     }\
                     #maticak-modal-wrapper {\
                         width: 95%;\
@@ -471,7 +484,7 @@
         injectHTML: function() {
             const container = document.createElement('div');
             container.id = 'maticak-chatbot-container';
-            container.innerHTML = '<iframe id="maticak-chatbot-iframe" src="' + this.config.chatbotUrl + '" allow="clipboard-write"></iframe><button id="maticak-chat-toggle">💬</button>';
+            container.innerHTML = '<iframe id="maticak-chatbot-iframe" src="' + this.config.chatbotUrl + '" allow="clipboard-write"></iframe><button id="maticak-chat-toggle" title="Otev\u0159\u00edt chat s Mat\u00fdskem"><img src="https://tmutina79-png.github.io/chatbot-rag-ready/Obr%C3%A1zky/MATY_1.png" alt="MATY" draggable="false" /></button>';
             document.body.appendChild(container);
         },
         
@@ -633,10 +646,14 @@
             
             if (this.isOpen) {
                 iframe.classList.add('maticak-visible');
-                btn.classList.add('maticak-hidden');
+                btn.style.opacity = '0';
+                btn.style.pointerEvents = 'none';
+                btn.style.transform = 'scale(0.5)';
             } else {
                 iframe.classList.remove('maticak-visible');
-                btn.classList.remove('maticak-hidden');
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+                btn.style.transform = '';
             }
         },
         

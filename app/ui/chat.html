@@ -70,9 +70,9 @@
             pointer-events: none;
         }
 
-        /* V standalone režimu ponechat MATY character viditelný */
+        /* V standalone režimu skrýt mascot, ale ponechat toggle button */
         html.standalone .maty-mascot {
-            display: block;
+            display: none !important;
         }
 
         .header {
@@ -840,15 +840,52 @@
         }
 
         /* ===== PLOVOUCÍ TLAČÍTKO PRO OTEVŘENÍ CHATBOTA ===== */
-        /* Skryté — nahrazeno postavičkou MATY_1 */
+        
         .chat-toggle-btn {
-            display: none !important;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #5B6FE8 0%, #7C4DFF 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(91, 111, 232, 0.35);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .chat-toggle-btn:hover,
-        .chat-toggle-btn:active,
+        .chat-toggle-btn:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 12px 32px rgba(91, 111, 232, 0.45);
+        }
+
+        .chat-toggle-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Animace pro puls efekt */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 2px 10px rgba(102, 126, 234, 0.6);
+            }
+            50% {
+                box-shadow: 0 2px 15px rgba(102, 126, 234, 0.9), 0 0 0 5px rgba(102, 126, 234, 0.1);
+            }
+            100% {
+                box-shadow: 0 2px 10px rgba(102, 126, 234, 0.6);
+            }
+        }
+
         .chat-toggle-btn.pulse {
-            display: none !important;
+            animation: pulse 2s infinite;
         }
 
         /* Skrytí/zobrazení chatbota */
@@ -905,44 +942,72 @@
             }
         }
 
-        /* ===== MATY CHARACTER (nahrazuje chat bubble) ===== */
+        /* ===== MATY MASCOT ===== */
         .maty-mascot {
-            display: block;
+            display: none; /* Skrytá postavička */
             position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 10000;
+            bottom: 90px;
+            right: 90px;
+            z-index: 999;
             cursor: pointer;
             animation: maty-float 3s ease-in-out infinite;
-            transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
-            filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));
-            pointer-events: auto;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 8px 16px rgba(102, 126, 234, 0.3));
         }
 
         .maty-mascot:hover {
-            transform: scale(1.08);
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-            animation-play-state: paused;
-        }
-
-        .maty-mascot:active {
-            transform: scale(0.95);
+            transform: scale(1.1);
+            filter: drop-shadow(0 12px 24px rgba(102, 126, 234, 0.5));
         }
 
         .maty-character {
-            width: 140px;
+            width: 150px;
             height: auto;
+            border-radius: 50%;
             display: block;
-            object-fit: contain;
-            border-radius: 0;
-            /* Zachování průhlednosti PNG */
-            background: transparent;
         }
 
-        /* Floating animace pro MATY character */
+        /* Animace pro pravá ruka - mává */
+        .maty-arm-right {
+            animation: maty-wave-right 1.5s ease-in-out infinite;
+            transform-origin: 120px 80px;
+        }
+
+        @keyframes maty-wave-right {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-25deg); }
+            50% { transform: rotate(-35deg); }
+            75% { transform: rotate(-25deg); }
+        }
+
+        /* Animace pro levá ruka - jímavost */
+        .maty-arm-left {
+            animation: maty-wave-left 2s ease-in-out infinite;
+            transform-origin: 40px 85px;
+        }
+
+        @keyframes maty-wave-left {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-15deg); }
+        }
+
+        /* Animace antény */
+        .maty-antenna {
+            animation: maty-antenna-bounce 2.5s ease-in-out infinite;
+            transform-origin: 80px 15px;
+        }
+
+        @keyframes maty-antenna-bounce {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
         @keyframes maty-float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(-2deg); }
+            50% { transform: translateY(-15px) rotate(0deg); }
+            75% { transform: translateY(-8px) rotate(2deg); }
         }
 
         .welcome-bubble-text {
@@ -1017,11 +1082,11 @@
             }
 
             .chat-toggle-btn {
-                display: none !important;
-            }
-
-            .maty-character {
-                width: 120px;
+                width: 64px;
+                height: 64px;
+                font-size: 30px;
+                bottom: 15px;
+                right: 15px;
             }
         }
 
@@ -1140,16 +1205,11 @@
             }
 
             .chat-toggle-btn {
-                display: none !important;
-            }
-
-            .maty-mascot {
-                top: 5px;
-                right: 5px;
-            }
-
-            .maty-character {
-                width: 100px;
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+                bottom: 20px;
+                right: 20px;
             }
 
             .container.hidden {
@@ -1282,16 +1342,11 @@
             }
 
             .chat-toggle-btn {
-                display: none !important;
-            }
-
-            .maty-mascot {
-                top: 3px;
-                right: 3px;
-            }
-
-            .maty-character {
-                width: 80px;
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+                bottom: 15px;
+                right: 15px;
             }
 
             /* Předměty - responsive grid */
@@ -1466,9 +1521,64 @@
         <span class="chat-badge" id="chatBadge">!</span>
     </button>
 
-    <!-- MATY Character (nahrazuje chat bubble) -->
-    <div class="maty-mascot" id="matyMascot" onclick="toggleChat()" title="Otevřít chat s Matýskem">
-        <img class="maty-character" src="MATY_1.png" alt="MATY – Matiční AI Pomocník" draggable="false" />
+    <!-- MATY Mascot -->
+    <div class="maty-mascot" id="matyMascot" onclick="toggleChat()">
+        <svg class="maty-character" width="160" height="180" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- Stín -->
+            <ellipse cx="80" cy="170" rx="35" ry="6" fill="#000" opacity="0.15"/>
+            
+            <!-- Tělo (fialové) -->
+            <ellipse cx="80" cy="110" rx="40" ry="50" fill="#7B68EE"/>
+            <ellipse cx="80" cy="105" rx="35" ry="42" fill="#9370DB" opacity="0.6"/>
+            
+            <!-- Nohy -->
+            <rect x="60" y="150" width="15" height="25" rx="7" fill="#6A5ACD"/>
+            <rect x="85" y="150" width="15" height="25" rx="7" fill="#6A5ACD"/>
+            <ellipse cx="67.5" cy="175" rx="10" ry="6" fill="#483D8B"/>
+            <ellipse cx="92.5" cy="175" rx="10" ry="6" fill="#483D8B"/>
+            
+            <!-- Levá ruka (animovaná) -->
+            <g class="maty-arm-left">
+                <ellipse cx="40" cy="100" rx="12" ry="28" fill="#6A5ACD" transform="rotate(-15 40 100)"/>
+                <circle cx="35" cy="125" r="10" fill="#FFD700"/>
+                <circle cx="35" cy="125" r="7" fill="#FFA500"/>
+            </g>
+            
+            <!-- Pravá ruka (mává) -->
+            <g class="maty-arm-right">
+                <ellipse cx="120" cy="95" rx="12" ry="30" fill="#6A5ACD" transform="rotate(20 120 95)"/>
+                <circle cx="127" cy="120" r="10" fill="#FFD700"/>
+                <circle cx="127" cy="120" r="7" fill="#FFA500"/>
+            </g>
+            
+            <!-- Hlava -->
+            <circle cx="80" cy="55" r="35" fill="#FFA07A"/>
+            <circle cx="80" cy="55" r="32" fill="#FFB89D"/>
+            
+            <!-- Oči -->
+            <circle cx="68" cy="50" r="6" fill="#2C3E50"/>
+            <circle cx="92" cy="50" r="6" fill="#2C3E50"/>
+            <circle cx="70" cy="48" r="2.5" fill="#fff"/>
+            <circle cx="94" cy="48" r="2.5" fill="#fff"/>
+            
+            <!-- Úsměv -->
+            <path d="M 60 62 Q 80 72 100 62" stroke="#E74C3C" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M 63 63 Q 80 70 97 63" stroke="#FF6B7A" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+            
+            <!-- Nos -->
+            <ellipse cx="80" cy="58" rx="4" ry="5" fill="#FF8C69"/>
+            
+            <!-- Tváře -->
+            <circle cx="55" cy="60" r="8" fill="#FF6B7A" opacity="0.4"/>
+            <circle cx="105" cy="60" r="8" fill="#FF6B7A" opacity="0.4"/>
+            
+            <!-- Anténa -->
+            <g class="maty-antenna">
+                <line x1="80" y1="22" x2="80" y2="8" stroke="#9370DB" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="80" cy="5" r="6" fill="#9370DB"/>
+                <circle cx="80" cy="5" r="3" fill="#BA55D3"/>
+            </g>
+        </svg>
     </div>
 
     <div class="container hidden" id="chatWidget">
@@ -4417,9 +4527,8 @@
         function toggleChat() {
             const chatWidget = document.getElementById('chatWidget');
             const toggleBtn = document.getElementById('chatToggleBtn');
-            const icon = toggleBtn ? toggleBtn.querySelector('.icon') : null;
+            const icon = toggleBtn.querySelector('.icon');
             const chatBadge = document.getElementById('chatBadge');
-            const matyMascot = document.getElementById('matyMascot');
             
             // Při otevření chatu zavřeme uvítací bublinu
             closeWelcomeBubble();
@@ -4427,18 +4536,9 @@
             if (chatWidget.classList.contains('hidden')) {
                 // Otevřít chat
                 chatWidget.classList.remove('hidden');
-                if (toggleBtn) {
-                    toggleBtn.classList.add('active');
-                    toggleBtn.classList.remove('pulse');
-                }
-                if (icon) icon.textContent = '✕';
-                
-                // Skrýt MATY character při otevřeném chatu
-                if (matyMascot) {
-                    matyMascot.style.opacity = '0';
-                    matyMascot.style.pointerEvents = 'none';
-                    matyMascot.style.transform = 'scale(0.5)';
-                }
+                toggleBtn.classList.add('active');
+                toggleBtn.classList.remove('pulse');
+                icon.textContent = '✕';
                 
                 // Skrýt badge při otevření
                 if (chatBadge) {
@@ -4458,18 +4558,9 @@
             } else {
                 // Zavřít chat
                 chatWidget.classList.add('hidden');
-                if (toggleBtn) {
-                    toggleBtn.classList.remove('active');
-                    toggleBtn.classList.add('pulse');
-                }
-                if (icon) icon.textContent = '💬';
-                
-                // Znovu zobrazit MATY character
-                if (matyMascot) {
-                    matyMascot.style.opacity = '1';
-                    matyMascot.style.pointerEvents = 'auto';
-                    matyMascot.style.transform = '';
-                }
+                toggleBtn.classList.remove('active');
+                toggleBtn.classList.add('pulse');
+                icon.textContent = '💬';
             }
         }
 
@@ -4477,12 +4568,10 @@
         document.addEventListener('click', (e) => {
             const chatWidget = document.getElementById('chatWidget');
             const toggleBtn = document.getElementById('chatToggleBtn');
-            const matyMascot = document.getElementById('matyMascot');
             
-            // Zavřít pouze pokud klik není na chat, tlačítko ani character
+            // Zavřít pouze pokud klik není na chat ani na tlačítko
             if (!chatWidget.contains(e.target) && 
-                !(toggleBtn && toggleBtn.contains(e.target)) &&
-                !(matyMascot && matyMascot.contains(e.target)) && 
+                !toggleBtn.contains(e.target) && 
                 !chatWidget.classList.contains('hidden')) {
                 // Zakomentováno - můžeš odkomentovat pokud chceš auto-zavírání
                 // toggleChat();
