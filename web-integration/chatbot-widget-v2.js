@@ -105,12 +105,12 @@
                 }\
                 #maticak-greeting-bubble {\
                     position: fixed;\
-                    top: 95px;\
-                    right: 155px;\
+                    top: 110px;\
+                    right: 150px;\
                     background: white;\
                     color: #1D1D1F;\
                     padding: 14px 20px;\
-                    border-radius: 16px 16px 16px 4px;\
+                    border-radius: 16px;\
                     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;\
                     font-size: 13px;\
                     font-weight: 400;\
@@ -120,6 +120,18 @@
                     cursor: pointer;\
                     max-width: 260px;\
                     line-height: 1.5;\
+                }\
+                #maticak-greeting-bubble::after {\
+                    content: "";\
+                    position: absolute;\
+                    top: 18px;\
+                    right: -10px;\
+                    width: 0;\
+                    height: 0;\
+                    border-top: 8px solid transparent;\
+                    border-bottom: 8px solid transparent;\
+                    border-left: 12px solid white;\
+                    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.08));\
                 }\
                 #maticak-chat-toggle.maticak-pulse {\
                     animation: maticakTogglePulse 1.2s ease-in-out infinite;\
