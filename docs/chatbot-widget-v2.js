@@ -105,21 +105,21 @@
                 }\
                 #maticak-greeting-bubble {\
                     position: fixed;\
-                    top: 310px;\
-                    right: 24px;\
+                    top: 165px;\
+                    right: 155px;\
                     background: white;\
                     color: #1D1D1F;\
-                    padding: 12px 18px;\
-                    border-radius: 16px 16px 4px 16px;\
+                    padding: 14px 20px;\
+                    border-radius: 16px 16px 16px 4px;\
                     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;\
-                    font-size: 14px;\
-                    font-weight: 500;\
+                    font-size: 13px;\
+                    font-weight: 400;\
                     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);\
-                    z-index: 999997;\
+                    z-index: 9999998;\
                     animation: maticakBubbleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), maticakPulseGlow 1.5s ease-in-out 0.5s infinite;\
                     cursor: pointer;\
-                    max-width: 220px;\
-                    line-height: 1.4;\
+                    max-width: 260px;\
+                    line-height: 1.5;\
                 }\
                 #maticak-chat-toggle.maticak-pulse {\
                     animation: maticakTogglePulse 1.2s ease-in-out infinite;\
@@ -625,7 +625,7 @@
                 var toggleBtn = document.getElementById('maticak-chat-toggle');
                 var bubble = document.createElement('div');
                 bubble.id = 'maticak-greeting-bubble';
-                bubble.textContent = 'Ahoj! \uD83D\uDC4B Jmenuji se MATY!';
+                bubble.innerHTML = '<strong>Ahoj, jmenuji se Maty \uD83D\uDC4B</strong><br>V\u00edtej na str\u00e1nk\u00e1ch na\u0161\u00ed \u0161koly. R\u00e1d ti pom\u016f\u017eu s informacemi o \u0161kole.';
                 if (toggleBtn) toggleBtn.classList.add('maticak-pulse');
                 bubble.addEventListener('click', function() {
                     bubble.remove();
