@@ -64,7 +64,7 @@
                 }\
                 #maticak-chat-toggle {\
                     position: fixed;\
-                    top: 90px;\
+                    top: 130px;\
                     right: -15px;\
                     width: auto;\
                     height: auto;\
@@ -105,7 +105,7 @@
                 }\
                 #maticak-greeting-bubble {\
                     position: fixed;\
-                    top: 110px;\
+                    top: 150px;\
                     right: 125px;\
                     background: white;\
                     color: #1D1D1F;\
@@ -671,7 +671,7 @@
                         setTimeout(function() { bubble.remove(); }, 300);
                     }
                     if (toggleBtn) toggleBtn.classList.remove('maticak-pulse');
-                }, 8000);
+                }, 4000);
             }, 1500);
         },
 
